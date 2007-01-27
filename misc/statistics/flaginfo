@@ -1,0 +1,14 @@
+flags=$(cat etc/flags | sed -e "s/^#.*$//" | cut -f1 | sort -b | uniq)
+
+# Output the total number of packages
+pkgs=$(find package -name "*.desc" | wc -l)
+echo Total number of packages: $pkgs
+echo ""
+
+for flag in $flags; do
+	# Determine the number of packages containing 
+	# the current flag.
+	flagOwners=$(grep -e "^\[F.*$flag" package/*/*/*.desc | wc -l)
+
+	echo $flag    $flagOwners
+done

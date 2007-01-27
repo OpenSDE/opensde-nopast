@@ -1,0 +1,27 @@
+OpenSDE News!
+
+Structure:
+	- introduced $HOME/.sde folder for global configurations
+	- src/ -> tmp/ for temporal files (2006/08/01)
+	- source/ folder dropped (2006/08/01)
+	- Documentation -> doc/
+	- misc/share/ -> etc/ (config) (2006-08-28)
+	- modify the license handling to not use hardcoded licenses
+	  but parse some files in etc. (2006-10-01)
+Targets:
+	- dropped archivista (2006/08/01)
+Packages:
+	- Xfce 4.4
+	- gtk+ repository for generic Gtk+ applications (2006/08/03)
+	  and changed those apps to use gtk+-conf.in instead of gnome's
+	- gtk+ and friends to usr/ (2006-08-03)
+	- php to opt/php (2006-08-06)
+OpenSDE:
+	- replaced old 'NEWS' file (2006/08/01)
+	- updated T2 Copyright notes all around (2006/08/01)
+	- introduced `sde` front-end wrapper (2006/08/20)
+	- `sde commit` replaced scripts/Commit (2006/08/20)
+	- CIA notifying changes on #opensde (2006-08-21)
+	- Mailing lists (discussion and svn changes) (2006-09-05)
+	- @opensde.org forward accounts for members (2006-09-05)
+

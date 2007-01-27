@@ -1,0 +1,14 @@
+statuses=$(cat etc/status | sed -e "s/^#.*$//" | cut -f1 | sort -b | uniq)
+
+# Output the total number of packages
+pkgs=$(find package -name "*.desc" | wc -l)
+echo Total number of packages: $pkgs
+echo ""
+
+for status in $statuses; do
+	# Determine the number of packages containing 
+	# the current status.
+	statusOwners=$(grep -e "^\[S[^R].*$status" package/*/*/*.desc | wc -l)
+
+	echo $status    $statusOwners
+done

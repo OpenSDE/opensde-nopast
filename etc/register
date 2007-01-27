@@ -1,0 +1,150 @@
+
+Reserved User and Group IDs:
+----------------------------
+
+- system:
+0	root		root
+	toor
+1	bin		bin
+2	daemon		daemon
+3			shadow
+4			games
+5			tty
+6			disk
+7			kmem
+8			mail
+9	log		log
+10			wheel
+100			users
+
+- ftp:
+13	ftp		ftp
+
+- uucp:
+14	uucp		uucp
+
+- D-BUS / HAL:
+15	haldaemon	haldaemon
+16	messagebus	messagebus
+
+- hardware access:
+16			video
+17			audio
+31			modem
+32			lp
+33			floppy
+34			cdrom
+35			tape
+36			fuse
+
+- sendmail:
+18	smmsp		smmsp
+
+- sshd:
+19	sshd		sshd
+
+- qmail:
+20	alias		nofiles
+21	qmaild		qmail
+22	qmaill
+23	qmailp
+24	qmailq
+25	qmailr
+26	qmails
+
+- qscanq:
+27	Gqscanq		Gqscanq
+
+- exim:
+30	exim		exim
+
+- nullmailer:
+38	nullmailer	nullmailer
+
+- mysql:
+39	mysql		mysql
+
+- oracle:
+40	oracle		oracle
+41	dba		dba
+
+- postgresql:
+42	postgres	postgres
+
+- postfix:
+43	postdrop
+44	postfix		postfix
+
+- memcached:
+45	memcached	memcached
+
+- cron:
+53	cron		crontab
+
+- clamav:
+54	clamav		clamav
+
+- zeroinstall:
+55	zeroinst	zeroinst
+
+- dansguardian:
+56	dansguardian	dansguardian
+
+- cdwserve:
+57	cdwserve	cdwserve
+
+- clockspeed:
+63	Gtaiclock
+
+- djbdns:
+64	Gdnscache
+65	Gtinydns
+
+- gdm:
+66	gdm		gdm
+
+- gopher:
+70	gopher		gopher
+
+- sfs:
+71	sfs		sfs
+
+- nagios
+76	nagios		nagios
+
+- jabber:
+78	jabber		jabber
+
+- mailman:
+79	mailman		mailman
+
+- httpd:
+80	http		http
+
+- partimage:
+81	partimag	partimag
+
+- pound:
+82	pound		pound
+
+- ldap:
+389	ldap		ldap
+
+- jboss:
+390	jboss		jboss
+
+- rsbac:
+400	secoff		rsbac
+
+
+  Free IDs: 11-12,28-29,37,46-52,57-62,67-69,72-75,77,83-99
+            101-388,391-399,401-999
+
+
+Filedescriptor Numbers
+----------------------
+
+199	Output plugins unchroot mechanism
+200	Package build $builddir/build.pid
+201	Target build $build_logs/build_target_$$.log
+

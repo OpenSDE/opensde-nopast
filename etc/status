@@ -1,0 +1,12 @@
+#
+# File Format:
+#       - Lines starting with '#' and empty lines are ignored
+#       - One line per status, no leading whitespaces
+#	- Status is followed by a tab and a short description
+
+
+Alpha	Status for packages in early development stage.
+Beta	Status for packages in their beta stage.
+Gamma	Status for mature but not stable packages.
+Stable	Status for stable packages.
+

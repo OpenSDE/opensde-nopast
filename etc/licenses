@@ -1,0 +1,30 @@
+#
+# This file contains all supported license types. These types can
+# be used in the [L] in .desc files. When using types other than
+# those mentioned here will result in build time errors.
+#
+# File Format:
+#       - Lines starting with '#' and empty lines are ignored
+#       - One line per license, no leading whitespaces
+#	- License keyword followed by a tab and a short description
+
+Unknown		Use this license for packages with unknown license.
+
+GPL		GNU General Public Licence
+LGPL		GNU Library General Public Licence
+FDL		GNU Free Documentation License
+MPL		Mozilla Public Licence
+MIT		MIT License
+BSD		BSD Licence
+APL		Apache License
+CDDL		Common Development and Distribution License
+APSL		Apple Public Source License
+IPL		IBM Public License
+
+OpenSource	Any other Open Source licence
+Free-to-use	Any other non Open Source (but free to use) licence
+Commercial	Any other non Open Source (commercial) licence
+Restricted	Any other restricted licence
+PublicDomain	uncopyrighted
+Artistic	Artistic License
+ZPL		Zope Public License

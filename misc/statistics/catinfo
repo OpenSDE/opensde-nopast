@@ -1,0 +1,14 @@
+categories=$(cat etc/categories | sed -e "s/^#.*$//" | cut -f1 | sort -b | uniq)
+
+# Output the total number of packages
+pkgs=$(find package -name "*.desc" | wc -l)
+echo Total number of packages: $pkgs
+echo ""
+
+for category in $categories; do
+	# Determine the number of packages containing 
+	# the current categories.
+	categoryOwners=$(grep -e "^\[C[^O].*$category" package/*/*/*.desc | wc -l)
+
+	echo $category	$categoryOwners
+done

@@ -1,0 +1,18 @@
+
+This directory contains files you need to (cross-)compile the T2 SDE on
+various architectures. There is a subdir for each architecture supported.
+Such a directory can contain this files:
+
+  README                 Architecture dependent documentation
+
+  preconfig.in           For registering the arch in the SDE config system
+  config.in              Architecture dependent configuration
+  config.hlp             Arhcitecture dependent configuration help
+  
+  archtest.out           Output of the archtest.c program
+  archtest.sh            Dynamic archtest values
+
+  kernel.conf.*          Linux kernel configuration
+
+  *cc-options.in         Compiler parameter configuration files
+

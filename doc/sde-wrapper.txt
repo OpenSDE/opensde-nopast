@@ -1,0 +1,103 @@
+(R)	the value stay recorded on the tree after the first usage
+(G)	the value can be specified at $HOME/.sde/config
+
+# `sde download`
+# Grab package files
+#
+sde download <options>	-all		# Download every file from the tree
+			[-cfg $config] $pkg [$pkg [...]]	
+		       			# Downloads specific packages and their active extenders
+			-cfg $config	# Download all the files required by a given config
+			-help		# Shows some help
+	options:
+			-q			# quiet mode
+		(R)	-mirror	$mirror		# use a given mirror
+		(G)	-alt-dir $altdir	# try first from a give path
+		(G)	-curl-opt $curlopt	# use a given set of arguments for `curl`
+		(G)	-proxy $proxy		# proxy to use on downloads
+		(G)	-proxy-auth $proxyuth	# auth info for the proxy
+
+# `sde config`
+# Set up a build
+#
+sde config <options> [[-cfg] $config]	# configure a build (default: default)
+	options:
+			-q			# quick/quiet mode, just refresh
+
+# `sde build`
+# Makes a build
+#
+sde build	[[-cfg] $config]	# start/continue a given build
+		[[-cfg] $config] -job [$stage-]$pkg
+					# builds certain package on a build
+		[[-cfg] $config] [-f] -tools [$stage]
+					# build some internal tools needed during the build
+					# (it's able to detect if they need regeneration or not)
+	options:
+			-f		# (-tools) force regeneration
+
+# `sde new`
+# Makes a new tree
+#
+sde new	[-branch $branch] $location 	# makes a new tree at a given location
+
+# `sde update`
+# Updates a tree
+sde update <options>		# Updates a tree
+	options:
+		-v	# verbose
+		-s	# append summary
+
+# `sde commit` (Alias: ci)
+# Commit changes
+#
+sde commit <options> [$location [$location [...]]]	# commits changes at give locations
+							# (they can also be package names)
+	options:
+		-patch	# creates a patch to send by mail
+
+# `sde pkg` (Alias: package)
+#
+sde pkg	update $package	# recalculate checksum for the files of a package (download if needed)
+	update $package $version [-relocate $newlocation]
+			# updates a package to a given version, optionally changing the
+			# download location
+	update $package -check
+			# check upstream for new versions of this package
+	build $package [-cfg $config] [-stage $stage] [-root $root]
+			# builds a package
+	new <options> [package/]$repository/$package (-fm|-cpan|-sf|-be) $name
+			# creates a new package from the info available for a name at a remote source
+			# fm:freshmeat cpan:CPAN sf:SourceForge be:berlios
+	new <options> [package/]$repository/$package $url [$url [...]]
+			# creates a new package taking as download files a given list of URLs
+
+	options:
+			-v	# (new), verbose package creation
+			-q	# (new), quiet package creation
+		(G)	-m $me	# (new), sets the given as the package maintainer
+
+# `sde target`
+# Interacts with the target's directory
+#
+sde target	list [$flag [$flag [...]]]
+			# list the targets (and their branches) which are registered for a given
+			# set of flags
+		list $target
+			# list the branches registered on the directory of a give target
+		update [$target [$target [...]]]
+			# updates one, more or all the targets on this tree
+		get $target [-branch $branch]
+			# gets a read-only copy of a target on the current tree (recursivly)
+		rename $target $newtarget
+			# changes the id a target is using on the current tree (and on the configs)
+		switch $target [-branch $branch] (-ro|-rw)
+			# change a target to a different branch or between rw/ro repositories
+
+# `sde cleanup`
+#
+sde cleanup			# removes inactive src.*/ directories lingering around
+		-download	# removes files at download/ which are no longer needed
+		-cache		# removes ccache caches
+		-build $builddir [$builddir [...]]
+				# removes complete builddirs

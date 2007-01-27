@@ -1,0 +1,74 @@
+OpenSDE:
+	- Document, document, document! - for accesibility.
+	- User interface to `sde` wrapper, for usability.
+	- Promote target creation, OpenSDE is just the framework
+	  and database. don't mix the concepts, promote the creation of
+	  targets, and keep all of them as svn:externals. Same for
+	  output formats
+	- Web site (generated from documentation)
+	- Logo, CSS, Layout
+	- register group at freenode
+	  http://freenode.net/group_registration.shtml
+
+OpenSDE.net:
+	- http:// mirror for svn repositories
+	- trac, websvn, dl
+	- improve infrastructure (mirrors, tasks automatization)
+	- CIA, distrowatch notifications
+	- Mailing lists, forward mail accounts
+
+Structure Changes:
+	- misc/*/ -> lib/*/ (modules)
+	- scripts/ -> lib/ (non executable files) (WIP:2006-08-02)
+	- scripts/ -> bin/ (executable files) (WIP:2006-08-20)
+	- frontend wrapper (`sde`) for user interface (WIP:2006-08-20)
+	- bash completition for `sde`
+	- move all targets out of target/
+	- $HOME/.sde/ (WIP:2006-08-05)
+
+Packages:
+	- sbin/init.d/functions.in for init and postinstall scripts
+	- qt and non-kde friends to /usr
+	- remove DNA from 'generic'
+	- FHS package validating flist and replacing 00-dirtree
+	  (WIP:2006-09-13)
+	- LSB package, scripts and tests
+	- move /etc/postinstall.d/ scripts to /var/adm/postinstall
+	  (one time only scripts) (WIP:2006-09-13)
+	- $sbindir/postinstall.d/ for scripts to trigger on each update/install
+	- drop gem format
+	- move /etc/stone.d/ to /lib/stone/
+	- look for a good name for `sam`, tool to administer installed
+	  machines
+	- replace `stone` with `sam`
+	- replace `mine` with `bize` or `sam`
+	- rocknet ?
+	- Xffm is now a large set of packages, rework it
+	- etc/rc.d -> sysvinit
+	- .tail files.... .aid ? "Automatic Instalation Document"
+		- users, groups, conditional, guides to generate init scripts
+		- target overwritable
+	- split of download handlers
+	- sf:// and cpan:// download handlers
+	- add git support for downloads
+	- split extract handlers (GPG?)
+	- add CACert on openssl and browsers
+	- drop $archdir/ in favor of match_source_file
+	- lib64/,lib/ -> lib32/,lib64/ + symlink (WIP:2006-09-13)
+	  http://www.pathname.com/fhs/pub/fhs-2.3.html#LIBLTQUALGTALTERNATEFORMATESSENTIAL
+	- package amarok needs ruby to build, if there is no ruby it will only build the docs and the .po files
+	  on the amarok.cache there is no [DEP] ruby, and this is not present in the cache file after a
+	  successful build either.
+	- fix Build-Target to keep a log of the 'output' at build_target.log again.
+	- enable (optionally) fortran compiler support on gcc
+
+Second Generation: re-design/re-implement
+	- Change the backend to something client/server with a modular
+	  and eficient engine. (Wishlist: C core, domain sockets, library for
+	  sh scripts, lua modules, bootstrapping)
+
+Third Generation: new features
+	- package branches (more than one .desc per package)
+	- package attributes (build options)
+	- package splits (more than one result package per package)
+	- language preselection

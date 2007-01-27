@@ -1,0 +1,14 @@
+This file includes packages we've hacked to get them build on
+*-64 architectures and which should be fixed after we have 
+lib64/,lib/ -> lib32/,lib64/ + symlink 
+
+package		things to do
+----------- ---------------------------------------------------------
+honeyd		remove lib64-configure-fix.patch
+fragroute	remove lib64-configure-fix.diff and cleanup .conf
+openldap	remove parse-config (see r17577)
+postgresql	remove parse-config (see r17585)
+xv		revert r18834
+mlt		revert r18851
+jpilot		revert r18858
+doxygen		revert r19667

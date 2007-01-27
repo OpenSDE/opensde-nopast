@@ -1,0 +1,40 @@
+OpenSDE - Open System Development Environment.
+http://opensde.org/
+
+In 1998 Clifford Wolf created ROCK Linux [1], a great shell-based
+'Distribution Build Kit' to help system administrators create and
+maintain their own Linux distributions.
+
+In 2004, René Rebe made his second (the first was named dROCK) fork
+due to an (in the view of some developers) inconvenient development
+cycle [2]. This fork with the temporary code name 'T2' [3] finally
+turned into the T2-Project [4]. The goal of T2 was to decentralize the
+development and revive the almost stalled ROCK-Linux development.
+It reworked the 'Distribution Build Kit' into 'System Development
+Environment' (SDE) to decouple it from the 'Distribution' concept
+which is strongly linked to the Linux Kernel.
+
+In May 2006 OpenSDE [5] was born, aimed at the reimplementation of the
+build engine which should result in a more efficient and flexible
+framework and lower the entry level for users as well as
+developers. OpenSDE, then two months later, after personal and many
+technical differences, was detached into its own project by
+Alejandro Mery, supported by T2 as well as former ROCK-Linux 
+developers.
+
+The SDE concept is intended as an open framework to build an operating
+system (not necessarily restricted to GNU/Linux) enabling the creation
+of systems for diverse architectures with various boot options and a
+tailored software selection. 
+
+OpenSDE has now turned into an ambitious purely team-lead project
+where decisions are made based on their technical merit uninfluenced
+by its predecessors and contribution are judged by their quality and
+security.
+
+[1] ROCK Linux  - http://www.rocklinux.org/
+[2] SubMaster   - http://www.rocklinux.org/wiki/SubMaster
+[3] 'T2' originally stood for "Try Two" and was finally kept for
+    brand recognition reasons.
+[4] T2 Project  - http://www.t2-project.org/
+[5] OpenSDE     - http://www.opensde.org/

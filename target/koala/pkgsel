@@ -1,0 +1,367 @@
+# Description: KDE-Koala reference package selection
+
+O *
+= glibc
+= glibc32
+X dietlibc
+
+# Add strictly required packages
+X 00-dirtree
+X cpio
+X dhcp
+X dialog
+X autoconf
+X automake
+X bash
+X binutils
+X bison
+X bdb
+X gdbm
+X bzip2
+X ccache
+X cracklib
+X cron
+X curl
+X diffutils
+X disktype
+X distcc
+X e2fsprogs
+X eject
+X embutils
+X ethtool
+X reiserfsprogs
+X ed
+X expat
+X file
+X fget
+X ipconfig
+X coreutils
+X mmv
+X findutils
+X flex
+X gawk
+X gcc
+X gdb
+X gettext
+X gpm
+X grep
+X groff
+X gzip
+X unifdef
+X iproute2
+X iptables
+X jfsutils
+X nullmailer
+X wireless-tools
+X kbd
+X less
+X libtool
+X libjpeg
+X libpng
+X libtiff
+X libungif
+X libvolume_id
+X linux26
+X linux-header
+X m4
+X make
+X man
+X man-pages
+X mine
+X minised
+X mktemp
+X modutils
+X module-init-tools
+X ncompress
+X ncurses
+X netkit-base
+X net-tools
+X nfs-utils
+X netkit-telnet
+X openssh
+X openssl
+X rsync
+X pam
+X parted
+X pdksh
+X patch
+X perl
+X procinfo
+X procps
+X psmisc
+X pciutils
+X screen
+X sudo
+X pkgconfig
+X readline
+X hotplug++
+X sed
+X shadow
+X strace
+X sysfiles
+X iana-etc
+X sysklogd
+X sysvinit
+X tar
+X texinfo
+X time
+X udev
+X unzip
+X util-linux
+X vim
+X vlock
+X wget
+X xfsprogs
+X zip
+X zlib
+
+# Subversion, to let people get our source
+X apr
+X apr-util
+X neon
+X subversion
+X cvs
+
+# and let people create ISOs here
+X dvdrtools
+X popt
+
+# Add architecture-specific-packages for booting
+X aboot
+X yaboot
+X quick
+X mac-fdisk
+X milo
+X grub
+X elftoaout
+X silo
+X syslinux
+X bin86
+X nasm
+
+# sysfiles split
+X stone
+X rocknet
+X mkinitrd
+
+###################### Begin XOrg basic packages and deps##################################
+# needed by xsm:
+X netkit-rsh
+
+# the basic modular X.org tree
+
+X xorg/*proto*
+X xorg/*ext
+X xorg/*lib*
+X xorg/*xf86-*
+X xorg/font-*
+X fslsfonts
+X fstobdf
+X bdftopcf
+X rgb
+X xbitmaps
+X xorg-server
+X xinit
+X xrdb
+X xauth
+X iceauth
+X fontconfig
+X mkfontdir
+X mkfontscale
+X xcursorgen
+X xcursor-themes
+X xtrans
+X xau
+X xcmiscproto
+X xkbcomp
+X xkbdata
+X setxkbmap
+X mesa
+X makedepend
+X mesa-demos
+X cairo
+X rman
+X imake
+X cf
+X gccmakedep
+
+X xhost
+x xkill
+X xdpyinfo
+X xwininfo
+X xrandr
+X xmag
+X xorg/xset*
+X xev
+
+X freetype*
+X gle
+X freeglut
+X lesstif
+X libgd
+X netpbm
+X xaw3d
+
+# a window manager and terminal
+X twm
+X xterm
+
+# needed by libx11
+X check
+
+###################### End XOrg basic packages and deps##################################
+###################### Begin desktop basic packages and deps#############################
+
+X bdb
+X pcre
+X perl-xml-parser
+X libusb
+X libidl
+X libxml
+X libxslt
+X ppp
+
+# graphics
+X libart_lgpl23
+X libmng
+X sane-backends
+X lcms
+X libgphoto
+X gimp
+
+# fonts
+X bitstream-vera-fonts
+X freefonts
+
+# printing
+X ghostscript
+X ghostscript-fonts
+X cups
+X gimp-print
+
+# gtk/gnome
+X atk
+X glib
+X pango
+X cairo
+X gtk+
+X libgsf
+X gconf
+X orbit2
+
+# kde
+X qt
+X arts
+X kdelibs
+
+# multimedia
+X xine
+X mplayer
+X mplayer-fonts
+X xvid
+
+# sound
+X alsa
+X alsa-driver
+X ogg-vorbis
+X cdrdao
+X libcdio
+X lame
+X audiofile
+X taglib
+
+# apps
+X firefox
+X epdfview
+
+# server
+X samba
+
+# security
+X gnupg
+###################### End desktop basic packages and deps######################
+
+###################### Begin KDE requirements ##################################
+X postgresql
+X python
+X tetex
+X htdig
+X sysfsutils
+X lm_sensors
+X mtools
+# libmal
+X openldap
+X hal
+X dbus
+X dbus-glib
+X fam
+X openslp
+X pilot-link
+X cyrus-sasl2
+X mdnsresponder
+X wine
+X libidn
+# NTLM
+X libsdl
+X libtiff
+X libpng
+X libjpeg
+X poppler
+# GIFT
+X cdparanoia
+X libvorbis
+X vorbis-tools
+X flac
+X speex
+X mad
+X libaudiofile
+X libogg
+X libvorbis
+X vorbis-tools
+X libtheora
+X ogmtools
+X gstreamer
+X gstreamer-plugins*
+X libmusicbrainz
+X libtunepimp
+X ctags
+X doxygen
+# libfacile
+X ocaml
+X imagemagick
+X graphicsmagick
+X imlib2
+###################### End KDE requirements ############################
+###################### Begin KDE core ##################################
+X kdebase
+X kdeaddons
+X kdeadmin
+X kdeartwork
+X kdebindings
+X kdeedu
+X kdegames
+X kdegraphics
+X kdemultimedia
+X kdenetwork
+X kdepim
+X kdesdk
+X kdetoys
+X kdeutils
+# X koffice
+X kdevelop
+###################### End KDE core ##################################
+##################### Begin Koala specific apps ######################
+X amarok
+X kaffeine
+X smb4k
+X konversation
+X w32codec
+X libexif
+X openexr
+X wv2
+X libwpd
+X k3b
+X k3b-i18n
+X digikam
+X digikamimageplugins
+##################### End Koala specific apps ########################
