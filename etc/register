@@ -55,6 +55,9 @@ Reserved User and Group IDs:
 - qscanq:
 27	Gqscanq		Gqscanq
 
+- qmail-scanner
+28	qscand		qscand
+
 - exim:
 30	exim		exim
 
@@ -143,7 +146,7 @@ Reserved User and Group IDs:
 400	secoff		rsbac
 
 
-  Free IDs: 11-12,28-29,37,46-52,57-62,67-69,72-75,83-96,98-99
+  Free IDs: 11-12,29,37,46-52,57-62,67-69,72-75,83-96,98-99
             101-388,391-399,401-999
 
 
