@@ -127,6 +127,9 @@ Reserved User and Group IDs:
 - pound:
 82	pound		pound
 
+- dovecot:
+97	dovecot		dovecot
+
 - ldap:
 389	ldap		ldap
 
@@ -137,7 +140,7 @@ Reserved User and Group IDs:
 400	secoff		rsbac
 
 
-  Free IDs: 11-12,28-29,37,46-52,57-62,67-69,72-75,77,83-99
+  Free IDs: 11-12,28-29,37,46-52,57-62,67-69,72-75,77,83-96,98-99
             101-388,391-399,401-999
 
 
