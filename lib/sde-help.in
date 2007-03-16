@@ -26,9 +26,9 @@ help_list() {
 		# optional description
 		desc=$( sed -n -e 's,^#Description: \(.*\)$,\1,p' "$module" )
 		# and valid aliases
-		alias=$( sed -n -e 's,^#Alias: \([^ ]*\)$,\1,p' "$module" )
+		alias=$( sed -n -e 's,^#Alias: \([^ ]*\)$,\1,p' "$module" | tr '\n' ' ' )
 
-		echo -e "\t* $id${alias:+\t($alias)}"
+		echo -e "\t* $id${alias:+\t(${alias%% })}"
 		if [ -n "$desc" ]; then
 			echo -e "\t\t$desc"
 		fi
