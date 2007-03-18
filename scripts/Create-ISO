@@ -251,7 +251,7 @@ if [ $src = 1 ] ; then
 
 	./scripts/Create-SrcTar
 
-	for x in doc/* t2-src-$sdever.tar.bz2 ; do
+	for x in doc/* opensde-src-$sdever.tar.bz2 ; do
 		[ ! -d $x ] && add $x ${x/doc\/}
 	done
 
@@ -314,8 +314,8 @@ for x in $disks ; do
 	echo "This is disk #$x." > $dat
 	# FIXME: current mkisofs does only accept one -path-list
 	sort -u ${pathspec}_${x} ${pathspec}_0 > ${pathspec}_current 2> /dev/null
-	mkisofs -q -r -T -J -l -A "T2 SDE - Disk $x" \
-	    -publisher 'T2 System Develop Environment - http://www.t2-project.org' \
+	mkisofs -q -r -T -J -l -A "OpenSDE - Disk $x" \
+	    -publisher 'OpenSDE System Develop Environment - http://www.opensde.org' \
 	    -path-list ${pathspec}_current \
 	    $bootoptions -graft-points disk$x.txt=$dat \
 	    `cat ${pathspec}_iso 2>/dev/null` | tee ${isoprefix}_cd$x.iso |
