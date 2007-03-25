@@ -16,10 +16,10 @@
 #
 sdever=trunk
 
-. $SDEROOT/lib/term-functions.in
-
-# export SDEROOT so it's available on the sub-apps
+[ -n "$SDEROOT" ] || SDEROOT=.
 export SDEROOT
+
+. $SDEROOT/lib/term-functions.in
 
 # default settings
 #
