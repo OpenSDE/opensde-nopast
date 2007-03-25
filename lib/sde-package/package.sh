@@ -67,24 +67,24 @@ fi
 
 output="${output:-.}"
 
-case "$type" in
+case "$pkg_type" in
 	tar.gz)		compressor=gzip	;;
 	tar.bz2)	compressor=bzip2 ;;
 	tar.lzo)	compressor=lzop ;;
 	*)		# external type
-		if [ -x "$SDEROOT/lib/sde-package/package-$type.sh" ]; then
-			exec $SDEROOT/lib/sde-package/package-$type.sh ${versioned:+--versioned} --root "${root}" \
+		if [ -x "$SDEROOT/lib/sde-package/package-$pkg_type.sh" ]; then
+			exec $SDEROOT/lib/sde-package/package-$pkg_type.sh ${versioned:+--versioned} --root "${root}" \
 				--output "${output}" "${pkg_name}"
 		else
-			echo_error "packaging type '$type' not handled."
+			echo_error "packaging type '$pkg_type' not handled."
 			exit 3
 		fi
 esac
 
-echo_info "Creating binary package for '$pkg_name' ..."
+echo_info "Creating binary package for '$pkg_name'"
 mkdir -p "$output"
 
-filename="$pkg_name${versioned:+-${version}}.$type"
+filename="$pkg_name${versioned:+-${version}}.$pkg_type"
 flist="$root/var/adm/flists/$pkg_name"
 
 ( grep	  ' var/adm' "$flist"
@@ -98,5 +98,5 @@ if [ "$errno" != "0" ]; then
 	rm -f "$output/$filename.tmp"
 	exit 4
 else
-	mv "$output/$filename{.tmp,}"
+	mv "$output/$filename"{.tmp,}
 fi

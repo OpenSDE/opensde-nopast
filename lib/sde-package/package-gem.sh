@@ -24,7 +24,6 @@ cat <<EOT
 Creates a GEM file for a given package based on it's flist
 
 Usage: ${0} [--versioned] [--root <root>] [--output <output>] <package>
-	type	package format (tar.gz,tar.bz2,tar.lzo,gem)
 	root	location of the root of the sandbox
 	output	folder to place the binary packages
 	package	name of the package
@@ -68,7 +67,7 @@ filename="${pkg_name}${versioned:+-${version}}"
 
 if $SDEROOT/lib/sde-package/package.sh --type "tar.bz2" ${versioned:+--versioned} --root "${root}" \
 	--output "${output}" "${pkg_name}"; then
-	echo_status "Converting into GEM format ..."
+	echo_status "Converting $filename.tar.bz2 into GEM format"
 
 	mine -C "${root}/var/adm" "$output/$filename.tar.bz2" "$pkg_name" \
 		"$output/$filename.gem.tmp"
@@ -77,7 +76,7 @@ if $SDEROOT/lib/sde-package/package.sh --type "tar.bz2" ${versioned:+--versioned
 		echo_error "Failed to create '$output/$filename.gem'"
 		rm -f "$output/$filename.gem.tmp"
 	else
-		mv "$output/$filename.gem{.tmp,}"
+		mv "$output/$filename.gem"{.tmp,}
 	fi
 
 	echo_status "Removing temporary ${filename}tar.bz2 file"
