@@ -232,7 +232,7 @@ pkgloop_package() {
 			echo_error "Creation of binary package isn't possible, because the package was not"
 			echo_error "built successfully in (at least) the current stage."
 		else
-			./lib/sde-package/package.sh --type "$SDECFG_PKGFILE_TYPE" \
+			./lib/sde-binary/package.sh --type "$SDECFG_PKGFILE_TYPE" \
 				$( if [ "${SDECFG_PKGFILE_VER}" == 1 ]; then echo '--versioned'; fi )	\
 				--root "${build_root}" --output "${build_pkgs}" ${pkg_name}
 		fi
