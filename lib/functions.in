@@ -505,7 +505,7 @@ pkgdesc() {
 	esac
 
 	if [ -s "$descfile" ]; then
-		sed -n "s,^\[$pattern\] \(.*\)$,\1,p" "$descfile"
+		sed -n "s,^\[$pattern\][ \t]\+\(.\+\)[ \t]*$,\1,p" "$descfile"
 	else
 		echo_error "pkgdesc: Package $2 not found."
 	fi
