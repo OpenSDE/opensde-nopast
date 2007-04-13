@@ -114,6 +114,7 @@ while read filename ; do
 			*scripts/[A-Z][a-z-]*|*/parse-config*) mode=sh ;;
 			*.patch|*.diff|*.patch.*|*.patch-*) mode=sh ;;
 			*m4) mode=m4 ;;
+			*.awk) mode=sh ;;
 		esac
 
 		#echo "Mode type: $mode"
