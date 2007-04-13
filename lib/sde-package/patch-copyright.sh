@@ -116,13 +116,6 @@ while read filename ; do
 			*m4) mode=m4 ;;
 		esac
 
-		case "$holder" in
-			amery)	# mnemosyne-only file extensions
-				case "$filename" in
-					*.ask|*.all|*.choice)	mode=sh ;;
-				esac ;;
-		esac
-
 		#echo "Mode type: $mode"
 
 		case "$mode" in
