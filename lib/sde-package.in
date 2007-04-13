@@ -21,6 +21,8 @@ Usage: sde package <action> <arguments> (Alias: pkg)
 	update [<package>] [<version>] (Alias: up)
 		Updates a package (which is autodetected if you are on it) to a
 		given version, or simply download and regenerate checksums.
+	update --md5 <url> (Alias: up)
+		Updates a set of packages based on a remote .md5 file
 
 	new [<repository>/]<package> <download> [...]
 		Creates a new package based on a template and the given download
