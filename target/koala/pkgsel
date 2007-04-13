@@ -182,7 +182,7 @@ X mesa-demos
 X cairo
 X rman
 X imake
-X cf
+X xorg-cf-files
 X gccmakedep
 
 X xhost
