@@ -20,7 +20,7 @@ package_patch_update() {
 	oldver=$( sed -n -e 's,^\[V\][ \t]\+\([^ \t]\+\)[ \t]*,\1,p' "$descfile" | head -n 1 )
 	echo_info "$pkg ($oldver -> $ver)"
 
-	awk -f $SDEROOT/lib/sde-package/package-update.awk -v "ver=$ver" -v "location=${location%/*}/" "$descfile" > $tmpfile
+	awk -f $SDEROOT/lib/sde-package/package-update.awk -v "ver=$ver" -v "location=$location" "$descfile" > $tmpfile
 	if diff -u $descfile $tmpfile; then
 		echo_warning "No change detected."
 	else
@@ -41,7 +41,7 @@ package_do_update() {
 	elif [ -z "$ver" ]; then
 		echo_info "Updating checksum for $pkg."
 	else
-		package_patch_update "$descfile" "$ver" "$location"
+		package_patch_update "$descfile" "$ver" "${location:+${location%/*}/}"
 	fi
 
 	cd "$SDEROOT"
