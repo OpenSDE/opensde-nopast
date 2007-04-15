@@ -18,11 +18,16 @@
 package_usage() {
 	cat <<EOT
 Usage: sde package <action> <arguments> (Alias: pkg)
-	update [<package>] [<version>] (Alias: up)
+	update [--location <url>] [<package>] [<version>] (Alias: up)
 		Updates a package (which is autodetected if you are on it) to a
 		given version, or simply download and regenerate checksums.
-	update --md5 <url> (Alias: up)
+		Using --location you are able to specify which will be the new
+		download location for this update.
+	update [--no-location] --md5 <url> (Alias: up)
 		Updates a set of packages based on a remote .md5 file
+		Using --no-location you tell the tool to not assume the download
+		location of the md5 file for the updates but keep their individual
+		download locations.
 
 	new [<repository>/]<package> <download> [...]
 		Creates a new package based on a template and the given download

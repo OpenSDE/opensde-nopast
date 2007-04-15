@@ -41,7 +41,7 @@ package_do_update() {
 	elif [ -z "$ver" ]; then
 		echo_info "Updating checksum for $pkg."
 	else
-		package_patch_update "$descfile" "$ver" "${location:+${location%/*}/}"
+		package_patch_update "$descfile" "$ver" "$location"
 	fi
 
 	cd "$SDEROOT"
@@ -50,7 +50,15 @@ package_do_update() {
 
 package_update_md5() {
 	local md5="$1" baseurl=
+	local nolocation= location=
+	shift
+
 	echo_info "Loading MD5 file from '$md5'"
+	if [ "$1" == "--no-location" ]; then
+		nolocation=yes; shift
+		echo_info "(Using individual download locations)"
+	fi
+
 	baseurl="${md5%/*}"
 	curl "$md5" | while read md5sum file; do
 		pkg=$( echo "$file" | sed -e 's,-[0-9].*,,' | tr [A-Z] [a-z] )
@@ -79,15 +87,28 @@ package_update_md5() {
 			continue
 		fi
 
-		package_do_update "$pkg" "$ver" "$baseurl/$file"
+		if [ -z "$nolocation" ]; then
+			location="$baseurl/$file";
+			package_do_update "$pkg" "$ver" "${location%/*}/"
+		else
+			package_do_update "$pkg" "$ver"
+		fi
 	done
 }
 
 package_update() {
 	local pkg= ver=
+	local nolocation=
+	local location=
+
+	if [ "$1" == "--no-location" ]; then
+		nolocation=yes; shift
+	elif [ "$1" == "--location" ]; then
+		location="$2"; shift 2
+	fi
 
 	if [ "$1" == "--md5" ]; then
-		package_update_md5 "$2"
+		package_update_md5 "$2" ${nolocation:+--no-location}
 		return $?
 	elif [ $# -eq 2 ]; then
 		# package and version
@@ -111,7 +132,7 @@ package_update() {
 	fi
 
 	if [ -n "$pkg" ]; then
-		package_do_update "$pkg" "$ver"
+		package_do_update "$pkg" "$ver" "${location}"
 	else
 		echo_error "I could't guess which package you want to update."
 		package_usage
