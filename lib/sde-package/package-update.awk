@@ -14,23 +14,30 @@
 
 {
 if ( $0 ~ /^\[V\]/ ) {
-	oldver = $2;
-	gsub( /\./, "\\.", oldver )
+	oldver_underscore = $2; gsub(/\./, "_", oldver_underscore );
+	oldver_dots	= $2; gsub(/\./, "\\.", oldver_dots );
+	oldver_pattern	= $2; gsub(/\./, "[_\\.]", oldver_pattern );
 	$2 = ver
 	}
-else if ( $0 ~ /^\[D\]/ && $3 ~ ".*" oldver ".*" ) {
+else if ( $0 ~ /^\[D\]/ && $3 ~ ".*" oldver_pattern ".*" ) {
 	filename = $3;
-	gsub( oldver, ver, filename );
+	if ( $3 ~ ".*" oldver_dots ".*" )
+		gsub( oldver_dots, ver, filename );
+	else {
+		ver_underscore = ver; gsub(/\./, "_", ver_underscore);
+		gsub( oldver_underscore, ver_underscore, filename );
+		}
+
 	if ( filename != $3 ) {
 		$2 = 0;
 		$3 = filename;
-		if ( location == "" )
-	  		gsub( oldver, ver, $4 );
-		else
+		if ( location > "" )
 	  		$4 = location;
+		else
+			for (i=4;i<=NF;i++)
+	 			gsub( oldver_pattern, ver, $i );
 		}
 	}
-
 
 print $0;
 }
