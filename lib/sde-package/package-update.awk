@@ -33,6 +33,10 @@ else if ( $0 ~ /^\[D\]/ && $3 ~ ".*" oldver_pattern ".*" ) {
 		$3 = filename;
 		if ( location > "" )
 	  		$4 = location;
+		else if ( $4 ~ ".*/[0-9]+\\.[0-9]+/" ) {
+			ver = gensub( "([0-9]+\\.[0-9]+).*","\\1","", ver );
+	 		sub( "/[0-9]+\\.[0-9]+/", "/" ver "/", $4 );
+			}
 		else
 			for (i=4;i<=NF;i++)
 	 			gsub( oldver_pattern, ver, $i );
