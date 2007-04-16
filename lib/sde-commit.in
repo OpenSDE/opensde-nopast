@@ -108,23 +108,8 @@ $SVN diff $locations | tee $$.diff
 if [ -z "$logfile" ]; then
 	logfile=$$.log
 	# the grep -v === is a hack - somehow the svn === lines confuse awk ... ?!?
-	grep -v === $$.diff | awk "
-	BEGIN { FS=\"[ /]\" }
-
-	/^\+\+\+ / { pkg = \$4 }
-	{ if (sub(/^\+\[I\]/,\" -\") ) { info = \$0 } }
-
-	/^\-\[V\] / { oldver=\$2 }
-	/^\+\[V\] / {
-		newver=\$2
-		if ( oldver )
-		  print \"\t* updated \" pkg \" (\" oldver \" -> \" newver \")\"
-		else {
-		  print \"\t* added \" pkg \" (\" newver \")\" info
-		}
-		oldver=\"\" ; newver=\"\" ; info=\"\"
-	}
-	" > $logfile
+	grep -v === $$.diff |
+		awk -f $SDEROOT/lib/sde-commit/commit-message.awk > $logfile
 fi
 
 echo_msg "Status:"
