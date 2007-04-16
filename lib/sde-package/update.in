@@ -71,6 +71,8 @@ package_update_md5() {
 				pkg=lib${pkg}	;;
 			gtk-xfce-engine)
 				pkg=${pkg}2	;;
+			kde-i18n/*)
+				pkg=${pkg#*/}   ;;
 			terminal)
 				pkg=xfce4-terminal	;;
 		esac
