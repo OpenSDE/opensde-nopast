@@ -16,13 +16,13 @@
 
 # normal user will always find their files on our mirrors, so this will be used only by developers
 
-s,^http://ftp.gnu.org/gnu/,http://ftp.belnet.be/mirror/ftp.gnu.org/gnu/,
+#s,^http://ftp.gnu.org/gnu/,http://ftp.belnet.be/mirror/ftp.gnu.org/gnu/,
 s,^http://www.mysql.org/Downloads/,http://www.mirrorservice.org/sites/ftp.mysql.com/Downloads/,
 
 #s,^ftp://ftp.kde.org/pub/kde/,http://ibiblio.org/pub/mirrors/kde/,
 
 # loadbalancer is working weird these days
-s,^http://.*dl.\(sourceforge\|sf\).net/,http://heanet.dl.sourceforge.net/,
+s,^http://.*dl.\(sourceforge\|sf\).net/,http://surfnet.dl.sourceforge.net/,
 
 # PostgreSQL Team does not like us to use their ftp
 s,^ftp://ftp.postgresql.org/pub/source/,ftp://ftp.us.postgresql.org/pub/mirrors/postgresql/source/,
