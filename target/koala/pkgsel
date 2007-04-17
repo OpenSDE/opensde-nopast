@@ -194,7 +194,7 @@ X xmag
 X xorg/xset*
 X xev
 
-X freetype*
+X freetype
 X gle
 X freeglut
 X lesstif
@@ -255,7 +255,7 @@ X arts
 X kdelibs
 
 # multimedia
-X xine
+X xine-lib
 X mplayer
 X mplayer-fonts
 X xvid
@@ -331,6 +331,7 @@ X ocaml
 X imagemagick
 X graphicsmagick
 X imlib2
+X tcl
 ###################### End KDE requirements ############################
 ###################### Begin KDE core ##################################
 X kdebase
