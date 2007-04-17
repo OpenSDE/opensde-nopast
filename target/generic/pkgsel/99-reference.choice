@@ -42,6 +42,11 @@ O zebra
 O glut
 # we prefer gutenprint
 O gimp-print
+# we prefer tftp-hpa
+O netkit-tftp
+
+# we still prefer rocknet
+O etcnet
 
 # broken kernel modules
 O rivatv
