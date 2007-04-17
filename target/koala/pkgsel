@@ -259,6 +259,8 @@ X xine-lib
 X mplayer
 X mplayer-fonts
 X xvid
+X libdvdread
+X ffmpeg
 
 # sound
 X alsa
@@ -267,8 +269,10 @@ X ogg-vorbis
 X cdrdao
 X libcdio
 X lame
+X libmad
 X audiofile
 X taglib
+X musepack-tools
 
 # apps
 X firefox
@@ -331,7 +335,9 @@ X ocaml
 X imagemagick
 X graphicsmagick
 X imlib2
+# KOffice needs tcl and tk
 X tcl
+X tk
 ###################### End KDE requirements ############################
 ###################### Begin KDE core ##################################
 X kdebase
