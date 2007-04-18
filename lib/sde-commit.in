@@ -37,6 +37,9 @@ fi
 commit_main() {
 local locations= x= y=
 local logfile=
+local tmpfile=$SDEROOT/tmp/$$
+
+mkdir -p "$SDEROOT/tmp"
 
 if [ "$1" == "--file" ]; then
 	logfile="`readlink -f $2 2> /dev/null`"; shift; shift;
@@ -90,32 +93,32 @@ fi
 
 # and here we go
 #
-trap 'echo_error "Got SIGINT (Crtl-C)." ; rm $$.status $$.diff ; [ $logfile != $$.log ] || rm $logfile; exit 1' INT
+trap 'echo_error "Got SIGINT (Crtl-C)." ; rm $tmpfile.status $tmpfile.diff ; [ $logfile != $tmpfile.log ] || rm $logfile; exit 1' INT
 cd "$SDEROOT"
 
-set +e
-$SVN st $locations | tee $$.status | grep '^\(A\|M\)' | tr -s ' ' | cut -d' ' -f2- | while read f; do
+(
+$SVN st $locations | tee $tmpfile.status | grep '^\(A\|M\)' | tr -s ' ' | cut -d' ' -f2- | while read f; do
 	f=${f#+ }
 	if [ -f "$f" ]; then
 		$SDEROOT/lib/sde-package/patch-copyright.sh "$f"
 	fi
-done | patch -p0 2> /dev/null
-set -e
+done | patch -p0 2> /dev/null || true
+)
 
 echo_msg "Changes:"
-$SVN diff $locations | tee $$.diff
+$SVN diff $locations | tee $tmpfile.diff
 
 if [ -z "$logfile" ]; then
-	logfile=$$.log
+	logfile=$tmpfile.log
 	# the grep -v === is a hack - somehow the svn === lines confuse awk ... ?!?
-	grep -v === $$.diff |
+	grep -v === $tmpfile.diff |
 		awk -f $SDEROOT/lib/sde-commit/commit-message.awk > $logfile
 fi
 
 echo_msg "Status:"
-cat $$.status
+cat $tmpfile.status
 
-if [ -s $$.diff ] || grep -q '^A' $$.status; then
+if [ -s $tmpfile.diff ] || grep -q '^A' $tmpfile.status; then
 	quit=0
 	until [ $quit -ne 0 ]; do
 
@@ -130,14 +133,14 @@ if [ -s $$.diff ] || grep -q '^A' $$.status; then
 		
 		echo -en "\n${COLOR_MESSAGE}Is the message ok?${COLOR_NORMAL}"
 		echo -en " (${COLOR_MESSAGE}q${COLOR_NORMAL}:quit,${COLOR_MESSAGE}e${COLOR_NORMAL}:edit,${COLOR_MESSAGE}d${COLOR_NORMAL}:diff,${COLOR_MESSAGE}s${COLOR_NORMAL}:status$commit)${COLOR_MESSAGE}:${COLOR_NORMAL} "
-		read in
+		read opt
 
-		case "$in" in
+		case "$opt" in
 		  c*)	if [ -n "$commit" ]; then
 		  		$SVN commit $locations --file $logfile && rm "$logfile" ; quit=1
 			fi ;;
-		  d*)	less $$.diff ;;
-		  s*)	cat $$.status ;;
+		  d*)	less $tmpfile.diff ;;
+		  s*)	cat $tmpfile.status ;;
 		  e*)	${EDITOR:-vi} $logfile ;;
 		  q*)	quit=1 ;;
 		  *)	echo "Excuse me?"
@@ -147,8 +150,8 @@ else
 	echo_warning "No changes detected at:$locations"
 fi
 
-rm -f $$.status $$.diff
-[ "$logfile" != "$$.log" ] || rm -f "$logfile"
+rm -f $tmpfile.status $tmpfile.diff
+[ "$logfile" != "$tmpfile.log" ] || rm -f "$logfile"
 }
 
 if [ "$module" == "commit" ]; then
