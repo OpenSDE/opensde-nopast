@@ -44,6 +44,8 @@ O glut
 O gimp-print
 # we prefer tftp-hpa
 O netkit-tftp
+# we prefer proftpd
+O wu-ftpd
 
 # we still prefer rocknet
 O etcnet
