@@ -237,7 +237,7 @@ X freefonts
 X ghostscript
 X ghostscript-fonts
 X cups
-X gimp-print
+X gnuteprint
 
 # gtk/gnome
 X atk
@@ -261,6 +261,7 @@ X mplayer-fonts
 X xvid
 X libdvdread
 X ffmpeg
+X libmpeg2
 
 # sound
 X alsa
@@ -272,7 +273,7 @@ X lame
 X libmad
 X audiofile
 X taglib
-X musepack-tools
+X mppenc
 
 # apps
 X firefox
@@ -313,8 +314,6 @@ X libjpeg
 X poppler
 # GIFT
 X cdparanoia
-X libvorbis
-X vorbis-tools
 X flac
 X speex
 X mad
@@ -371,4 +370,6 @@ X k3b
 X k3b-i18n
 X digikam
 X digikamimageplugins
+X vlc
+X wxwidgets
 ##################### End Koala specific apps ########################
