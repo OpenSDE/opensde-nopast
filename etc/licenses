@@ -10,23 +10,23 @@
 
 Unknown		Use this license for packages with unknown license.
 
-GPL		GNU General Public Licence
-LGPL		GNU Library General Public Licence
+GPL		GNU General Public License
+LGPL		GNU Library General Public License
 FDL		GNU Free Documentation License
-MPL		Mozilla Public Licence
+MPL		Mozilla Public License
 MIT		MIT License
-BSD		BSD Licence
+BSD		BSD License
 APL		Apache License
 CDDL		Common Development and Distribution License
 APSL		Apple Public Source License
 IPL		IBM Public License
 
-OpenSource	Any other Open Source licence
-Free-to-use	Any other non Open Source (but free to use) licence
-Commercial	Any other non Open Source (commercial) licence
-Restricted	Any other restricted licence
+OpenSource	Any other Open Source license
+Free-to-use	Any other non Open Source (but free to use) license
+Commercial	Any other non Open Source (commercial) license
+Restricted	Any other restricted license
 PublicDomain	uncopyrighted
 Artistic	Artistic License
 ZPL		Zope Public License
-Python		Python Licence
+Python		Python License
 
