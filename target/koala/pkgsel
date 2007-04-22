@@ -237,7 +237,7 @@ X freefonts
 X ghostscript
 X ghostscript-fonts
 X cups
-X gnuteprint
+X gutenprint
 
 # gtk/gnome
 X atk
@@ -284,6 +284,13 @@ X samba
 
 # security
 X gnupg
+
+#miscelanous
+X sip
+X pyqt
+X pykde
+X pykde-extensions
+
 ###################### End desktop basic packages and deps######################
 
 ###################### Begin KDE requirements ##################################
