@@ -83,7 +83,13 @@ atstage() {
 # hasflag FLAG
 #
 hasflag() {
-	[ "$desc_F" != "${desc_F/$1}" ]
+	local flag=
+	for flag; do
+		if ! echo "$desc_F" | grep -q -e "^\(.* \)\?$flag\( .*\)\?\$"; then
+			return 1
+		fi
+	done
+	return 0
 }
 
 # bz2filename [<filename>]
