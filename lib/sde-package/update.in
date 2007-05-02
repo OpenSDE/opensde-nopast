@@ -114,13 +114,12 @@ package_update() {
 		return $?
 	elif [ $# -eq 2 ]; then
 		# package and version
-		pkg="$1"
+		pkg="$( echo "$1" | tr A-Z a-z)"
 		ver="$2"
 	elif [ $# -eq 1 ]; then
 		# package or verion?
-		if [ -d "$( echo "$SDEROOT/package/"*"/$1/" )" ]; then
-			pkg="$1"
-		else
+		pkg="$( echo "$1" | tr A-Z a-z)"
+		if [ ! -d "$( echo "$SDEROOT/package/"*"/$pkg/" )" ]; then
 			pkg="$( package_autodetect )"
 			ver="$1"
 		fi
