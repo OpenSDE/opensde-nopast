@@ -15,29 +15,6 @@
 #Alias: pkg
 #Description: Package related tasks
 
-package_usage() {
-	cat <<EOT
-Usage: sde package <action> <arguments> (Alias: pkg)
-	update [--location <url>] [<package>] [<version>] (Alias: up)
-		Updates a package (which is autodetected if you are on it) to a
-		given version, or simply download and regenerate checksums.
-		Using --location you are able to specify which will be the new
-		download location for this update.
-	update [--no-location] --md5 <url> (Alias: up)
-		Updates a set of packages based on a remote .md5 file
-		Using --no-location you tell the tool to not assume the download
-		location of the md5 file for the updates but keep their individual
-		download locations.
-
-	new [<repository>/]<package> <download> [...]
-		Creates a new package based on a template and the given download
-		locations.
-	new -fm [<repository>/]<package> [<name_at_freshmeat>]
-		Creates a new package based on the information available at
-		freshmeat <http://freshmeat.net> from it.
-EOT
-}
-
 package_autodetect() {
 	echo $( pwd -P | sed -n -e "s,^$SDEROOT/package/[^/]*/\([^/]*\)\(/.*\)\?$,\1,p" )
 }
@@ -45,24 +22,3 @@ package_autodetect() {
 package_autodetect_repo() {
 	echo $( pwd -P | sed -n -e "s,^$SDEROOT/package/\([^/]*\)\(/.*\)\?,\1,p" )
 }
-
-if [ "$module" = "package" ]; then
-	# what action was requested?
-	if [ $# -eq 0 ]; then
-		action="help"
-	else
-		action="$1"; shift
-	fi
-
-	case "$action" in
-		help|--help)	package_usage ;;
-		up|update)	. $SDEROOT/lib/sde-package/update.in
-				package_update "$@" ;;
-		new)		. $SDEROOT/lib/sde-package/new.in
-				package_new "$@" ;;
-		*)	echo_warning "'$COLOR_MESSAGE$action$COLOR_NORMAL' not understood by the" \
-				"$COLOR_MESSAGE$module$COLOR_NORMAL module"
-			package_usage
-			exit 1	;;
-	esac
-fi
