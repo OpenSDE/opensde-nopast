@@ -1,0 +1,3 @@
+Usage: sde commit [--file <file>] <package> [<location> [...]] (Alias: ci)
+
+	Note: location can be a package name or an explicit file/directory
