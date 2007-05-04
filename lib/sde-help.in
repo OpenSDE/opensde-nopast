@@ -15,18 +15,26 @@
 #Description: Help about the usage of `sde` and the modules
 #Alias: --help
 
+help_command() {
+	if [ -r "$SDEROOT/lib/sde-$1.hlp" ]; then
+		grep -v '^#' "$SDEROOT/lib/sde-$1.hlp"
+	else
+		echo_warning "'$COLOR_MESSAGE${1}$COLOR_NORMAL' doesn't provide help."
+	fi
+}
+
 help_list() {
-	local module=
+	local command=
 	local name= desc= alias=
 
-	echo "Available Modules:"
-	for module in $SDEROOT/lib/sde-*.in; do
-		# detect module name
-		id=$( echo "$module" | sed -e 's,.*/sde-,,' -e 's,.in$,,' )
+	echo "Available Commands:"
+	for command in $SDEROOT/bin/sde-*; do
+		# detect command name
+		id=$( echo "$command" | sed -e 's,.*/sde-,,' )
 		# optional description
-		desc=$( sed -n -e 's,^#Description: \(.*\)$,\1,p' "$module" )
+		desc=$( sed -n -e 's,^#Description: \(.*\)$,\1,p' "$command" )
 		# and valid aliases
-		alias=$( sed -n -e 's,^#Alias: \([^ ]*\)$,\1,p' "$module" | tr '\n' ' ' )
+		alias=$( sed -n -e 's,^#Alias: \([^ ]*\)$,\1,p' "$command" | tr '\n' ' ' )
 
 		echo -e "\t* $id${alias:+\t(${alias%% })}"
 		if [ -n "$desc" ]; then
@@ -34,38 +42,3 @@ help_list() {
 		fi
 	done
 }
-
-if [ "$module" == "help" ]; then
-	# main action
-	if [ $# -eq 0 -o -z "$1" ]; then
-		help_list
-	elif [ $# -gt 1 ]; then
-		echo_error "Incorrect Syntax."
-		help_usage
-		exit 1
-	elif [ -r "$SDEROOT/lib/sde-$1.in" ]; then
-		[ "$1" == "help" ] || . "$SDEROOT/lib/sde-$1.in"
-
-		if type -t "${1}_usage" > /dev/null; then
-			"${1}_usage"
-		else
-			echo_warning "'$COLOR_MESSAGE${1}$COLOR_NORMAL' doesn't provide help."
-		fi
-	elif grep -q "^#Alias: $1$" $SDEROOT/lib/sde-*.in 2> /dev/null; then
-		# use alias
-		x="$( grep -l "^#Alias: $1$" $SDEROOT/lib/sde-*.in 2> /dev/null |
-			head -n 1 | sed -e 's,.*/sde-,,' -e 's,.in$,,' )"
-		[ "$x" == "help" ] || . "$SDEROOT/lib/sde-$x.in"
-
-		if type -t "${x}_usage" > /dev/null; then
-			"${x}_usage"
-		else
-			echo_warning "'$COLOR_MESSAGE${x}$COLOR_NORMAL' doesn't provide help."
-		fi
-	else
-		# unknown module
-		echo_error "Module '$COLOR_MESSAGE$1$COLOR_NORMAL' doesn't exist."
-		help_list
-		exit 2
-	fi
-fi
