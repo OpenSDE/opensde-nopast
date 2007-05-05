@@ -203,7 +203,7 @@ pkgloop_package() {
 	else cmd_prefix="" ; fi
 
 	if [ "$autodownload" == 1 ]; then
-		./scripts/Download -cfg $config $downloadopt $pkg_name
+		./bin/sde-download -cfg $config $downloadopt $pkg_name
 	fi
 
 	cmd_buildpkg="./scripts/Build-Pkg -$stagelevel -cfg $config"
