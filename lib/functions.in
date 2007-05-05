@@ -1091,7 +1091,7 @@ populate_archdir()
 		fi
 	done
 	if [ $missing -eq 1 ]; then
-		echo_warning "Did you run ./scripts/Download for this package?"
+		echo_warning "Did you run download for this package?"
 		false
 	fi
 }
