@@ -45,7 +45,7 @@ package_do_update() {
 	fi
 
 	cd "$SDEROOT"
-	./scripts/Download -q "$pkg" && ./lib/sde-package/patch-cksum.sh "$pkg" | patch -p0
+	./bin/sde-download -q "$pkg" && ./lib/sde-package/patch-cksum.sh "$pkg" | patch -p0
 }
 
 package_update_md5() {
