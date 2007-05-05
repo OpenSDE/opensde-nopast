@@ -65,8 +65,7 @@ fi
 #
 if [ "$1" = -mk-cksum ] ; then
 	shift
-	sh ./lib/sde-download/cksum.sh "$@"
-	exit $?
+	exec sh ./lib/sde-download/cksum.sh "$@"
 fi
 
 # Handle options passed on the command line
