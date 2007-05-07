@@ -264,8 +264,8 @@ X ffmpeg
 X libmpeg2
 
 # sound
-X alsa
-X alsa-driver
+X audio/alsa*
+#X alsa-driver
 X ogg-vorbis
 X cdrdao
 X libcdio
@@ -360,11 +360,20 @@ X kdepim
 X kdesdk
 X kdetoys
 X kdeutils
-# X koffice
+X koffice
 X kdevelop
 ###################### End KDE core ##################################
 ##################### Begin Koala specific apps ######################
 X amarok
+
+# needed by amarok
+X ruby
+#
+
+# needed by mppenc
+X cmake
+#
+
 X kaffeine
 X smb4k
 X konversation
