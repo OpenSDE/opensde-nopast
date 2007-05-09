@@ -17,8 +17,6 @@
 
 #Description: Cleanup the build environment 
 
-set -e
-
 [ -n "$SDEROOT" ] ||
 	export SDEROOT=$( cd "${0%/*}/.."; pwd -P )
 
