@@ -14,7 +14,7 @@
 # GNU General Public License can be found in the file COPYING.
 # --- SDE-COPYRIGHT-NOTE-END ---
 
-. lib/core-functions.in
+. ${SDEROOT:-.}/lib/core-functions.in
 
 # This function returns a "uniqe id" as output
 #
