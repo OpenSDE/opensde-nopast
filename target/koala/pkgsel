@@ -265,7 +265,6 @@ X libmpeg2
 
 # sound
 X audio/alsa*
-#X alsa-driver
 X ogg-vorbis
 X cdrdao
 X libcdio
@@ -274,10 +273,6 @@ X libmad
 X audiofile
 X taglib
 X mppenc
-
-# apps
-X firefox
-X epdfview
 
 # server
 X samba
