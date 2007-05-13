@@ -60,5 +60,11 @@ O uclibc
 # devfs is obsolete on latest linxu 2.6 kernels
 O devfsd
 
-# fam is preferred over gamin
-O gamin
+# gamin is preferred over fam
+O fam
+
+# different libchipcard version gives shared files
+# we prefer only the latest version for reference
+# build
+O libchipcard
+O libchipcard2
