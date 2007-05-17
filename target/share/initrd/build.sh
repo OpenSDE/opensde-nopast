@@ -45,6 +45,14 @@ done
 #
 [ -z "$INITRD_POSTFLIST_HOOK" ] || eval "$INITRD_POSTFLIST_HOOK"
 
+if [ -r "target/$target/init.sh" ]; then
+	echo_status "Copying target's /init script."
+	cp "target/$target/init.sh" "${initrddir}/init"
+	chmod +x "${initrddir}/init"
+else
+	echo_warning "Target '$target' doesn't provide an init script."
+fi
+
 # remove empty folder, use $INITRD_EMPTY_PATTERN to skip folders
 #
 echo_status "Removing empty folders ..."
