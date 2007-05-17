@@ -21,7 +21,7 @@ mkdir -p "$initrddir"
 
 INITRD_POSTFLIST_HOOK=""
 INITRD_FLIST_PATTERN="-e '/\.\(h\|o\|a\|la\)$/d;' -e '/ usr\/share\/\(doc\|info\|man\)\//d;'"
-INITRD_EMPTY_PATTERN="-e '/\/lib\/udev\/devices\//d;'"
+INITRD_EMPTY_PATTERN="-e '/\.\/lib\/udev\/devices\//d;'"
 
 # source target specific code
 #
@@ -43,17 +43,17 @@ done
 
 # hook
 #
-[ -z "$INITRD_POSTFLIST" ] || eval "$INITRD_POSTFLIST"
+[ -z "$INITRD_POSTFLIST_HOOK" ] || eval "$INITRD_POSTFLIST_HOOK"
 
 # remove empty folder, use $INITRD_EMPTY_PATTERN to skip folders
 #
 echo_status "Removing empty folders ..."
-find "$initrddir" -type d | tac | eval "sed -e '/\/dev\$/d;' $INITRD_EMPTY_PATTERN" | while read folder; do
-	count=$( find "$folder" | wc -l )
+( cd "$initrddir"; find . -type d ) | tac | eval "sed -e '/\.\/\(dev\|sys\|proc\|mnt\|tmp\)\$/d;' $INITRD_EMPTY_PATTERN" | while read folder; do
+	count=$( find "${initrddir}/$folder" | wc -l )
 
 	if [ $count -eq 1 ]; then
-		rm -r "$folder"
-		#echo_status "- ${folder#$initrddir} deleted."
+		rm -r "${initrddir}/$folder"
+	#	echo_status "- ${folder} deleted."
 	fi
 done
 
