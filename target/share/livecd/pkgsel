@@ -9,7 +9,7 @@ O !base/*
 = sh/*
 = arm/*
 
-O t2-src
+O opensde-src
 O busybox
 O workbone
 O ifhp
