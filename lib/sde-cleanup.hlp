@@ -12,6 +12,5 @@
 # GNU General Public License can be found in the file COPYING.
 # --- SDE-COPYRIGHT-NOTE-END ---
 
-
-		echo "Usage: $0 [ -build ] [ -cache ] [ -full ] [ -nocheck ] [ -download ]"
-		echo "       ${0//[a-zA-Z\/.]/ } [ dir(s) ]"
+Usage:	sde cleanup [ -build ] [ -cache ] [ -full ] [ -nocheck ] [ -download ]
+	sde cleanup [ dir(s) ]
