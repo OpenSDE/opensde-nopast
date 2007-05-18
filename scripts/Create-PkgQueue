@@ -134,8 +134,8 @@ function check_package() {
 		    stagelevel != stage9_no_deps)
 			build_this_package = 0;
 
-		# t2-debug must be build _after_ all other packages
-		if (package == "t2-debug" && not_present != "")
+		# sde-debug must be build _after_ all other packages
+		if (package == "sde-debug" && not_present != "")
 			build_this_package = 0;
 
 		if (build_this_package) {

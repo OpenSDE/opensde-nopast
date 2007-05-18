@@ -20,8 +20,8 @@ counter=1000
 for pkg in $( ./bin/sde-list package | cut -f4,5 -d' ' | tr ' ' / )
 do
 	xcounter="${counter%?}.${counter#???}00"
-	[ $pkg = base/t2-debug ] && xcounter=999.900
-	[ $pkg = base/t2-src ] && xcounter=999.800
+	[ $pkg = base/sde-debug ] && xcounter=999.900
+	[ $pkg = base/sde-src ] && xcounter=999.800
 	sed -e 's,^\(\[P\] .* \)[0-9\.][0-9\.]*$,\1'$xcounter',' \
 		< package/$pkg/${pkg#*/}.desc > $tempfile
 	diff -u ./package/$pkg/${pkg#*/}.desc $tempfile
