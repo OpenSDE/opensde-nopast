@@ -805,7 +805,9 @@ case "$1" in
 
 	-repository)	shift ; repository "$@" ;;
 
-	-*|"")		exec $0 --help ;;
+	-*|"")		. $SDEROOT/lib/sde-help.in
+			help_command download
+			exit 1;;
 
 	*)		packages "$@" ;;
 esac
