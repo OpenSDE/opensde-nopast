@@ -782,6 +782,8 @@ packages() {
 	done
 }
 
+set +e 
+
 # Things to do only for downloading
 #
 if [ "${1:0:5}" != "-list" -a $checkonly = 0 ]; then
