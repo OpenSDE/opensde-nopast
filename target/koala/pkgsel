@@ -339,6 +339,9 @@ X imlib2
 # KOffice needs tcl and tk
 X tcl
 X tk
+# KDEPim needs gpgme so libgpg-error too
+X gpgme
+X libgpg-error
 ###################### End KDE requirements ############################
 ###################### Begin KDE core ##################################
 X kdebase
