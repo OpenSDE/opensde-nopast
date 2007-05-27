@@ -212,7 +212,6 @@ X check
 ###################### End XOrg basic packages and deps##################################
 ###################### Begin desktop basic packages and deps#############################
 
-X bdb
 X pcre
 X perl-xml-parser
 X libusb
@@ -339,9 +338,14 @@ X imlib2
 # KOffice needs tcl and tk
 X tcl
 X tk
-# KDEPim needs gpgme so libgpg-error too
+# KDEPim needs some stuff
 X gpgme
 X libgpg-error
+X libassuan
+X pinentry
+X bogofilter
+X libksba
+
 ###################### End KDE requirements ############################
 ###################### Begin KDE core ##################################
 X kdebase
@@ -359,6 +363,7 @@ X kdesdk
 X kdetoys
 X kdeutils
 X koffice
+X koffice-i18n
 X kdevelop
 ###################### End KDE core ##################################
 ##################### Begin Koala specific apps ######################
@@ -373,7 +378,6 @@ X cmake
 #
 
 X kaffeine
-X smb4k
 X konversation
 X w32codec
 X libexif
@@ -386,4 +390,6 @@ X digikam
 X digikamimageplugins
 X vlc
 X wxwidgets
+X unrar
+X shared-mime-info
 ##################### End Koala specific apps ########################
