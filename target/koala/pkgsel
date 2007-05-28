@@ -345,7 +345,8 @@ X libassuan
 X pinentry
 X bogofilter
 X libksba
-
+# kopete needs jasper
+X jasper
 ###################### End KDE requirements ############################
 ###################### Begin KDE core ##################################
 X kdebase
