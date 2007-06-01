@@ -474,17 +474,9 @@ if [ "$download_file" ]; then
 
 	[D] 0 $download_file $download_url
 	EOF
-	echo "ok"
-	cd $SDEROOT
-	echo -n "Updating cksum... "
-	if ./bin/sde pkg up $package &> /dev/null;then
-		echo "ok"
-	else
-		echo "failed"
-	fi 
-	cd package/$dir
 fi
 
+echo "ok"
 echo -n "Creating $package.conf ... "
 
 if [ "$create_main" == "1" ] ; then

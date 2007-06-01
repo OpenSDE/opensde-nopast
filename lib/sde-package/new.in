@@ -60,14 +60,21 @@ package_new() {
 	if [ ! -d "$new_repository" ]; then
 		echo_warning "New repository created. (${new_repository#$SDEROOT/package/})"
 	fi
-
 	cd "$SDEROOT"
 	case "${method}" in
 		freshmeat)
 			fm_name=${1:-$new_package}
-			exec /bin/bash ./lib/sde-package/new-freshmeat.sh ${new_repository#$SDEROOT/package/}/$new_package "$fm_name"
+			/bin/bash ./lib/sde-package/new-freshmeat.sh ${new_repository#$SDEROOT/package/}/$new_package "$fm_name"
 			;;
-		*)	exec /bin/sh ./lib/sde-package/new.sh ${new_repository#$SDEROOT/package/}/$new_package "$@"
+		*)	/bin/sh ./lib/sde-package/new.sh ${new_repository#$SDEROOT/package/}/$new_package "$@"
 			;;
 	esac
+	if [ -e package/*/$new_package/$new_package.desc ];then	
+		echo -n "Updating chksum $new_package... "
+		if ./bin/sde pkg up $new_package &> /dev/null;then
+			echo "ok"
+		else
+			echo "failed"
+		fi
+	fi
 }

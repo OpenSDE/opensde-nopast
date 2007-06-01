@@ -137,13 +137,8 @@ ${package}_main() {
 custmain="${package}_main"
 EEE
 fi
+
 echo "ok"
-echo -n "Updating cksum... "
-if ./bin/sde pkg up $package &> /dev/null;then
-	echo "ok"
-else
-	echo "failed"
-fi
 echo "Remember to fill in the TODO's:"
 grep TODO $confdir/$package.*
 echo
