@@ -31,3 +31,6 @@ Usage: sde package <action> <arguments> (Alias: pkg)
 	new -fm [<repository>/]<package> [<name_at_freshmeat>]
 		Creates a new package based on the information available at
 		freshmeat <http://freshmeat.net> from it.
+	new -deb [options] [repo/]<package>
+		Creates a pkg from packages.debian.org. For more details:
+		sde pkg new -deb --help
