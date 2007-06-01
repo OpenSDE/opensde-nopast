@@ -11,7 +11,7 @@
 # the Free Software Foundation; version 2 of the License. A copy of the
 # GNU General Public License can be found in the file COPYING.
 # --- SDE-COPYRIGHT-NOTE-END ---
-#set -x
+
 package_new() {
 	local method=
 	if [ "$1" = "-fm" ]; then
@@ -21,7 +21,6 @@ package_new() {
 		shift
 		exec python ./lib/sde-package/new-debian.py "$@"
 	fi
-
 	# new package
 	new_package="$1"; shift
 	if [ "$new_package" != "${new_package//\//}" ]; then

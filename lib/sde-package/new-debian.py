@@ -15,6 +15,7 @@ cParse=cParseHTML()
 parse=cParse.parse	
 repo=None
 pkg=None
+bdescd=False
 parser = optparse.OptionParser(usage)
 parser.add_option("-b", "--base", dest="base",
 						help="""Change base i.e from 
@@ -82,6 +83,7 @@ for link in soup("a"):
         re.search('("|\').*("|\')',link).group())
         descd+=" " + buf.split("/").pop()
         descd+=" " + re.sub(buf.split("/").pop()+"$","",buf)
+        bdescd=True
 try:
 	descv="[V] " + re.sub("^.|.$","",re.search("\(.*\)",
 					str(soup("h1"))).group())
@@ -165,9 +167,6 @@ if options.outpkg:
 				sys.exit(1)
 		else:
 			os.mkdir(dir)
-		#outf=open(out,"w")
-		#outf.write(formatteddesc)	
-		#outf.close()
 	elif optcnt==2:
 		repository="package/" + output[0]
 		if not os.path.isdir(repository):
@@ -184,12 +183,19 @@ if options.outpkg:
 			os.mkdir(dir)
 	else:parser.error("Inavlid Option for --outpkg (-o)")
 	try:
+                os.system("echo -n 'Writing desc to file...'")
 		outf=open(out,"w")
 		outf.write(formatteddesc)	
 		outf.close()
+		os.system("echo 'ok'")
 	except:
 		print"Error writing to file " + out		
-	todo=""
+	if bdescd:
+            os.system("echo -n 'Patching cksum...'")
+            if os.popen("sde pkg up " + output[len(output)-1]+"&>/dev/null"):
+            	os.system("echo 'ok'")
+            else:os.system("echo 'failed'")
+        todo=""
 	for line in formatteddesc.split("\n"):
 		if re.search("^\[.\] TODO:",line):todo+="\n" + line
 	if not todo == "":
