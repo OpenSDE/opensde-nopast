@@ -19,6 +19,7 @@ package_new() {
 		shift
 	elif [ "$1" = "-deb" ];then
 		shift
+		cd $SDEROOT
 		exec python ./lib/sde-package/new-debian.py "$@"
 	fi
 	# new package
