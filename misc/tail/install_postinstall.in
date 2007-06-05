@@ -18,9 +18,11 @@ tail_postinstall_wrapper=rock_substitute
 
 auto_install_postinstall() {
 	local pitpl= pidir=$root/var/adm/postinstall
-	for pitpl in $( cd $confdir; ls -1 *.postinstall 2> /dev/null ); do
-		echo "Installing ${pitpl%.postinstall} postinstall script..."
-		eval "cat $confdir/$pitpl | \
+	mkdir -p $pidir
+	for file in $( ls -1d $confdir/*.postinstall 2> /dev/null ) \
+        $( ls -1d $base/target/$target/pkg_${pkg}.postinstall 2> /dev/null ); do
+	pitpl="${file##*/}"; echo "Installing ${pitpl%.postinstall} postinstall script..."
+		eval "cat $file | \
 			${tail_postinstall_wrapper//|/ | } \
 			> $pidir/${pitpl%.postinstall}"
 		chmod +x $pidir/${pitpl%.postinstall}
