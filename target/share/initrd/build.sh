@@ -19,7 +19,9 @@ initrddir="$build_toolchain/initrd"
 rm -rf "$initrddir"
 mkdir -p "$initrddir"
 
-INITRD_POSTFLIST_HOOK=""
+INITRD_POSTFLIST_HOOK=
+
+INITRD_FLIST_PACKAGES=
 INITRD_FLIST_PATTERN="-e '/\.\(h\|o\|a\|la\)$/d;' -e '/ usr\/share\/\(doc\|info\|man\)\//d;'"
 INITRD_EMPTY_PATTERN="-e '/\.\/lib\/udev\/devices\//d;'"
 
@@ -31,8 +33,12 @@ fi
 
 # install what was flisted for stage 1 packages, use $INITRD_FLIST_PATTERN to skip files
 #
+if [ -z "$INITRD_FLIST_PACKAGES" ]; then
+	INITRD_FLIST_PACKAGES=$( grep '^X .1' $base/config/$config/packages | cut -d' ' -f5 | tr '\n' ' ' )
+fi
+
 echo_status "Populating ${initrddir#$base/} ..."
-for pkg_name in $( grep '^X .1' $base/config/$config/packages | cut -d' ' -f5 ); do
+for pkg_name in $INITRD_FLIST_PACKAGES; do
 	echo_status "- $pkg_name"
 	flist="build/${SDECFG_ID}/var/adm/flists/$pkg_name"
 
