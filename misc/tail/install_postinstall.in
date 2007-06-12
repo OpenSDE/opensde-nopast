@@ -20,7 +20,7 @@ auto_install_postinstall() {
 	local pitpl= pidir=$root/var/adm/postinstall
 	mkdir -p $pidir
 	for file in $( ls -1d $confdir/*.postinstall 2> /dev/null ) \
-        $( ls -1d $base/target/$target/pkg_${pkg}.postinstall 2> /dev/null ); do
+        $( ls -1d $base/target/$target/${pkg}.postinstall 2> /dev/null ); do
 	pitpl="${file##*/}"; echo "Installing ${pitpl%.postinstall} postinstall script..."
 		eval "cat $file | \
 			${tail_postinstall_wrapper//|/ | } \
