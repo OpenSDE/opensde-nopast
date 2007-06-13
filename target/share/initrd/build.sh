@@ -22,7 +22,7 @@ mkdir -p "$initrddir"
 INITRD_POSTFLIST_HOOK=
 
 INITRD_FLIST_PACKAGES=
-INITRD_FLIST_PATTERN="-e '/\.\(h\|o\|a\|la\)$/d;' -e '/ usr\/share\/\(doc\|info\|man\)\//d;'"
+INITRD_FLIST_PATTERN="-e '/\.\(h\|o\|a\|la\|pc\)$/d;' -e '/ usr\/share\/\(doc\|info\|man\)\//d;'"
 INITRD_EMPTY_PATTERN="-e '/\.\/lib\/udev\/devices\//d;'"
 
 # source target specific code
