@@ -22,8 +22,11 @@ mkdir -p "$initrddir"
 INITRD_POSTFLIST_HOOK=
 
 INITRD_FLIST_PACKAGES=
-INITRD_FLIST_PATTERN="-e '/\.\(h\|o\|a\|la\|pc\)$/d;' -e '/ usr\/share\/\(doc\|info\|man\)\//d;'"
+INITRD_FLIST_PATTERN="-e '/\.\(h\|o\|a\|a\..*\|la\|pc\)$/d;' -e '/ usr\/share\/\(doc\|info\|man\)\//d;'"
 INITRD_EMPTY_PATTERN="-e '/\.\/lib\/udev\/devices\//d;'"
+
+# weak function, should this package be extracted by flist or not?
+initrd_flist_install_filter() { true; }
 
 # source target specific code
 #
@@ -39,12 +42,14 @@ fi
 
 echo_status "Populating ${initrddir#$base/} ..."
 for pkg_name in $INITRD_FLIST_PACKAGES; do
-	echo_status "- $pkg_name"
-	flist="build/${SDECFG_ID}/var/adm/flists/$pkg_name"
+	if initrd_flist_install_filter $pkg_name; then
+		echo_status "- $pkg_name"
+		flist="build/${SDECFG_ID}/var/adm/flists/$pkg_name"
 
-	eval "sed -e '/ var\/adm/ d;' $INITRD_FLIST_PATTERN '$flist'" | cut -f2- -d' ' |
-		tar -C "build/${SDECFG_ID}/" -cf- --no-recursion --files-from=- |
-		tar -C "$initrddir" -xf-
+		eval "sed -e '/ var\/adm/ d;' $INITRD_FLIST_PATTERN '$flist'" | cut -f2- -d' ' |
+			tar -C "build/${SDECFG_ID}/" -cf- --no-recursion --files-from=- |
+			tar -C "$initrddir" -xf-
+	fi
 done
 
 # hook
@@ -55,8 +60,6 @@ if [ -r "target/$target/init.sh" ]; then
 	echo_status "Copying target's /init script."
 	cp "target/$target/init.sh" "${initrddir}/init"
 	chmod +x "${initrddir}/init"
-else
-	echo_warning "Target '$target' doesn't provide an init script."
 fi
 
 # remove empty folder, use $INITRD_EMPTY_PATTERN to skip folders
@@ -69,6 +72,24 @@ echo_status "Removing empty folders ..."
 		rm -r "${initrddir}/$folder"
 	#	echo_status "- ${folder} deleted."
 	fi
+done
+
+# sanity check
+[ -x "${initrddir}/init" ] || echo_warning "This image is missing an /init file, it wont run."
+for x in ${initrddir}/{,usr/}{sbin,bin}/* ${initrddir}/init ${initrddir}/lib/udev/*; do
+	[ -e "$x" ] || continue
+
+	signature="$( file "$x" 2> /dev/null | cut -d' ' -f2- )"
+
+	case "$signature" in
+		directory)	continue ;;
+		ASCII\ English\ text)
+				continue ;;
+		*symbolic*|*statically*|*shell*)
+				continue ;;
+	esac
+
+	echo_warning "evil signature ($signature) on '${x#$initrddir}'."
 done
 
 echo_status "Expanded size: $( du -sh "$initrddir" | cut -f1)."
