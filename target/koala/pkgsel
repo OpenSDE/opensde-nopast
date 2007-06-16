@@ -90,6 +90,7 @@ X procinfo
 X procps
 X psmisc
 X pciutils
+X usbutils
 X screen
 X sudo
 X pkgconfig
