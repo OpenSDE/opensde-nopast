@@ -1,0 +1,27 @@
+O *
+X 00-dirtree
+X sysfiles
+
+X linux-header
+X uclibc
+
+X automake
+X autoconf
+X gcc
+X binutils
+X flex
+X libtool
+X ccache
+
+X busybox
+X disktype
+X udev
+X hotplug2
+
+X device-mapper
+X lvm2
+X mdadm
+
+X util-linux
+X e2fsprogs
+X reiserfsprogs
