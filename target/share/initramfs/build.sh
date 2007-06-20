@@ -30,8 +30,8 @@ initrd_flist_install_filter() { true; }
 
 # source target specific code
 #
-if [ -f target/$target/build-initrd.in ]; then
-	. target/$target/build-initrd.in
+if [ -f target/$target/build-initramfs.in ]; then
+	. target/$target/build-initramfs.in
 fi
 
 # install what was flisted for stage 1 packages, use $INITRD_FLIST_PATTERN to skip files
