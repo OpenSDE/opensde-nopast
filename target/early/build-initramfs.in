@@ -19,12 +19,15 @@ ln -s . ${initrddir}/usr
 
 # don't break /tmp when flattening
 INITRD_FLIST_PATTERN="$INITRD_FLIST_PATTERN -e '/ usr\/tmp/d;'"
+INITRD_FLIST_PATTERN="$INITRD_FLIST_PATTERN -e '/ lib\/udev\/devices/d;'"
 
 INITRD_EMPTY_PATTERN="-e '/\.\/rootfs/d;'"
 
 initrd_flist_install_filter() {
 	local root="build/${SDECFG_ID}/"
 	case "$1" in
+		udev)	cp -a "$root/lib/udev/devices"/* "$initrddir/dev/"
+			return 0 ;;
 		hotplug2)
 			cp "$root/sbin/hotplug2-modwrap" "$initrddir/sbin/"
 			;;

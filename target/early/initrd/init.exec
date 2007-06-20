@@ -41,15 +41,9 @@ done
 
 banner "Starting Early User Space environment"
 
-title "Mounting /dev, /proc, /tmp and /sys"
-check mount -n -t tmpfs none /dev
+title "Mounting /proc and /sys"
 check mount -n -t usbfs none /proc/bus/usb
-check mount -n -t tmpfs none /tmp
 check mount -n -t sysfs none /sys
-status
-
-title "Populating /dev"
-check cp -a /lib/udev/devices/* /dev
 status
 
 [ -x /bin/dmesg ] && /bin/dmesg -n 3
@@ -103,22 +97,11 @@ while [ ! -x "/rootfs$initrd" ]; do
 	setsid /bin/sh < /dev/vc/1 > /dev/vc/1 2> /dev/vc1
 done
 
-title "Stopping udev daemon"
+title "Cleaning up"
 check killall udevd
-status
-
-if [ ! -e /rootfs/dev/console ]; then
-	title "Injecting /dev/console"
-	check cp -a /dev/console /rootfs/dev/console
-	status
-fi
-	
-title "Cleaning the room"
 check umount /sys
-check umount /tmp
 check umount /proc/bus/usb
 check umount /proc
-check umount /dev
 status
 	
 exec switch_root /rootfs "$initrd" "$initargs"
