@@ -68,3 +68,6 @@ O fam
 # build
 O libchipcard
 O libchipcard2
+
+O runit-shutdown
+O runit-logacct
