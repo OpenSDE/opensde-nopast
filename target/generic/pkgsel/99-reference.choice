@@ -71,3 +71,7 @@ O libchipcard2
 
 O runit-shutdown
 O runit-logacct
+
+# Use only one nvidia driver at a time. Disable
+# the legacy one by default.
+O nvidia-legacy
