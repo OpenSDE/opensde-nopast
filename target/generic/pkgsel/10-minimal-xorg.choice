@@ -22,6 +22,9 @@ include target/generic/pkgsel/00-minimal.choice
 # needed by xsm:
 X netkit-rsh
 
+# needed by xcfgt2
+X ddcxinfo
+
 # the basic modular X.org tree
 
 X xorg/*proto*
