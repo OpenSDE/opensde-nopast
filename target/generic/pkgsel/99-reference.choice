@@ -35,6 +35,8 @@ O wip/*
 - gpl-ghostscript
 # can't coexist with pcmciautils
 - pcmcia-cs
+# can't coexist with lesstif
+- openmotif
 
 # we prefer quagga, zebra is almost (?) dead
 O zebra
