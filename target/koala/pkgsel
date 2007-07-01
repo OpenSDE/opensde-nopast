@@ -155,6 +155,10 @@ X xorg/*proto*
 X xorg/*ext
 X xorg/*lib*
 X xorg/*xf86-*
+
+# Disable clashing drivers
+O xorg/xf86-video-i810
+
 X xorg/font-*
 X fslsfonts
 X fstobdf
