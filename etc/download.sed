@@ -38,4 +38,4 @@ s,^ftp://ftp.kernel.org,http://ftp.kernel.org,
 s,http://browsers.evolt.org/download.php?,http://www.mirrorservice.org/sites/browsers.evolt.org/browsers,
 
 # apache mirrors
-s,^http://dl.apache.org/,http://www.eu.apache.org/,
+s,^http://dl.apache.org/,http://www.apache.org/,
