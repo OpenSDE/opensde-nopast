@@ -1,0 +1,20 @@
+sde-configure(1)
+================
+The OpenSDE Community <list@opensde.org>
+
+NAME
+----
+
+SYNOPSIS
+--------
+'sde configure' [OPTIONS]
+
+DESCRIPTION
+-----------
+
+EXAMPLES
+--------
+
+SEE ALSO
+--------
+

@@ -1,0 +1,20 @@
+sde-commit(1)
+=============
+The OpenSDE Community <list@opensde.org>
+
+NAME
+----
+
+SYNOPSIS
+--------
+'sde commit' [OPTIONS]
+
+DESCRIPTION
+-----------
+
+EXAMPLES
+--------
+
+SEE ALSO
+--------
+

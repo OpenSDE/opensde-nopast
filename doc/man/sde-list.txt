@@ -1,0 +1,20 @@
+sde-list(1)
+===========
+The OpenSDE Community <list@opensde.org>
+
+NAME
+----
+
+SYNOPSIS
+--------
+'sde list' [OPTIONS]
+
+DESCRIPTION
+-----------
+
+EXAMPLES
+--------
+
+SEE ALSO
+--------
+

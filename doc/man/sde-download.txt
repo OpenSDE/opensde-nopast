@@ -1,0 +1,20 @@
+sde-download(1)
+===============
+The OpenSDE Community <list@opensde.org>
+
+NAME
+----
+
+SYNOPSIS
+--------
+'sde download' [OPTIONS]
+
+DESCRIPTION
+-----------
+
+EXAMPLES
+--------
+
+SEE ALSO
+--------
+
