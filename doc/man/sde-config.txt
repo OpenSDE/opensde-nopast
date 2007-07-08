@@ -1,4 +1,4 @@
-sde-configure(1)
+sde-config(1)
 ================
 The OpenSDE Community <list@opensde.org>
 
@@ -7,7 +7,7 @@ NAME
 
 SYNOPSIS
 --------
-'sde configure' [OPTIONS]
+'sde config' [OPTIONS]
 
 DESCRIPTION
 -----------
