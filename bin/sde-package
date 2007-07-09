@@ -24,6 +24,33 @@ set -e
 . $SDEROOT/lib/libsde.in
 . $SDEROOT/lib/sde-package.in
 
+package_usage() {
+cat <<EOT
+Usage: sde package <action> <arguments> (Alias: pkg)
+
+	update [--location <url>] [<package>] [<version>] (Alias: up)
+		Updates a package (which is autodetected if you are on it) to a
+		given version, or simply download and regenerate checksums.
+		Using --location you are able to specify which will be the new
+		download location for this update.
+	update [--no-location] --md5 <url> (Alias: up)
+		Updates a set of packages based on a remote .md5 file
+		Using --no-location you tell the tool to not assume the download
+		location of the md5 file for the updates but keep their individual
+		download locations.
+
+	new [<repository>/]<package> <download> [...]
+		Creates a new package based on a template and the given download
+		locations.
+	new -fm [<repository>/]<package> [<name_at_freshmeat>]
+		Creates a new package based on the information available at
+		freshmeat <http://freshmeat.net> from it.
+	new -deb [options] [repo/]<package>
+		Creates a pkg from packages.debian.org. For more details:
+		sde pkg new -deb --help
+EOT
+}
+
 # what action was requested?
 if [ $# -eq 0 ]; then
 	action="help"
@@ -32,16 +59,14 @@ else
 fi
 
 case "$action" in
-	help|--help)	. $SDEROOT/lib/sde-help.in
-			help_command package	;;
+	help|--help)	package_usage ;;
 	up|update)	. $SDEROOT/lib/sde-package/update.in
 			package_update "$@" ;;
 	new)		. $SDEROOT/lib/sde-package/new.in
 			package_new "$@" ;;
-	*)		. $SDEROOT/lib/sde-help.in
-			echo_warning "'$COLOR_MESSAGE$action$COLOR_NORMAL' not understood by the" \
+	*)		echo_warning "'$COLOR_MESSAGE$action$COLOR_NORMAL' not understood by the" \
 				"$COLOR_MESSAGE$module$COLOR_NORMAL module"
 
-			help_command package
+			package_usage
 			exit 1	;;
 esac
