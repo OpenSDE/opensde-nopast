@@ -54,6 +54,10 @@ OPTIONS
 	on the global config. Alternatively you can use ''none'', or auto
 	to detect again the best mirror for your location.
 
+--dependencies::
+	When using 'package' or 'repository' discriminators, download the
+	active dependencies considering the specified config id.
+
 -c, --copy::
 	When the file is found on the alternative location the tool will
 	'copy' it instead of doing a hardlink.
