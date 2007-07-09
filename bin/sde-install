@@ -22,10 +22,17 @@ set -e
 
 . $SDEROOT/lib/libsde.in
 
+install_usage() {
+cat <<EOT
+Usage: sde install
+	Installs a symlink of the sde wrapper at \$HOME/bin/,
+	which is supposed to be on \$PATH
+EOT
+}
+
 # what action was requested?
 if [ $# -ne 0 ]; then
-	. $SDEROOT/lib/sde-help.in
-	help_command install
+	install_usage
 elif [ -L "$HOME/bin/sde" ]; then
 	if [ "$( readlink -f $HOME/bin/sde )" == "$SDEROOT/bin/sde" ]; then
 		echo_warning "the same sde wrapper is already installed, skip."
