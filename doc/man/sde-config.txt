@@ -41,8 +41,28 @@ OPTIONS FOR 'CONFIG' DISCRIMINATOR
 OPTIONS FOR 'SYSTEM' DISCRIMINATOR
 ----------------------------------
 
+-q, --query::
+	returns the value of a specified 'section.key'
+
+-s, --set::
+	sets the value of a specified 'section.key'
+
+--dump::
+	dumps the content of the 'settings' file.
+
+--name::
+	dumps the full path to the 'settings' file in use.
+
 DESCRIPTION
 -----------
+
+SECTIONS AND KEYS ON GLOBAL SDE CONFIGURATION
+---------------------------------------------
+
+* 'download'
+  - 'altdir'
+  - 'curl-opt'
+  - 'mirror' (kept unique per version only)
 
 EXAMPLES
 --------
