@@ -22,13 +22,44 @@ set -e
 	export SDEROOT=$( cd "${0%/*}/.."; pwd -P )
 
 . $SDEROOT/lib/libsde.in
-. $SDEROOT/lib/sde-help.in
+
+help_list() {
+	local command=
+	local name= desc= alias=
+
+	echo "Available Commands:"
+	for command in $SDEROOT/bin/sde-*; do
+		# detect command name
+		id=$( echo "$command" | sed -e 's,.*/sde-,,' )
+		# optional description
+		desc=$( sed -n -e 's,^#Description: \(.*\)$,\1,p' "$command" )
+		# and valid aliases
+		alias=$( sed -n -e 's,^#Alias: \([^ ]*\)$,\1,p' "$command" | tr '\n' ' ' )
+
+		echo -e "\t* $id${alias:+\t(${alias%% })}"
+		if [ -n "$desc" ]; then
+			echo -e "\t\t$desc"
+		fi
+	done
+}
+
+help_usage() {
+	echo "Usage: sde help [<command>]"
+}
+
+help_command() {
+	if [ -r "$SDEROOT/doc/man/sde-$1.txt" ]; then
+		cat "$SDEROOT/doc/man/sde-$1.txt"
+	else
+		echo_warning "'$COLOR_MESSAGE${1}$COLOR_NORMAL' doesn't provide help."
+	fi
+}
 
 if [ $# -eq 0 -o -z "$1" ]; then
 	help_list
 elif [ $# -gt 1 ]; then
 	echo_error "Incorrect Syntax."
-	help_command 'help'
+	help_usage
 	exit 1
 elif [ -x "$SDEROOT/bin/sde-$1" ]; then
 	help_command "$1"
