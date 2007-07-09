@@ -38,7 +38,7 @@ OPTIONS FOR 'CONFIG' DISCRIMINATOR
 
 OPTIONS FOR 'SYSTEM' DISCRIMINATOR
 ----------------------------------
--q, --query::
+-g, --get::
 	returns the value of a specified 'section.key'
 
 -s, --set::
