@@ -18,6 +18,7 @@ config, cfg::
 
 package, pkg::
 	Downloads the packages specified by item.
+	(this is the default if none is given)
 	
 repository, repo::
 	Downloads all packages in the repositories specified by item.
