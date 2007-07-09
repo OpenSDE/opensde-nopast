@@ -7,7 +7,49 @@ NAME
 
 SYNOPSIS
 --------
-'sde list' [OPTIONS]
+'sde list' [DISCRIMINATOR] [OPTIONS]
+
+DISCRIMINATORS
+--------------
+
+package, pkg::
+	packages
+
+download::
+	downloadable files of a list of packages, or all
+	if no package is given
+
+OPTIONS FOR PACKAGES
+--------------------
+
+-a, --arch::
+	list the packages available for the specified architecture
+
+-c, --cfg::
+	list the packages active for the specified config
+
+OPTIONS FOR DOWNLOAD
+--------------------
+
+-c, --cfg::
+	list the download files needed for a given config.
+
+-r, --repositories::
+	the given list is a list of repositories, not packages.
+
+-a, --all::
+	list the download files of every package available independent
+	of the rest of the provided options.
+
+--dependencies::
+	include the download files of the active dependencies on the
+	specified config.
+
+--checksum::
+	include the checksum value when listing.
+
+--location::
+	include the download location when listing.
 
 DESCRIPTION
 -----------
