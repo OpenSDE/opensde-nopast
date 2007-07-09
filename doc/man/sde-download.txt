@@ -4,10 +4,63 @@ The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
+sde-download downloads one or more packages indicated or belonging to the
+specified name (items). Multiple items can be specified.
 
 SYNOPSIS
 --------
-'sde download' [OPTIONS]
+'sde download' [DISCRIMINATOR] [OPTIONS] [ITEMS...]
+
+DISCRIMINATORS
+--------------
+
+config, cfg::
+	Downloads all packages in the config specified by item.
+
+package, pkg::
+	Downloads the packages specified by item.
+	
+repository, repo::
+	Downloads all packages in the repositories specified by item.
+
+OPTIONS
+-------
+
+-q, --quiet::
+	Gives minimal feedback.
+
+-v, --verbose::
+	Gives extra feedback.
+
+-a, --all::
+	Downloads every package independently of the specified items.
+
+-d, --dry-run::
+	No real download is performed but the list of missing files is
+	output.
+
+--timeout::
+	Defines how tolerat to download delay are we. The default value
+	is 'normal', but you can choose between 'no' and 'long' too.
+
+--check::
+	Defines when will the tool validate the downloaded file against
+	the checksum in the database. The defailt value is 'always', but
+	you can choose between 'download', meaning that it wont validate
+	when using the alternative download location, or 'never'.
+
+--mirror::
+	Defines which mirror to use since now, replacing the value stored
+	on the global config. Alternatively you can use ''none'', or auto
+	to detect again the best mirror for your location.
+
+-c, --copy::
+	When the file is found on the alternative location the tool will
+	'copy' it instead of doing a hardlink.
+
+-m, --move::
+	When the file is found on the alternative location the tool will
+	'move' it instead of doing a hardlink.
 
 DESCRIPTION
 -----------
