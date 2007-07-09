@@ -27,6 +27,31 @@ set -e
 . $SDEROOT/lib/libsde-ini.in	# to write
 . $SDEROOT/lib/functions.in
 
+download_usage() {
+cat <<EOT
+Usage:
+	sde download <options> [ Package(s) ]
+	sde download <options> [ Desc file(s) ]	
+	sde download <options> -repository Repositories
+	sde download <options> [ -all | -required ]
+
+	Options is an alias for:
+	[ -cfg <config> ] [ -nock ] [ -alt-dir <AlternativeDirectory> ]
+	[ -mirror <URL> | -check ]  [ -try-questionable ]  [ -notimeout ]
+	[ -longtimeout ]  [ -curl-opt <curl-option>[:<curl-option>[:..]] ]
+	[ -copy ] [ -move ]
+
+	On default, this script auto-detects the best OpenSDE mirror.
+	
+	Mirrors can also be a local directories in the form of 'file:///<dir>'.
+
+	sde download -mk-cksum Filename(s)
+	sde download [ -list | -list-unknown | -list-missing | -list-cksums ]
+
+	See '-mirror none' output for help on bypassing the official mirrors.
+EOT
+}
+
 umask 022
 
 cd "$SDEROOT"
@@ -807,8 +832,7 @@ case "$1" in
 
 	-repository)	shift ; repository "$@" ;;
 
-	-*|"")		. $SDEROOT/lib/sde-help.in
-			help_command download
+	-*|"")		download_usage
 			exit 1;;
 
 	*)		packages "$@" ;;
