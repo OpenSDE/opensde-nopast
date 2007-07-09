@@ -4,10 +4,42 @@ The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
+sde-config configures the identified part (item) within the sde
+environment section indicated by the discriminator.
 
 SYNOPSIS
 --------
-'sde config' [OPTIONS]
+'sde config' [DISCRIMINATOR] [OPTIONS]
+
+DISCRIMINATORS
+--------------
+config, cfg::
+	TODO
+	(this is the default if none is given)
+
+system, sys::
+	Allows to change global sde configuration
+
+
+OPTIONS FOR 'CONFIG' DISCRIMINATOR
+----------------------------------
+
+-q, --oldconfig::
+	Reconfigure an already existant config without interativity with
+	the user.
+
+-c, --cfg::
+	Defines the id to use for a given 'config', the name 'default' is
+	used if this option is not given.
+		
+--nobashmod::
+	Don't use the bash config helper plugin
+
+--profile::
+	Create a config.profile with profiling data
+
+OPTIONS FOR 'SYSTEM' DISCRIMINATOR
+----------------------------------
 
 DESCRIPTION
 -----------
