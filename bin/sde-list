@@ -22,12 +22,18 @@ set -e
 
 . $SDEROOT/lib/libsde.in
 
+list_usage() {
+cat <<EOT
+Usage: sde list [pkg|package] [--arch <arch>]
+EOT
+}
+
 sde_list_package() {
 	local repo=
 
 	if [ -n "$arch" -a ! -d $SDEROOT/architecture/$arch/ ]; then
 		echo_error "wrong architecture ($arch) specified, aborting."
-		sde_list_help
+		list_usage
 		return 1
 	fi
 
@@ -38,11 +44,6 @@ sde_list_package() {
 		[ ! -d "$repo/" ] ||
 			gawk -f ./lib/sde-package/package-list.awk -v "arch=$arch" $( ls -1d $repo/*/*.desc 2> /dev/null )
 	done | sort -k 3
-}
-
-sde_list_help() {
-	. $SDEROOT/lib/sde-help.in
-	help_command list
 }
 
 option=help
@@ -65,9 +66,9 @@ done
 # multiplex
 case "$option" in
 	package|pkg)	sde_list_package ;;
-	help)		sde_list_help	;;
+	help)		list_usage	;;
 	*)		echo_error "Unknown discriminator '$option'."
-			sde_list_help
+			list_usage
 			exit 1 ;;
 esac
 
