@@ -27,6 +27,13 @@ downclean=0
 buildclean=0
 cacheclean=0
 
+cleanup_usage() {
+cat <<EOT
+Usage:	sde cleanup [ -build ] [ -cache ] [ -full ] [ -nocheck ] [ -download ]
+	sde cleanup [ dir(s) ]
+EOT
+}
+
 while [ "$1" ] ; do
 	case "$1" in
 	    -build)
@@ -39,9 +46,7 @@ while [ "$1" ] ; do
 		nocheck=1 ;;
 	    -download)
 		downclean=1 ;;
-	    -*)
-	    	. $SDEROOT/lib/sde-help.in
-		help_command cleanup
+	    -*)	cleanup_usage
 		exit 1 ;;
 	    *)
 		break ;;
