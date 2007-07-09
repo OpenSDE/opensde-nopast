@@ -4,8 +4,7 @@ The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
-sde-config configures the identified part (item) within the sde
-environment section indicated by the discriminator.
+sde-config configures part of the system
 
 SYNOPSIS
 --------
@@ -23,7 +22,6 @@ system, sys::
 
 OPTIONS FOR 'CONFIG' DISCRIMINATOR
 ----------------------------------
-
 -q, --oldconfig::
 	Reconfigure an already existant config without interativity with
 	the user.
@@ -40,7 +38,6 @@ OPTIONS FOR 'CONFIG' DISCRIMINATOR
 
 OPTIONS FOR 'SYSTEM' DISCRIMINATOR
 ----------------------------------
-
 -q, --query::
 	returns the value of a specified 'section.key'
 
@@ -55,6 +52,8 @@ OPTIONS FOR 'SYSTEM' DISCRIMINATOR
 
 DESCRIPTION
 -----------
+sde-config configures the identified part (item) within the sde
+environment section indicated by the discriminator.
 
 SECTIONS AND KEYS ON GLOBAL SDE CONFIGURATION
 ---------------------------------------------
