@@ -4,7 +4,7 @@ The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
-sde copy - copy part of the system
+sde-copy - copy part of the system
 
 SYNOPSIS
 --------

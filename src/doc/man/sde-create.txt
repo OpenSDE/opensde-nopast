@@ -4,7 +4,7 @@ The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
-sde create - enhance the system with new parts
+sde-create - enhance the system with new parts
 
 SYNOPSIS
 --------

@@ -4,7 +4,7 @@ The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
-sde export - Export stuff out of the system
+sde-export - Export stuff out of the system
 
 SYNOPSIS
 --------

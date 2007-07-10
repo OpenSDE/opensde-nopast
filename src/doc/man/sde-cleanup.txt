@@ -4,7 +4,7 @@ The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
-sde cleanup - cleanup part of the system
+sde-cleanup - cleanup part of the system
 
 SYNOPSIS
 --------

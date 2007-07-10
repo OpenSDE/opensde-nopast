@@ -4,7 +4,7 @@ The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
-sde update - updates part of the system with upstream info
+sde-update - updates part of the system with upstream info
 
 SYNOPSIS
 --------
