@@ -309,7 +309,7 @@ X libunicode
 X libxml
 X libxslt
 X wv2
-X docbookx
+X docbook-xml
 X tetex
 X tex4ht
 X libxml1
