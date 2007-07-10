@@ -48,8 +48,8 @@ help_usage() {
 }
 
 help_command() {
-	if [ -r "$SDEROOT/doc/man/sde-$1.txt" ]; then
-		cat "$SDEROOT/doc/man/sde-$1.txt"
+	if [ -r "$SDEROOT/doc/man/sde-$1.1" ]; then
+		man "$SDEROOT/doc/man/sde-$1.1"
 	else
 		echo_warning "'$COLOR_MESSAGE${1}$COLOR_NORMAL' doesn't provide help."
 	fi
