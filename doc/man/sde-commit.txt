@@ -4,6 +4,7 @@ The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
+sde commit - Commit changes
 
 SYNOPSIS
 --------
@@ -11,10 +12,8 @@ SYNOPSIS
 
 DESCRIPTION
 -----------
-
-EXAMPLES
---------
-
-SEE ALSO
---------
-
+Commits changes to the identified part (item) within the sde environment
+section indicated by the discriminator. When the user has commit rights to the
+repository containing the item, using this command will indeed commit the
+changes. If there are no commit rights to the repository, all changes will be
+wrapped up in a patch and send to the mailing list.  

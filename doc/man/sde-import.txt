@@ -4,6 +4,7 @@ The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
+sde import - import stuff into the system
 
 SYNOPSIS
 --------
@@ -11,10 +12,8 @@ SYNOPSIS
 
 DESCRIPTION
 -----------
-
-EXAMPLES
---------
-
-SEE ALSO
---------
-
+Imports the specified filename into the opensde environment under the name
+specified by item. If no item name is specified the original, as it was
+exported, item name will be used. The content of the specified file need to
+match the kind of content specified by the discriminator. In case the content
+does not match the command will abort with an error message.

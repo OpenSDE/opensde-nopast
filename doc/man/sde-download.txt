@@ -4,7 +4,7 @@ The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
-sde-download downloads stuff
+sde-download - Downloads stuff
 
 SYNOPSIS
 --------
@@ -70,10 +70,4 @@ DESCRIPTION
 -----------
 sde-download downloads one or more packages indicated or belonging to the
 specified name (items). Multiple items can be specified.
-
-EXAMPLES
---------
-
-SEE ALSO
---------
 

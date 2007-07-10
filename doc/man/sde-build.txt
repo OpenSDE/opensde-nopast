@@ -4,17 +4,39 @@ The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
+sde-build - Build stuff
 
 SYNOPSIS
 --------
-'sde build' [OPTIONS]
+'sde build' [DISCRIMINATOR] [OPTIONS] ITEMS
 
 DESCRIPTION
 -----------
+Builds all or TODO
 
-EXAMPLES
---------
+DISCRIMINATORS
+--------------
 
-SEE ALSO
---------
+config, cfg::
+	Start building the full configuration
+package, pkg::
+	Allows to add or remove packages to/from the build queue without
+	actually starting the build
+repository, repo::
+	Allows to add or remove all packages in a repository to/from the
+	build queue without actually starting the build
 
+OPTIONS
+-------
+
+--enqueue::
+	Adds the given item (packages or all packages in a repository) to
+	the build queue
+--dequeue::
+	Removes the given item (packages or all packages in a repository)
+	from the build queue
+--dependees::
+	Instead of adding the package, all its dependees will be added to
+	the build queue.
+--stage::
+	Only perfom the action (build/enqueue/dequeue) for the given stage.

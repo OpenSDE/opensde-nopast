@@ -4,17 +4,13 @@ The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
+sde - front end wrapper
 
 SYNOPSIS
 --------
-'sde' [OPTIONS]
+'sde' [COMMAND] [DISCRIMINATOR] [OPTIONS]
 
 DESCRIPTION
 -----------
-
-EXAMPLES
---------
-
-SEE ALSO
---------
-
+The `sde` frontend wrapper is supposed to help to use the 'sde'
+commands from within multiple 'sde' trees, from '$PATH'

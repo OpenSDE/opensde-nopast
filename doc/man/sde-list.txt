@@ -4,6 +4,7 @@ The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
+sde list - produce lists needed by other commands
 
 SYNOPSIS
 --------
@@ -50,13 +51,4 @@ OPTIONS FOR DOWNLOAD
 
 --location::
 	include the download location when listing.
-
-DESCRIPTION
------------
-
-EXAMPLES
---------
-
-SEE ALSO
---------
 

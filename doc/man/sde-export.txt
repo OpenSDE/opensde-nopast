@@ -4,6 +4,7 @@ The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
+sde export - Export stuff out of the system
 
 SYNOPSIS
 --------
@@ -11,10 +12,10 @@ SYNOPSIS
 
 DESCRIPTION
 -----------
+Exports part of the sde system specified by item. All information belonging to
+the specified item will be wrapped up in a single file specified by filename.
+This file can be imported again elsewhere. The option is ideal for sending
+information to the opensde mailing list.
 
-EXAMPLES
---------
-
-SEE ALSO
---------
-
+If the file specified by filename already exists the command will abort unless
+the --force option is specified.  In this case the file will be overwritten.

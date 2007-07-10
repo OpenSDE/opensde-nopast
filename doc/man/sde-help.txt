@@ -4,17 +4,13 @@ The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
+sde-help - provides help about the usage of the 'sde' wrapper
 
 SYNOPSIS
 --------
-'sde help' [OPTIONS]
+'sde help' [COMMAND]
 
 DESCRIPTION
 -----------
-
-EXAMPLES
---------
-
-SEE ALSO
---------
-
+Provides help about the commands available for the 'sde' wrapper
+on the current tree.

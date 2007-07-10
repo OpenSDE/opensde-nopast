@@ -4,6 +4,7 @@ The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
+sde cleanup - cleanup part of the system
 
 SYNOPSIS
 --------
@@ -11,10 +12,9 @@ SYNOPSIS
 
 DESCRIPTION
 -----------
-
-EXAMPLES
---------
-
-SEE ALSO
---------
+Cleans up the identified part (item) of the 'sde' indicated by
+the discriminator. If no item is specified the whole section
+(discriminator) in the 'sde' environment is cleaned up.
+Depending on the specified item or discriminator, cleanup indicates
+tidying things up or removing it completely
 

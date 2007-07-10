@@ -4,6 +4,7 @@ The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
+sde create - enhance the system with new parts
 
 SYNOPSIS
 --------
@@ -11,10 +12,5 @@ SYNOPSIS
 
 DESCRIPTION
 -----------
-
-EXAMPLES
---------
-
-SEE ALSO
---------
-
+Create a new part with the identified name (item) within the sde environment
+section indicated by the discriminator.

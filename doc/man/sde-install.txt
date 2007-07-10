@@ -4,17 +4,13 @@ The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
+sde install - install the wrapper
 
 SYNOPSIS
 --------
-'sde install' [OPTIONS]
+'sde install'
 
 DESCRIPTION
 -----------
-
-EXAMPLES
---------
-
-SEE ALSO
---------
-
+Install the `sde` wrapper on '$HOME/bin' which is expected to be
+on your '$PATH'.

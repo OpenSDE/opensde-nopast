@@ -1,10 +1,10 @@
 sde-config(1)
-================
+=============
 The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
-sde-config configures part of the system
+sde-config - configures part of the system
 
 SYNOPSIS
 --------
@@ -62,10 +62,3 @@ SECTIONS AND KEYS ON GLOBAL SDE CONFIGURATION
   - 'altdir'
   - 'curl-opt'
   - 'mirror' (kept unique per version only)
-
-EXAMPLES
---------
-
-SEE ALSO
---------
-

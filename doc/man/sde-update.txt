@@ -4,6 +4,7 @@ The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
+sde update - updates part of the system with upstream info
 
 SYNOPSIS
 --------
@@ -11,10 +12,4 @@ SYNOPSIS
 
 DESCRIPTION
 -----------
-
-EXAMPLES
---------
-
-SEE ALSO
---------
-
+TODO
