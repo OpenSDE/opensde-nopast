@@ -1,0 +1,22 @@
+.\"     Title: sde-export
+.\"    Author: 
+.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
+.\"      Date: 07/10/2007
+.\"    Manual: 
+.\"    Source: 
+.\"
+.TH "SDE\-EXPORT" "1" "07/10/2007" "" ""
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.SH "NAME"
+sde\-export \- Export stuff out of the system
+.SH "SYNOPSIS"
+\fIsde export\fR [OPTIONS]
+.sp
+.SH "DESCRIPTION"
+Exports part of the sde system specified by item. All information belonging to the specified item will be wrapped up in a single file specified by filename. This file can be imported again elsewhere. The option is ideal for sending information to the opensde mailing list.
+.sp
+If the file specified by filename already exists the command will abort unless the \-\-force option is specified. In this case the file will be overwritten.
+.sp

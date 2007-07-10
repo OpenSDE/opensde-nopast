@@ -1,0 +1,100 @@
+.\"     Title: sde-config
+.\"    Author: 
+.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
+.\"      Date: 07/10/2007
+.\"    Manual: 
+.\"    Source: 
+.\"
+.TH "SDE\-CONFIG" "1" "07/10/2007" "" ""
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.SH "NAME"
+sde\-config \- configures part of the system
+.SH "SYNOPSIS"
+\fIsde config\fR [DISCRIMINATOR] [OPTIONS]
+.sp
+.SH "DISCRIMINATORS"
+.PP
+config, cfg
+.RS 4
+TODO (this is the default if none is given)
+.RE
+.PP
+system, sys
+.RS 4
+Allows to change global sde configuration
+.RE
+.SH "OPTIONS FOR \fICONFIG\fR DISCRIMINATOR"
+.PP
+\-q, \-\-oldconfig
+.RS 4
+Reconfigure an already existant config without interativity with the user.
+.RE
+.PP
+\-c, \-\-cfg
+.RS 4
+Defines the id to use for a given
+\fIconfig\fR, the name
+\fIdefault\fR
+is used if this option is not given.
+.RE
+.PP
+\-\-nobashmod
+.RS 4
+Don't use the bash config helper plugin
+.RE
+.PP
+\-\-profile
+.RS 4
+Create a config.profile with profiling data
+.RE
+.SH "OPTIONS FOR \fISYSTEM\fR DISCRIMINATOR"
+.PP
+\-g, \-\-get
+.RS 4
+returns the value of a specified
+\fIsection.key\fR
+.RE
+.PP
+\-s, \-\-set
+.RS 4
+sets the value of a specified
+\fIsection.key\fR
+.RE
+.PP
+\-\-dump
+.RS 4
+dumps the content of the
+\fIsettings\fR
+file.
+.RE
+.PP
+\-\-name
+.RS 4
+dumps the full path to the
+\fIsettings\fR
+file in use.
+.RE
+.SH "DESCRIPTION"
+sde\-config configures the identified part (item) within the sde environment section indicated by the discriminator.
+.sp
+.SH "SECTIONS AND KEYS ON GLOBAL SDE CONFIGURATION"
+.RS 4
+\h'-04'\(bu\h'+03'
+\fIdownload\fR
+.RS 4
+\h'-04'\(bu\h'+03'
+\fIaltdir\fR
+.RE
+.RS 4
+\h'-04'\(bu\h'+03'
+\fIcurl\-opt\fR
+.RE
+.RS 4
+\h'-04'\(bu\h'+03'
+\fImirror\fR
+(kept unique per version only)
+.RE
+.RE

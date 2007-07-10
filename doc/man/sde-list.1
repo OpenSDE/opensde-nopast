@@ -1,0 +1,70 @@
+.\"     Title: sde-list
+.\"    Author: 
+.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
+.\"      Date: 07/10/2007
+.\"    Manual: 
+.\"    Source: 
+.\"
+.TH "SDE\-LIST" "1" "07/10/2007" "" ""
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.SH "NAME"
+sde\-list \- produce lists needed by other commands
+.SH "SYNOPSIS"
+\fIsde list\fR [DISCRIMINATOR] [OPTIONS]
+.sp
+.SH "DISCRIMINATORS"
+.PP
+package, pkg
+.RS 4
+packages
+.RE
+.PP
+download
+.RS 4
+downloadable files of a list of packages, or all if no package is given
+.RE
+.SH "OPTIONS FOR PACKAGES"
+.PP
+\-a, \-\-arch
+.RS 4
+list the packages available for the specified architecture
+.RE
+.PP
+\-c, \-\-cfg
+.RS 4
+list the packages active for the specified config
+.RE
+.SH "OPTIONS FOR DOWNLOAD"
+.PP
+\-c, \-\-cfg
+.RS 4
+list the download files needed for a given config.
+.RE
+.PP
+\-r, \-\-repositories
+.RS 4
+the given list is a list of repositories, not packages.
+.RE
+.PP
+\-a, \-\-all
+.RS 4
+list the download files of every package available independent of the rest of the provided options.
+.RE
+.PP
+\-\-dependencies
+.RS 4
+include the download files of the active dependencies on the specified config.
+.RE
+.PP
+\-\-checksum
+.RS 4
+include the checksum value when listing.
+.RE
+.PP
+\-\-location
+.RS 4
+include the download location when listing.
+.RE

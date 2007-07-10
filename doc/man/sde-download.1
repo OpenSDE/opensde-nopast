@@ -1,0 +1,104 @@
+.\"     Title: sde-download
+.\"    Author: 
+.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
+.\"      Date: 07/10/2007
+.\"    Manual: 
+.\"    Source: 
+.\"
+.TH "SDE\-DOWNLOAD" "1" "07/10/2007" "" ""
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.SH "NAME"
+sde\-download \- Downloads stuff
+.SH "SYNOPSIS"
+\fIsde download\fR [DISCRIMINATOR] [OPTIONS] [ITEMS\]
+.sp
+.SH "DISCRIMINATORS"
+.PP
+config, cfg
+.RS 4
+Downloads all packages in the config specified by item.
+.RE
+.PP
+package, pkg
+.RS 4
+Downloads the packages specified by item. (this is the default if none is given)
+.RE
+.PP
+repository, repo
+.RS 4
+Downloads all packages in the repositories specified by item.
+.RE
+.SH "OPTIONS"
+.PP
+\-q, \-\-quiet
+.RS 4
+Gives minimal feedback.
+.RE
+.PP
+\-v, \-\-verbose
+.RS 4
+Gives extra feedback.
+.RE
+.PP
+\-a, \-\-all
+.RS 4
+Downloads every package independently of the specified items.
+.RE
+.PP
+\-d, \-\-dry\-run
+.RS 4
+No real download is performed but the list of missing files is output.
+.RE
+.PP
+\-\-timeout
+.RS 4
+Defines how tolerat to download delay are we. The default value is
+\fInormal\fR, but you can choose between
+\fIno\fR
+and
+\fIlong\fR
+too.
+.RE
+.PP
+\-\-check
+.RS 4
+Defines when will the tool validate the downloaded file against the checksum in the database. The defailt value is
+\fIalways\fR, but you can choose between
+\fIdownload\fR, meaning that it wont validate when using the alternative download location, or
+\fInever\fR.
+.RE
+.PP
+\-\-mirror
+.RS 4
+Defines which mirror to use since now, replacing the value stored on the global config. Alternatively you can use
+\fI'none\fR', or auto to detect again the best mirror for your location.
+.RE
+.PP
+\-\-dependencies
+.RS 4
+When using
+\fIpackage\fR
+or
+\fIrepository\fR
+discriminators, download the active dependencies considering the specified config id.
+.RE
+.PP
+\-c, \-\-copy
+.RS 4
+When the file is found on the alternative location the tool will
+\fIcopy\fR
+it instead of doing a hardlink.
+.RE
+.PP
+\-m, \-\-move
+.RS 4
+When the file is found on the alternative location the tool will
+\fImove\fR
+it instead of doing a hardlink.
+.RE
+.SH "DESCRIPTION"
+sde\-download downloads one or more packages indicated or belonging to the specified name (items). Multiple items can be specified.
+.sp

@@ -1,0 +1,57 @@
+.\"     Title: sde-build
+.\"    Author: 
+.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
+.\"      Date: 07/10/2007
+.\"    Manual: 
+.\"    Source: 
+.\"
+.TH "SDE\-BUILD" "1" "07/10/2007" "" ""
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.SH "NAME"
+sde\-build \- Build stuff
+.SH "SYNOPSIS"
+\fIsde build\fR [DISCRIMINATOR] [OPTIONS] ITEMS
+.sp
+.SH "DESCRIPTION"
+Builds all or TODO
+.sp
+.SH "DISCRIMINATORS"
+.PP
+config, cfg
+.RS 4
+Start building the full configuration
+.RE
+.PP
+package, pkg
+.RS 4
+Allows to add or remove packages to/from the build queue without actually starting the build
+.RE
+.PP
+repository, repo
+.RS 4
+Allows to add or remove all packages in a repository to/from the build queue without actually starting the build
+.RE
+.SH "OPTIONS"
+.PP
+\-\-enqueue
+.RS 4
+Adds the given item (packages or all packages in a repository) to the build queue
+.RE
+.PP
+\-\-dequeue
+.RS 4
+Removes the given item (packages or all packages in a repository) from the build queue
+.RE
+.PP
+\-\-dependees
+.RS 4
+Instead of adding the package, all its dependees will be added to the build queue.
+.RE
+.PP
+\-\-stage
+.RS 4
+Only perfom the action (build/enqueue/dequeue) for the given stage.
+.RE

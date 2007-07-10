@@ -1,0 +1,20 @@
+.\"     Title: sde-commit
+.\"    Author: 
+.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
+.\"      Date: 07/10/2007
+.\"    Manual: 
+.\"    Source: 
+.\"
+.TH "SDE\-COMMIT" "1" "07/10/2007" "" ""
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.SH "NAME"
+sde\-commit \- Commit changes
+.SH "SYNOPSIS"
+\fIsde commit\fR [OPTIONS]
+.sp
+.SH "DESCRIPTION"
+Commits changes to the identified part (item) within the sde environment section indicated by the discriminator. When the user has commit rights to the repository containing the item, using this command will indeed commit the changes. If there are no commit rights to the repository, all changes will be wrapped up in a patch and send to the mailing list.
+.sp
