@@ -28,7 +28,7 @@ Options:
 	[-g|--get] section.key
 	[-d|--delete] section[.key]
 	[-S|--sections]
-	[-K|--keys section]
+	[-K|--keys] section
 
 EOT
 }
@@ -127,7 +127,19 @@ ini_write() {
 }
 
 ini_do_set() { echo_abort 1 "Not yet implemented"; }
-ini_do_get() { echo_abort 1 "Not yet implemented"; }
+ini_do_get() {
+	local section="${1%%.*}"
+	local key="${1#*.}"
+
+	if [ "$key" != "$section" ]; then
+		# just one key
+		ini_section_raw "$file" "$section" | sed -n \
+			-e "s,^[ \t]*$key[ \t]*=\(.*\),\1,p"
+	else
+		ini_section_read "$file" "$section"
+	fi
+}
+
 ini_do_delete() { echo_abort 1 "Not yet implemented"; }
 
 shortopts='F:s:g:d:SK:'
