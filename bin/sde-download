@@ -638,7 +638,7 @@ download_file_now() {
 list_dtags() {
 	{ 
 		grep -H '^\[D\] ' package/*/*/*.desc
-		grep -H '^[X0-9]' target/*/download.txt | sed 's,:,:[D] ,'
+		grep -H '^[X0-9]' target/*/download.txt 2> /dev/null | sed 's,:,:[D] ,'
 	} | column_clean
 }
 
@@ -740,7 +740,7 @@ all() {
 	done
     done
     
-    for each in target/*/download.txt; do
+    for each in $( ls -1 target/*/download.txt 2> /dev/null ); do
 	target="`echo $each | cut -f2 -d/`"
 
 	while read cksum file url ; do
