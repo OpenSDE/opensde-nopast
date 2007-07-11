@@ -24,48 +24,27 @@ set -e
 
 list_usage() {
 cat <<EOT
-Usage: sde list [pkg|package] [--arch <arch>]
+Usage: sde list [DISCRIMINATOR] [OPTIONS]
+
+Valid discrimintors are:
+	* package (pkg)
+	* download
+
+Try \`sde help list\` for more details.
 EOT
 }
 
-sde_list_package() {
-	local repo=
-
-	if [ -n "$arch" -a ! -d $SDEROOT/architecture/$arch/ ]; then
-		echo_error "wrong architecture ($arch) specified, aborting."
-		list_usage
-		return 1
-	fi
-
-	# the .awk file needs complete $SDEROOT relative .desc locations
-	cd $SDEROOT
-	# NOTE: protection again command line overflow
-	for repo in package/*; do
-		[ ! -d "$repo/" ] ||
-			gawk -f ./lib/sde-package/package-list.awk -v "arch=$arch" $( ls -1d $repo/*/*.desc 2> /dev/null )
-	done | sort -k 3
-}
-
 option=help
-arch=
 
 # discriminator
 if [ $# -gt 0 ]; then
 	option="$1"; shift
 fi
 
-# arguments
-while [ $# -gt 0 ]; do
-	case "$1" in
-		--arch)	arch="$2"; shift ;;
-		*)	echo_abort 1 "Unknown argument '$1', aborting."
-	esac
-	shift
-done
-
 # multiplex
 case "$option" in
-	package|pkg)	sde_list_package ;;
+	package|pkg)	exec $SDEROOT/bin/sde-list-pkg "$@" ;;
+	download)	exec $SDEROOT/bin/sde-list-download "$@" ;;
 	help)		list_usage	;;
 	*)		echo_error "Unknown discriminator '$option'."
 			list_usage
