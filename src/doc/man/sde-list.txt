@@ -38,10 +38,6 @@ OPTIONS FOR DOWNLOAD
 -r, --repositories::
 	the given list is a list of repositories, not packages.
 
--a, --all::
-	list the download files of every package available independent
-	of the rest of the provided options.
-
 --dependencies::
 	include the download files of the active dependencies on the
 	specified config.
