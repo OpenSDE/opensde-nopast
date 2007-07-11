@@ -13,8 +13,6 @@
 # GNU General Public License can be found in the file COPYING.
 # --- SDE-COPYRIGHT-NOTE-END ---
 
-set -e
-
 [ -n "$SDEROOT" ] ||
 	export SDEROOT=$( cd "${0%/*}/.."; pwd -P )
 
@@ -131,7 +129,6 @@ ini_write() {
 ini_do_set() { echo_abort 1 "Not yet implemented"; }
 ini_do_get() { echo_abort 1 "Not yet implemented"; }
 ini_do_delete() { echo_abort 1 "Not yet implemented"; }
-ini_do_keys() { echo_abort 1 "Not yet implemented"; }
 
 shortopts='F:s:g:d:SK:'
 longopts='file:,set:,get:,delete:,sections,keys:'
@@ -164,7 +161,9 @@ while [ $# -gt 0 ]; do
 				-S|--sections)
 					sed -n -e 's,^\[\(.*\)\][ \t]*$,\1,p' "$file"
 					;;
-				-K|--keys)	shift; ini_do_keys "$1"
+				-K|--keys)	shift;
+					ini_section_raw "$file" "$1" |
+						sed -n -e 's,^[ \t]*\([^;= ]*\)[ \t]*=.*,\1,p'
 						;;
 			esac
 	esac
