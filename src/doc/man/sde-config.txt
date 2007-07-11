@@ -17,18 +17,18 @@ config, cfg::
 	(this is the default if none is given)
 
 system, sys::
-	Allows to change global sde configuration
+	Allows to query or modify global sde configuration parameters.
 
 
 OPTIONS FOR 'CONFIG' DISCRIMINATOR
 ----------------------------------
--q, --oldconfig::
-	Reconfigure an already existant config without interativity with
-	the user.
+-n, --non-interactive::
+	Reconfigures an existing config without the interactive 
+	configuration application.
 
--c, --cfg::
-	Defines the id to use for a given 'config', the name 'default' is
-	used if this option is not given.
+-c, --cfg name::
+	Defines the name to be used for a given 'config', the name 'default' is
+	used if this option is not supplied.
 		
 --nobashmod::
 	Don't use the bash config helper plugin
@@ -36,19 +36,26 @@ OPTIONS FOR 'CONFIG' DISCRIMINATOR
 --profile::
 	Create a config.profile with profiling data
 
+-q, --quiet::
+	Feedback will be reduced to an absolute minimum.
+
+-v, --verbose::
+	Feedback will be augmented with additional information.
+
 OPTIONS FOR 'SYSTEM' DISCRIMINATOR
 ----------------------------------
--g, --get::
+-g, --get key::
 	returns the value of a specified 'section.key'
 
--s, --set::
+-s, --set key=value::
 	sets the value of a specified 'section.key'
 
 --dump::
-	dumps the content of the 'settings' file.
+	dumps the relevant content of the 'settings' file for the 
+	current sde instance.
 
---name::
-	dumps the full path to the 'settings' file in use.
+--path::
+	outputs the full path to the 'settings' file in use.
 
 DESCRIPTION
 -----------
