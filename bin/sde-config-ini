@@ -53,15 +53,10 @@ ini_section_raw() {
 # USAGE: ini_section_read "file" "section"
 #
 ini_section_read() {
-	ini_section_raw "$1" "$2" | sed -e '/^[ \t]*#/d;' -e '/^[ \t]*$/d;' -e 's,",\\",g' -e 's,=\(..*\)$,="\1",'
+	ini_section_raw "$1" "$2" |
+		sed -e '/^[ \t]*;/d;' -e '/^[ \t]*$/d;' -e 's,",\\",g' -e 's,=\(..*\)$,="\1",'
 }
 
-# list the available sections on a file
-# USAGE: ini_section_list "file"
-#
-ini_section_list() {
-	sed -n -e 's,^\[\(.*\)\][ \t]*$,\1,p' "$1"
-}
 
 # this file has to be sourced only by tools which really want to
 # write ini formated files. reading methods are available at libsde.in
@@ -136,7 +131,6 @@ ini_write() {
 ini_do_set() { echo_abort 1 "Not yet implemented"; }
 ini_do_get() { echo_abort 1 "Not yet implemented"; }
 ini_do_delete() { echo_abort 1 "Not yet implemented"; }
-ini_do_sections() { echo_abort 1 "Not yet implemented"; }
 ini_do_keys() { echo_abort 1 "Not yet implemented"; }
 
 shortopts='F:s:g:d:SK:'
@@ -150,29 +144,29 @@ fi
 # load new arguments list
 eval set -- "$options"
 
-if [ $# -le 1 ]; then
-	ini_usage
-fi
+[ $# -ge 2 ] || ini_usage
 
 file=
 while [ $# -gt 0 ]; do
 	case "$1" in
-		-F|--file)	shift; file="$1"
-				if [ ! -r "$file" ]; then
-					echo_abort 1 "$file: can't read."
-				fi ;;
-		-s|--set)	shift; ini_do_set "$1"
-				;;
-		-g|--get)	shift; ini_do_get "$1"
-				;;
-		-d|--delete)	shift; ini_do_delete "$1"
-				;;
-		-S|--sections)	ini_do_sections
-				;;
-		-K|--keys)	shift; ini_do_keys "$1"
-				;;
+		-F|--file)	shift; file="$1" ;;
+		--)	break ;;
 
-		--)	break;	;;
+		*)	[ -r "$file" ] || echo_abort 1 "${file:-none}: can't read."
+
+			case "$1" in
+				-s|--set)	shift; ini_do_set "$1"
+						;;
+				-g|--get)	shift; ini_do_get "$1"
+						;;
+				-d|--delete)	shift; ini_do_delete "$1"
+						;;
+				-S|--sections)
+					sed -n -e 's,^\[\(.*\)\][ \t]*$,\1,p' "$file"
+					;;
+				-K|--keys)	shift; ini_do_keys "$1"
+						;;
+			esac
 	esac
 	shift
 done
