@@ -21,16 +21,38 @@
 ini_usage() {
 	local progname=${0##*/}
 cat <<EOT
-Usage:	$progname --file <file> [OPTIONS]
+Usage:	$progname --file <file> --sections
+	$progname --file <file> --keys <section>
+	$progname --file <file> [--delete] section[.key] ...
+	$progname --file <file> section.key=value ...
 
-Options:
-	[-s|--set] section.key=value
-	[-g|--get] section.key
-	[-d|--delete] section[.key]
-	[-S|--sections]
-	[-K|--keys] section
-
+Valid aliases:
+	--file (-F)
+	--sections (-S)
+	--keys (-K)
 EOT
+}
+
+# splits an .ini file in three parts:
+# * before the section ($tmpname.1)
+# * the section ($tmpname.2)
+# * after the section ($tmpname.3)
+#
+# USAGE: ini_split "file" "section" "tmpname"
+#
+ini_split() {
+	local file="$1" section="$2" tmpname="$3"
+
+	rm -rf $tmpfile.{0,1,2}
+	gawk "BEGIN { level=0; }
+	/^\[/ {
+		if ( level == 0 && \$0 ~ /^\[$section\][ \t]*\$/ )
+			level=1;
+		else if ( level == 1 )
+			level=2;
+	}
+	{ print > \"$tmpfile.\" level }
+	" "$file"
 }
 
 # dumps the raw content of a section
@@ -46,15 +68,6 @@ ini_section_raw() {
 		}
 	/^[^\[]/ { if ( show ) print; }" "$1"
 }
-
-# dumps the content of a section assuming variables are defined in there
-# USAGE: ini_section_read "file" "section"
-#
-ini_section_read() {
-	ini_section_raw "$1" "$2" |
-		sed -e '/^[ \t]*;/d;' -e '/^[ \t]*$/d;' -e 's,",\\",g' -e 's,=\(..*\)$,="\1",'
-}
-
 
 # this file has to be sourced only by tools which really want to
 # write ini formated files. reading methods are available at libsde.in
@@ -79,19 +92,8 @@ ini_write() {
 		# known section
 		#
 
-		#FIXME: better performance may be required
-
 		# split the file
-		rm -rf $tmpfile.{0,1,2}
-		gawk "BEGIN { level=0; }
-		/^\[/ {
-			if ( level == 0 && \$0 ~ /^\[$section\][ \t]*\$/ )
-				level=1;
-			else if ( level == 1 )
-				level=2;
-		}
-		{ print > \"$tmpfile.\" level }
-		" "$file"
+		ini_split_section "$file" "$section" "$tmpfile"
 
 		# remove empty lines
 		sed -i -e '/^[ \t]*$/d;' $tmpfile.1
@@ -126,24 +128,8 @@ ini_write() {
 	fi
 }
 
-ini_do_set() { echo_abort 1 "Not yet implemented"; }
-ini_do_get() {
-	local section="${1%%.*}"
-	local key="${1#*.}"
-
-	if [ "$key" != "$section" ]; then
-		# just one key
-		ini_section_raw "$file" "$section" | sed -n \
-			-e "s,^[ \t]*$key[ \t]*=\(.*\),\1,p"
-	else
-		ini_section_read "$file" "$section"
-	fi
-}
-
-ini_do_delete() { echo_abort 1 "Not yet implemented"; }
-
-shortopts='F:s:g:d:SK:'
-longopts='file:,set:,get:,delete:,sections,keys:'
+shortopts='F:SK:'
+longopts='file:,sections,keys:,delete'
 options=$( getopt -o "$shortopts" -l "$longopts" -- "$@" )
 if [ $? -ne 0 ]; then
 	ini_usage
@@ -153,31 +139,78 @@ fi
 # load new arguments list
 eval set -- "$options"
 
-[ $# -ge 2 ] || ini_usage
+if [ $# -lt 2 ]; then
+	ini_usage
+	exit -1
+fi
 
 file=
+delete=
 while [ $# -gt 0 ]; do
 	case "$1" in
 		-F|--file)	shift; file="$1" ;;
-		--)	break ;;
+		--delete)	delete=yes ;;
 
-		*)	[ -r "$file" ] || echo_abort 1 "${file:-none}: can't read."
+		--)		shift; break ;;
 
-			case "$1" in
-				-s|--set)	shift; ini_do_set "$1"
-						;;
-				-g|--get)	shift; ini_do_get "$1"
-						;;
-				-d|--delete)	shift; ini_do_delete "$1"
-						;;
-				-S|--sections)
-					sed -n -e 's,^\[\(.*\)\][ \t]*$,\1,p' "$file"
-					;;
-				-K|--keys)	shift;
-					ini_section_raw "$file" "$1" |
-						sed -n -e 's,^[ \t]*\([^;= ]*\)[ \t]*=.*,\1,p'
-						;;
-			esac
+		-S|--sections)
+			[ -r "$file" ] || echo_abort 1 "${file:-none}: can't read."
+
+			exec sed -n -e 's,^\[\(.*\)\][ \t]*$,\1,p' "$file"
+			;;
+		-K|--keys)
+			[ -r "$file" ] || echo_abort 1 "${file:-none}: can't read."
+
+			ini_section_raw "$file" "$2" |
+				sed -n -e 's,^[ \t]*\([^;= ]*\)[ \t]*=.*,\1,p'
+			exit $?
+			;;
 	esac
 	shift
+done
+
+if [ -z "$file" ]; then
+	echo_abort 1 "no ini file specified."
+elif [ ! -r "$file" ]; then
+	echo_abort 1 "${file}: can't read."
+fi
+
+section= key= value= action=
+
+for item; do
+	# parse 'item'
+	section="${item%%.*}"
+	value="${item#*=}"
+	key="${item#*.}"; key="${key%%=*}"
+
+	[ "$section" != "$key" ] || key=
+
+	# choose an action
+	if [ "$value" == "$item" ]; then
+		if [ -n "$delete" ]; then
+			action='delete'
+		else
+			action='get'
+		fi
+	else
+		action='set'
+	fi
+
+	case "$action" in
+		get)	if [ -n "$key" ]; then
+				# just on key
+				ini_section_raw "$file" "$section" | sed -n \
+					-e "s,^[ \t]*$key[ \t]*=\(.*\),\1,p"
+			else
+				# the entire section, as variables
+				ini_section_raw "$file" "$section" | sed \
+					-e '/^[ \t]*;/d;' -e '/^[ \t]*$/d;' -e 's,",\\",g' -e 's,=\(..*\)$,="\1",'
+			fi ;;
+		set)
+			echo_abort 1 "Not yet implemented";
+			;;
+		delete)
+			echo_abort 1 "Not yet implemented";
+			;;
+	esac
 done
