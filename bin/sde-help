@@ -30,7 +30,12 @@ help_list() {
 	echo "Available Commands:"
 	for command in $SDEROOT/bin/sde-*; do
 		# detect command name
-		id=$( echo "$command" | sed -e 's,.*/sde-,,' )
+		case "$command" in
+			*/sde-*-*)	continue ;;
+			*/sde-*)	id=$( echo "$command" | sed -e 's,.*/sde-,,' )
+					;;
+		esac	
+
 		# optional description
 		desc=$( sed -n -e 's,^#Description: \(.*\)$,\1,p' "$command" )
 		# and valid aliases
@@ -61,6 +66,10 @@ elif [ $# -gt 1 ]; then
 	echo_error "Incorrect Syntax."
 	help_usage
 	exit 1
+elif [ "$1" != "${1%-*}" ]; then
+	# don't accept subcommands
+	echo_error "Incorrect Syntax."
+	help_usage
 elif [ -x "$SDEROOT/bin/sde-$1" ]; then
 	help_command "$1"
 elif grep -q "^#Alias: $1$" $SDEROOT/bin/sde-* 2> /dev/null; then
