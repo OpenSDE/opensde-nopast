@@ -52,18 +52,18 @@ list_arch() {
 
 list_desc_extenders() {
 	local config="$1"
-	local repo= pkg= pattern= confdir=
+	local repo= pkg= pattern= pattern2= confdir=
 	shift
 
 	[ $# -gt 0 ] || return
 
-	if [ -z "$config" ]; then
-		if [ $# -eq 1 ]; then
-			pattern=$1
-		else
-			pattern="{$( echo $* | tr ' ' ',' )}"
-		fi
+	if [ $# -eq 1 ]; then
+		pattern=$1
+	else
+		pattern="{$( echo $* | tr ' ' ',' )}"
+	fi
 
+	if [ -z "$config" ]; then
 		for repo in $( cd "$SDEROOT/package"; ls -1d * 2> /dev/null ); do
 			( cd "$SDEROOT"; eval ls -1d package/$repo/*/pkg_${pattern}_{pre,post}.conf 2> /dev/null | cut -d/ -f-3 | sort -u ) 
 		done | while read confdir; do
@@ -71,7 +71,20 @@ list_desc_extenders() {
 			echo $confdir/$pkg.desc
 		done
 	else
-		echo_abort 1 "Not yet implemented"
+		for repo in $( grep '^X' $SDEROOT/config/$config/packages | cut -d' ' -f4 | sort -u ); do
+			set -- $( grep "^X [^ ]\+ [^ ]\+ $repo " "$SDEROOT/config/$config/packages" | cut -d' ' -f5 )
+
+			if [ $# -eq 1 ]; then
+				pattern2=$1
+			else
+				pattern2="{$( echo $* | tr ' ' ',' )}"
+			fi
+
+			( cd "$SDEROOT"; eval ls -1d package/$repo/${pattern2}//pkg_${pattern}_{pre,post}.conf 2> /dev/null | cut -d/ -f-3 | sort -u )
+		done | while read confdir; do
+			pkg=${confdir##*/}
+			echo $confdir/$pkg.desc
+		done
 	fi
 }
 
