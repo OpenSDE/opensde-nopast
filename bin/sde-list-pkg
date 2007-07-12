@@ -91,7 +91,7 @@ list_desc_repo() {
 }
 
 list_desc() {
-	local config="$1"
+	local config="$1" patterns=
 	local repo= file= pkg= desc=
 	shift;
 
@@ -131,8 +131,24 @@ list_desc() {
 					echo "$desc"
 				fi
 			done
-		else
+		elif [ -z "$repositories" ]; then
 			echo_abort 1 "Not yet implemented"
+		elif [ $# -eq 0 ]; then
+			:
+		else
+			if [ $# -eq 1 ]; then
+				pattern=$1
+			else
+				pattern="\\($( echo $* | sed -e "s/ /\\\\|/g" )\\)"
+			fi
+
+			grep "^X [^ ]\+ [^ ]\+ $pattern" "$SDEROOT/config/$config/packages" | cut -d' ' -f4,5 | while read repo pkg; do
+				desc=package/$repo/$pkg/$pkg.desc
+
+				if [ -f "$SDEROOT/$desc" ]; then
+					echo "$desc"
+				fi
+			done
 		fi
 	else
 		echo_abort -1 "$config: config not found."
