@@ -145,9 +145,7 @@ list_desc() {
 					echo "$desc"
 				fi
 			done
-		elif [ $# -eq 0 ]; then
-			:
-		else
+		elif [ $# -gt 0 ]; then
 			if [ $# -eq 1 ]; then
 				pattern=$1
 			else
@@ -173,7 +171,7 @@ mode=desc
 extenders=
 repositories=
 
-shortopts='a:c:r'
+shortopts='a:c:er'
 longopts='arch:,cfg:,extenders,repositories'
 options=$( getopt -o "$shortopts" -l "$longopts" -- "$@" )
 if [ $? -ne 0 ]; then
@@ -193,7 +191,7 @@ while [ $# -gt 0 ]; do
 
 		-r|--repositories)
 				repositories=yes ;;
-		--extenders)
+		-e|--extenders)
 				extenders=yes ;;
 
 		--)	shift; break ;;
