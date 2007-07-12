@@ -52,7 +52,30 @@ list_arch() {
 }
 
 list_desc() {
-	echo_abort 1 "Not yet implemented"
+	local config="$1" item=
+	local repo= confdir= pkg=
+	shift;
+
+	if [ -z "$config" ]; then
+		if [ $# -eq 0 ]; then
+			# no config, use the whole db
+			for repo in $( cd "$SDEROOT/package"; ls -1d * 2> /dev/null ); do
+				[ -d "$SDEROOT/package/$repo/" ] || continue
+
+				for pkg in $( cd "$SDEROOT/package/$repo/"; ls -1d * 2> /dev/null ); do
+					confdir="package/$repo/$pkg"
+					[ -f "$SDEROOT/$confdir/$pkg.desc" ] || continue
+
+					echo "$confdir/$pkg.desc"
+				done
+			done
+		else
+			# no config, but a given set of packages
+			echo_abort 1 "Not yet implemented"
+		fi
+	elif [ -r "$SDEROOT/config/$config/packages" ]; then
+		echo_abort 1 "Not yet implemented"
+	fi
 }
 
 arch=
@@ -92,6 +115,6 @@ done
 
 case "$mode" in
 	arch)	list_arch "$arch"	;;
-	desc)	list_desc "$config"	;;
+	desc)	list_desc "$config" "$@" ;;
 	*)	list_usage	;;
 esac
