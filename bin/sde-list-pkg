@@ -36,45 +36,95 @@ list_arch() {
 
 	if [ ! -s $SDEROOT/architecture/$arch/archtest.out ]; then
 		echo_error "wrong architecture ($arch) specified, aborting."
-		list_usage
 		return 1
 	fi
 
 	# the .awk file needs complete $SDEROOT relative .desc locations
 	cd $SDEROOT
-	# NOTE: protection again command line overflow
+
 	for repo in package/*; do
 		files=$( ls -1d $repo/*/*.desc 2> /dev/null )
 		if [ -n "$files" ]; then
 			gawk -f ./lib/sde-package/package-list.awk -v "arch=$arch" $files
-		fi		
+		fi
 	done | sort -k 3
 }
 
+list_desc_extenders() {
+	local repo= pkg= pattern= confdir=
+
+	if [ $# -eq 0 ]; then
+		return
+	elif [ $# -eq 1 ]; then
+		pattern=$1
+	else
+		pattern="{$( echo $* | tr ' ' ',' )}"
+	fi
+
+	for repo in $( cd "$SDEROOT/package"; ls -1d * 2> /dev/null ); do
+		( cd "$SDEROOT"; eval ls -1d package/$repo/*/pkg_${pattern}_{pre,post}.conf 2> /dev/null | cut -d/ -f-3 | sort -u ) 
+	done | while read confdir; do
+		pkg=${confdir##*/}
+		echo $confdir/$pkg.desc
+	done
+}
+
+list_desc_repo() {
+	local repo="$1" pkg= desc=
+
+	if [ -d "$SDEROOT/package/$repo/" ]; then
+		set -- $( cd "$SDEROOT/package/$repo/"; ls -1d * 2> /dev/null )
+
+		for pkg; do
+			desc="package/$repo/$pkg/$pkg.desc"
+
+			if [ -f "$SDEROOT/$desc" ]; then
+				echo "$desc"
+			fi
+		done
+
+		if [ -n "$extenders" ]; then
+			# get desc of extenders of those packages
+			list_desc_extenders "$@"
+		fi
+	fi
+}
+
 list_desc() {
-	local config="$1" item=
-	local repo= confdir= pkg=
+	local config="$1"
+	local repo= file= pkg= desc=
 	shift;
 
 	if [ -z "$config" ]; then
 		if [ $# -eq 0 ]; then
 			# no config, use the whole db
 			for repo in $( cd "$SDEROOT/package"; ls -1d * 2> /dev/null ); do
-				[ -d "$SDEROOT/package/$repo/" ] || continue
-
-				for pkg in $( cd "$SDEROOT/package/$repo/"; ls -1d * 2> /dev/null ); do
-					confdir="package/$repo/$pkg"
-					[ -f "$SDEROOT/$confdir/$pkg.desc" ] || continue
-
-					echo "$confdir/$pkg.desc"
-				done
+				extenders= list_desc_repo "$repo"
 			done
-		else
+		elif [ -z "$repositories" ]; then
 			# no config, but a given set of packages
-			echo_abort 1 "Not yet implemented"
+			for pkg; do
+				desc=$( cd "$SDEROOT"; ls -1d package/*/$pkg/$pkg.desc )
+
+				if [ -f "$SDEROOT/$desc" ]; then
+					echo "$desc"
+				fi
+
+			done
+
+			if [ -n "$extenders" ]; then
+				# get desc of extenders of those packages
+				list_desc_extenders "$@"
+			fi
+		else
+			for repo; do
+				list_desc_repo "$repo"
+			done
 		fi
 	elif [ -r "$SDEROOT/config/$config/packages" ]; then
 		echo_abort 1 "Not yet implemented"
+	else
+		echo_abort -1 "$config: config not found."
 	fi
 }
 
