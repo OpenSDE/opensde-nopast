@@ -51,22 +51,28 @@ list_arch() {
 }
 
 list_desc_extenders() {
+	local config="$1"
 	local repo= pkg= pattern= confdir=
+	shift
 
-	if [ $# -eq 0 ]; then
-		return
-	elif [ $# -eq 1 ]; then
-		pattern=$1
+	[ $# -gt 0 ] || return
+
+	if [ -z "$config" ]; then
+		if [ $# -eq 1 ]; then
+			pattern=$1
+		else
+			pattern="{$( echo $* | tr ' ' ',' )}"
+		fi
+
+		for repo in $( cd "$SDEROOT/package"; ls -1d * 2> /dev/null ); do
+			( cd "$SDEROOT"; eval ls -1d package/$repo/*/pkg_${pattern}_{pre,post}.conf 2> /dev/null | cut -d/ -f-3 | sort -u ) 
+		done | while read confdir; do
+			pkg=${confdir##*/}
+			echo $confdir/$pkg.desc
+		done
 	else
-		pattern="{$( echo $* | tr ' ' ',' )}"
+		echo_abort 1 "Not yet implemented"
 	fi
-
-	for repo in $( cd "$SDEROOT/package"; ls -1d * 2> /dev/null ); do
-		( cd "$SDEROOT"; eval ls -1d package/$repo/*/pkg_${pattern}_{pre,post}.conf 2> /dev/null | cut -d/ -f-3 | sort -u ) 
-	done | while read confdir; do
-		pkg=${confdir##*/}
-		echo $confdir/$pkg.desc
-	done
 }
 
 list_desc_repo() {
@@ -85,7 +91,7 @@ list_desc_repo() {
 
 		if [ -n "$extenders" ]; then
 			# get desc of extenders of those packages
-			list_desc_extenders "$@"
+			list_desc_extenders '' "$@"
 		fi
 	fi
 }
@@ -114,7 +120,7 @@ list_desc() {
 
 			if [ -n "$extenders" ]; then
 				# get desc of extenders of those packages
-				list_desc_extenders "$@"
+				list_desc_extenders '' "$@"
 			fi
 		else
 			for repo; do
@@ -145,6 +151,11 @@ list_desc() {
 					echo "$desc"
 				fi
 			done
+
+			if [ -n "$extenders" ]; then
+				# get desc of extenders of those packages
+				list_desc_extenders "$config" "$@"
+			fi
 		elif [ $# -gt 0 ]; then
 			if [ $# -eq 1 ]; then
 				pattern=$1
@@ -159,6 +170,12 @@ list_desc() {
 					echo "$desc"
 				fi
 			done
+
+			if [ -n "$extenders" ]; then
+				# get desc of extenders of those packages
+				list_desc_extenders "$config" $( grep "^X [^ ]\+ [^ ]\+ $pattern " "$SDEROOT/config/$config/packages" |
+					cut -d' ' -f 5 )
+			fi
 		fi
 	else
 		echo_abort -1 "$config: config not found."
