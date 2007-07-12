@@ -49,6 +49,9 @@ OPTIONS FOR DOWNLOAD
 	include the download files of the active extenders on the
 	specified config.
 
+-p,--package::
+	include the package name when listing
+
 -k, --checksum::
 	include the checksum value when listing.
 
