@@ -1,11 +1,11 @@
 .\"     Title: sde-config
 .\"    Author: 
 .\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/10/2007
+.\"      Date: 07/12/2007
 .\"    Manual: 
 .\"    Source: 
 .\"
-.TH "SDE\-CONFIG" "1" "07/10/2007" "" ""
+.TH "SDE\-CONFIG" "1" "07/12/2007" "" ""
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
@@ -24,21 +24,21 @@ TODO (this is the default if none is given)
 .PP
 system, sys
 .RS 4
-Allows to change global sde configuration
+Allows to query or modify global sde configuration parameters.
 .RE
 .SH "OPTIONS FOR \fICONFIG\fR DISCRIMINATOR"
 .PP
-\-q, \-\-oldconfig
+\-n, \-\-non\-interactive
 .RS 4
-Reconfigure an already existant config without interativity with the user.
+Reconfigures an existing config without the interactive configuration application.
 .RE
 .PP
-\-c, \-\-cfg
+\-c, \-\-cfg name
 .RS 4
-Defines the id to use for a given
+Defines the name to be used for a given
 \fIconfig\fR, the name
 \fIdefault\fR
-is used if this option is not given.
+is used if this option is not supplied.
 .RE
 .PP
 \-\-nobashmod
@@ -50,15 +50,25 @@ Don't use the bash config helper plugin
 .RS 4
 Create a config.profile with profiling data
 .RE
+.PP
+\-q, \-\-quiet
+.RS 4
+Feedback will be reduced to an absolute minimum.
+.RE
+.PP
+\-v, \-\-verbose
+.RS 4
+Feedback will be augmented with additional information.
+.RE
 .SH "OPTIONS FOR \fISYSTEM\fR DISCRIMINATOR"
 .PP
-\-g, \-\-get
+\-g, \-\-get key
 .RS 4
 returns the value of a specified
 \fIsection.key\fR
 .RE
 .PP
-\-s, \-\-set
+\-s, \-\-set key=value
 .RS 4
 sets the value of a specified
 \fIsection.key\fR
@@ -66,14 +76,14 @@ sets the value of a specified
 .PP
 \-\-dump
 .RS 4
-dumps the content of the
+dumps the relevant content of the
 \fIsettings\fR
-file.
+file for the current sde instance.
 .RE
 .PP
-\-\-name
+\-\-path
 .RS 4
-dumps the full path to the
+outputs the full path to the
 \fIsettings\fR
 file in use.
 .RE
