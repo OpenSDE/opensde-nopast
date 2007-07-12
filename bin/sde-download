@@ -44,7 +44,6 @@ Usage:
 	
 	Mirrors can also be a local directories in the form of 'file:///<dir>'.
 
-	sde download -mk-cksum Filename(s)
 	sde download [ -list | -list-unknown | -list-missing | -list-cksums ]
 
 	See '-mirror none' output for help on bypassing the official mirrors.
@@ -54,16 +53,6 @@ EOT
 umask 022
 
 cd "$SDEROOT"
-
-# -mk-cksum mode (display OpenSDE type package checksum): it
-# displays the checksum OpenSDE validates against.
-#
-# Currently bz2, tbz2, gz, tgz, Z are unpacked
-#
-if [ "$1" = -mk-cksum ] ; then
-	shift
-	exec sh ./lib/sde-download/cksum.sh "$@"
-fi
 
 # Handle options passed on the command line
 #
