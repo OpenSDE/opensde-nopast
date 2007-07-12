@@ -13,8 +13,6 @@
 # GNU General Public License can be found in the file COPYING.
 # --- SDE-COPYRIGHT-NOTE-END ---
 
-set -e
-
 [ -n "$SDEROOT" ] ||
 	export SDEROOT=$( cd "${0%/*}/.."; pwd -P )
 

@@ -13,8 +13,6 @@
 # GNU General Public License can be found in the file COPYING.
 # --- SDE-COPYRIGHT-NOTE-END ---
 
-set -e
-
 [ -n "$SDEROOT" ] ||
 	export SDEROOT=$( cd "${0%/*}/.."; pwd -P )
 
@@ -37,5 +35,29 @@ fi
 
 # load new arguments list
 eval set -- "$options"
+
+config=
+extenders=
+repositories=
+checksum=
+location=
+
+while [ $# -gt 0 ]; do
+	case "$1" in
+		--)		shift; break ;;
+
+		-c|--cfg)	shift; config="$1" ;;
+
+		-e|--extenders)
+			extenders=yes ;;
+		-r|--repositories)
+			repositories=yes ;;
+		-k|--checksum)
+			checksum=yes ;;
+		-l|--location)
+			location=yes ;;
+	esac
+	shift
+done
 
 echo_abort 1 "Not yet implemented"
