@@ -46,34 +46,3 @@ unlock() {
 	rm "$1.lock"
 }
 
-# INI format functions
-# NOTE: if you want to write, source libsde-ini.in too.
-
-# dumps the raw content of a section
-# USAGE: ini_section_raw "file" "section"
-#
-ini_section_raw() {
-	gawk "BEGIN { show=0; }
-	/^\[/ {
-		if ( \$0 ~ /^\[$2\][ \t]*\$/ )
-			show=1;
-		else
-			show=0;
-		}
-	/^[^\[]/ { if ( show ) print; }" "$1"
-}
-
-# dumps the content of a section assuming variables are defined in there
-# USAGE: ini_section_read "file" "section"
-#
-ini_section_read() {
-	ini_section_raw "$1" "$2" | sed -e '/^[ \t]*#/d;' -e '/^[ \t]*$/d;' -e 's,",\\",g' -e 's,=\(..*\)$,="\1",'
-}
-
-# list the available sections on a file
-# USAGE: ini_section_list "file"
-#
-ini_section_list() {
-	sed -n -e 's,^\[\(.*\)\][ \t]*$,\1,p' "$1"
-}
-
