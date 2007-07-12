@@ -132,7 +132,19 @@ list_desc() {
 				fi
 			done
 		elif [ -z "$repositories" ]; then
-			echo_abort 1 "Not yet implemented"
+			if [ $# -eq 1 ]; then
+				pattern=$1
+			else
+				pattern="\\($( echo $* | sed -e "s/ /\\\\|/g" )\\)"
+			fi
+
+			grep "^X [^ ]\+ [^ ]\+ [^ ]\+ $pattern " "$SDEROOT/config/$config/packages" | cut -d' ' -f4,5 | while read repo pkg; do
+				desc=package/$repo/$pkg/$pkg.desc
+
+				if [ -f "$SDEROOT/$desc" ]; then
+					echo "$desc"
+				fi
+			done
 		elif [ $# -eq 0 ]; then
 			:
 		else
@@ -142,7 +154,7 @@ list_desc() {
 				pattern="\\($( echo $* | sed -e "s/ /\\\\|/g" )\\)"
 			fi
 
-			grep "^X [^ ]\+ [^ ]\+ $pattern" "$SDEROOT/config/$config/packages" | cut -d' ' -f4,5 | while read repo pkg; do
+			grep "^X [^ ]\+ [^ ]\+ $pattern " "$SDEROOT/config/$config/packages" | cut -d' ' -f4,5 | while read repo pkg; do
 				desc=package/$repo/$pkg/$pkg.desc
 
 				if [ -f "$SDEROOT/$desc" ]; then
