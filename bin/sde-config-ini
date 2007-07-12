@@ -34,16 +34,24 @@ EOT
 }
 
 # splits an .ini file in three parts:
-# * before the section ($tmpname.1)
-# * the section ($tmpname.2)
-# * after the section ($tmpname.3)
+# * before the section ($tmpname.0)
+# * the section ($tmpname.1)
+# * after the section ($tmpname.2)
 #
 # USAGE: ini_split "file" "section" "tmpname"
 #
 ini_split() {
 	local file="$1" section="$2" tmpname="$3"
 
-	rm -rf $tmpfile.{0,1,2}
+	rm -rf $tmpname.{0,1,2}
+
+	if [ ! -e "$file" ]; then
+		# create the file if it's not there
+		touch "$file" || echo_abort 1 "$file: can't write."
+	fi
+
+	[ -f "$file" -a -w "$file" ] || echo_abort 1 "$file: can't write."
+
 	gawk "BEGIN { level=0; }
 	/^\[/ {
 		if ( level == 0 && \$0 ~ /^\[$section\][ \t]*\$/ )
@@ -51,8 +59,35 @@ ini_split() {
 		else if ( level == 1 )
 			level=2;
 	}
-	{ print > \"$tmpfile.\" level }
+	{ print > \"$tmpname.\" level }
 	" "$file"
+
+	# clean empty lines on the section to alter
+	[ ! -s "$tmpname.1" ] || sed -i -e "/^[ \t]*$/d;" "$tmpname.1"
+
+}
+
+# merge a previously split .ini file
+# USAGE: ini_merge "file" "section" "tmpname"
+#
+ini_merge() {
+	local file="$1" tmpname="$2"
+	local x=
+
+	# new empty line at the end of the section, if there is a next
+	if [ -s "$tmpname.1" -a -s "$tmpname.2" ]; then
+		echo >> "$tmpname.1"
+	fi
+
+	for x in 0 1 2; do
+		echo "merge: $tmpname.$x" >&2
+		if [ -s $tmpname.$x ]; then
+			cat $tmpname.$x
+			cat $tmpname.$x >&2
+		fi
+	done > "$file"
+
+	rm -rf $tmpname.{0,1,2}
 }
 
 # dumps the raw content of a section
@@ -67,65 +102,6 @@ ini_section_raw() {
 			show=0;
 		}
 	/^[^\[]/ { if ( show ) print; }" "$1"
-}
-
-# this file has to be sourced only by tools which really want to
-# write ini formated files. reading methods are available at libsde.in
-
-# writes a list of variables into a section of an ini file
-# USAGE: ini_write "file" "section" var1 var2 var3 ...
-#
-ini_write() {
-	local file="$1" section="$2" var= c=
-	local tmpfile=
-	shift 2
-
-	# something to write?
-	[ $# -gt 0 ] || return
-
-	# make sure the file exists
-	[ -f "$file" ] || touch "$file"
-	tmpfile="$file.$$"
-
-	# FIXME: a lock may be needed
-	if grep -q "^\[$section\][ \t]*$" "$file"; then
-		# known section
-		#
-
-		# split the file
-		ini_split_section "$file" "$section" "$tmpfile"
-
-		# remove empty lines
-		sed -i -e '/^[ \t]*$/d;' $tmpfile.1
-
-		# edit the section
-		for var; do
-			if grep -q "^$var=" $tmpfile.1; then
-				sed -i -e "s|^$var=.*|$var=$( eval echo \$$var )|" $tmpfile.1
-			else
-				echo "$var=$( eval echo \$$var )" >> $tmpfile.1
-			fi
-		done
-
-		# and finally write the new file!
-		(
-		cat $tmpfile.0
-		cat $tmpfile.1
-		if [ -s $tmpfile.2 ]; then
-			echo
-			cat $tmpfile.2
-		fi
-		) > "$file"
-
-		rm -rf $tmpfile.{0,1,2}
-	else
-		# new section
-		#
-		echo -e "\n[$section]" >> "$file"
-		for var; do
-			echo "$var=$( eval echo \$$var )"
-		done >> "$file"
-	fi
 }
 
 shortopts='F:SK:'
@@ -171,10 +147,10 @@ done
 
 if [ -z "$file" ]; then
 	echo_abort 1 "no ini file specified."
-elif [ ! -r "$file" ]; then
-	echo_abort 1 "${file}: can't read."
 fi
 
+oldsection=
+tmpfile="$file.$$"
 section= key= value= action=
 
 for item; do
@@ -197,7 +173,9 @@ for item; do
 	fi
 
 	case "$action" in
-		get)	if [ -n "$key" ]; then
+		get)	[ -r "$file" ] || echo_abort 1 "${file:-none}: can't read."
+
+			if [ -n "$key" ]; then
 				# just on key
 				ini_section_raw "$file" "$section" | sed -n \
 					-e "s,^[ \t]*$key[ \t]*=\(.*\),\1,p"
@@ -207,10 +185,51 @@ for item; do
 					-e '/^[ \t]*;/d;' -e '/^[ \t]*$/d;' -e 's,",\\",g' -e 's,=\(..*\)$,="\1",'
 			fi ;;
 		set)
-			echo_abort 1 "Not yet implemented";
+			if [ -n "$oldsection" -a "$oldsection" != "$section" ]; then
+				# close previous split
+				ini_merge "$file" "$tmpfile"
+				oldsection=
+			fi
+
+			if [ -z "$oldsection" ]; then
+				# split before mangling
+				ini_split "$file" "$section" "$tmpfile"
+				oldsection="$section"
+			fi
+
+			if [ ! -s "$tmpfile.1" ]; then
+				# new section
+				if [ -s "$tmpfile.0" ]; then
+					# empty line at the end of the last section
+					echo >> "$tmpfile.0"
+				fi
+				echo -e "[$section]" >> "$tmpfile.1"
+			fi
+
+			if grep -q "^[ \t]*$key[ \t]*=" $tmpfile.1; then
+				sed -i -e "s|^[ \t]*$key[ \t]*=.*|$key=$value|" $tmpfile.1
+			else
+				echo "$key=$value" >> $tmpfile.1
+			fi
 			;;
 		delete)
+			if [ -n "$oldsection" -a "$oldsection" != "$section" ]; then
+				# close previous split
+				ini_merge "$file" "$tmpfile"
+				oldsection=
+			fi
+
+			if [ -z "$oldsection" ]; then
+				# split before mangling
+				ini_split "$file" "$section" "$tmpfile"
+				oldsection="$section"
+			fi
+
 			echo_abort 1 "Not yet implemented";
 			;;
 	esac
 done
+
+if [ -n "$oldsection" ]; then
+	ini_merge "$file" "$tmpfile"
+fi
