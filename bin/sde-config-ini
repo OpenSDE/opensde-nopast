@@ -80,10 +80,8 @@ ini_merge() {
 	fi
 
 	for x in 0 1 2; do
-		echo "merge: $tmpname.$x" >&2
 		if [ -s $tmpname.$x ]; then
 			cat $tmpname.$x
-			cat $tmpname.$x >&2
 		fi
 	done > "$file"
 
@@ -207,9 +205,9 @@ for item; do
 			fi
 
 			if grep -q "^[ \t]*$key[ \t]*=" $tmpfile.1; then
-				sed -i -e "s|^[ \t]*$key[ \t]*=.*|$key=$value|" $tmpfile.1
+				sed -i -e "s|^[ \t]*$key[ \t]*=.*|$key=$value|" "$tmpfile.1"
 			else
-				echo "$key=$value" >> $tmpfile.1
+				echo "$key=$value" >> "$tmpfile.1"
 			fi
 			;;
 		delete)
@@ -225,7 +223,14 @@ for item; do
 				oldsection="$section"
 			fi
 
-			echo_abort 1 "Not yet implemented";
+			if [ -n "$key" ]; then
+				# just on key
+				grep -v "^[ \t]*$key[ \t]*=" "$tmpfile.1" > "$tmpfile.1+"
+				mv -f "$tmpfile.1+" "$tmpfile.1"
+			else
+				# the entire section
+				echo "[$section]" > "$tmpfile.1"
+			fi
 			;;
 	esac
 done
