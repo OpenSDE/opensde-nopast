@@ -122,7 +122,18 @@ list_desc() {
 			done
 		fi
 	elif [ -r "$SDEROOT/config/$config/packages" ]; then
-		echo_abort 1 "Not yet implemented"
+		if [ $# -eq 0 ]; then
+			# every active package
+			grep '^X' config/xfce/packages | cut -d' ' -f4,5 | while read repo pkg; do
+				desc=package/$repo/$pkg/$pkg.desc
+
+				if [ -f "$SDEROOT/$desc" ]; then
+					echo "$desc"
+				fi
+			done
+		else
+			echo_abort 1 "Not yet implemented"
+		fi
 	else
 		echo_abort -1 "$config: config not found."
 	fi
