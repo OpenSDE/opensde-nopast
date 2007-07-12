@@ -33,7 +33,7 @@ OPTIONS FOR PACKAGES
 -r, --repositories::
 	the given list is a list of repositories, not packages.
 
---extenders::
+-e, --extenders::
 	include the packages which extend the given items.
 
 OPTIONS FOR DOWNLOAD
@@ -45,13 +45,13 @@ OPTIONS FOR DOWNLOAD
 -r, --repositories::
 	the given list is a list of repositories, not packages.
 
---extenders::
+-e, --extenders::
 	include the download files of the active extenders on the
 	specified config.
 
---checksum::
+-k, --checksum::
 	include the checksum value when listing.
 
---location::
+-l, --location::
 	include the download location when listing.
 

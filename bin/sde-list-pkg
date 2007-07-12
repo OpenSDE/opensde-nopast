@@ -13,8 +13,6 @@
 # GNU General Public License can be found in the file COPYING.
 # --- SDE-COPYRIGHT-NOTE-END ---
 
-#Description: generate lists needed by other commands
-
 set -e
 
 [ -n "$SDEROOT" ] ||
