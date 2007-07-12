@@ -8,7 +8,7 @@ sde-list - produce lists needed by other commands
 
 SYNOPSIS
 --------
-'sde list' [DISCRIMINATOR] [OPTIONS]
+'sde list' [DISCRIMINATOR] [OPTIONS] [ITEMS...]
 
 DISCRIMINATORS
 --------------
@@ -24,10 +24,17 @@ OPTIONS FOR PACKAGES
 --------------------
 
 -a, --arch::
-	list the packages available for the specified architecture
+	list the packages available for the specified architecture, ignoring
+	the given items and other options.
 
 -c, --cfg::
-	list the packages active for the specified config
+	use an specified config to see the active packages, instead of all of them.
+
+-r, --repositories::
+	the given list is a list of repositories, not packages.
+
+--extenders::
+	include the packages which extend the given items.
 
 OPTIONS FOR DOWNLOAD
 --------------------
@@ -38,8 +45,8 @@ OPTIONS FOR DOWNLOAD
 -r, --repositories::
 	the given list is a list of repositories, not packages.
 
---dependencies::
-	include the download files of the active dependencies on the
+--extenders::
+	include the download files of the active extenders on the
 	specified config.
 
 --checksum::

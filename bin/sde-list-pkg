@@ -22,18 +22,18 @@ set -e
 
 . $SDEROOT/lib/libsde.in
 
-
 list_usage() {
 	local progname=${0##*/}
 	cat <<EOT
 Usage:	$progname [--arch <arch>]
-	$progname [--cfg <config>]
+	$progname [--cfg <config>] [--extenders] [--repositories] [ITEMS...]
 EOT
 }
 
 list_arch() {
 	local repo= arch="$1"
 	local files=
+
 	if [ ! -s $SDEROOT/architecture/$arch/archtest.out ]; then
 		echo_error "wrong architecture ($arch) specified, aborting."
 		list_usage
@@ -57,10 +57,12 @@ list_desc() {
 
 arch=
 config=
-mode=
+mode=desc
+extenders=
+repositories=
 
-shortopts=a:c:
-longopts=arch:,cfg:
+shortopts='a:c:r'
+longopts='arch:,cfg:,extenders,repositories'
 options=$( getopt -o "$shortopts" -l "$longopts" -- "$@" )
 if [ $? -ne 0 ]; then
 	list_usage
@@ -75,8 +77,13 @@ while [ $# -gt 0 ]; do
 	case "$1" in
 		-a|--arch)	mode=arch
 				arch="$2"; shift ;;
-		-c|--cfg)	mode=desc
-				config="$2"; shift ;;
+		-c|--cfg)	config="$2"; shift ;;
+
+		-r|--repositories)
+				repositories=yes ;;
+		--extenders)
+				extenders=yes ;;
+
 		--)	shift; break ;;
 		*)	echo_abort 1 "Unknown argument '$1', aborting."
 	esac

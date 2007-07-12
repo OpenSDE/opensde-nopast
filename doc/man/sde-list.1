@@ -1,11 +1,11 @@
 .\"     Title: sde-list
 .\"    Author: 
 .\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/11/2007
+.\"      Date: 07/12/2007
 .\"    Manual: 
 .\"    Source: 
 .\"
-.TH "SDE\-LIST" "1" "07/11/2007" "" ""
+.TH "SDE\-LIST" "1" "07/12/2007" "" ""
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
@@ -13,7 +13,7 @@
 .SH "NAME"
 sde\-list \- produce lists needed by other commands
 .SH "SYNOPSIS"
-\fIsde list\fR [DISCRIMINATOR] [OPTIONS]
+\fIsde list\fR [DISCRIMINATOR] [OPTIONS] [ITEMS\]
 .sp
 .SH "DISCRIMINATORS"
 .PP
@@ -30,12 +30,22 @@ downloadable files of a list of packages, or all if no package is given
 .PP
 \-a, \-\-arch
 .RS 4
-list the packages available for the specified architecture
+list the packages available for the specified architecture, ignoring the given items and other options.
 .RE
 .PP
 \-c, \-\-cfg
 .RS 4
-list the packages active for the specified config
+use an specified config to see the active packages, instead of all of them.
+.RE
+.PP
+\-r, \-\-repositories
+.RS 4
+the given list is a list of repositories, not packages.
+.RE
+.PP
+\-\-extenders
+.RS 4
+include the packages which extend the given items.
 .RE
 .SH "OPTIONS FOR DOWNLOAD"
 .PP
@@ -49,9 +59,9 @@ list the download files needed for a given config.
 the given list is a list of repositories, not packages.
 .RE
 .PP
-\-\-dependencies
+\-\-extenders
 .RS 4
-include the download files of the active dependencies on the specified config.
+include the download files of the active extenders on the specified config.
 .RE
 .PP
 \-\-checksum
