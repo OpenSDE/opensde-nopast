@@ -80,7 +80,7 @@ list_desc_extenders() {
 				pattern2="{$( echo $* | tr ' ' ',' )}"
 			fi
 
-			( cd "$SDEROOT"; eval ls -1d package/$repo/${pattern2}//pkg_${pattern}_{pre,post}.conf 2> /dev/null | cut -d/ -f-3 | sort -u )
+			( cd "$SDEROOT"; eval ls -1d package/$repo/${pattern2}/pkg_${pattern}_{pre,post}.conf 2> /dev/null | cut -d/ -f-3 | sort -u )
 		done | while read confdir; do
 			pkg=${confdir##*/}
 			echo $confdir/$pkg.desc
