@@ -24,7 +24,6 @@ set -e
 	export SDEROOT=$( cd "${0%/*}/.."; pwd -P )
 
 . $SDEROOT/lib/libsde.in
-. $SDEROOT/lib/libsde-ini.in	# to write
 . $SDEROOT/lib/functions.in
 
 download_usage() {
@@ -75,17 +74,8 @@ mkdir -p tmp/ download/
 config=default mirror= altdir= proxy= proxyauth=
 
 if [ -s "$SDESETTINGS" ]; then
-	eval $( ini_section_read "$SDESETTINGS" download )
-	eval $( ini_section_read "$SDESETTINGS" download-$sdever )
-elif [ -s "$HOME/.sde/download" ]; then
-	# import old $HOME/.sde/download
-	. "$HOME/.sde/download"
-	ini_write "$SDESETTINGS" 'download' altdir
-fi
-
-# deprecation of $HOME/.sde/download
-if [ -f "$HOME/.sde/download" ]; then
-	echo_warning "\$HOME/.sde/download is deprecated." 1>&2
+	eval $( $SDEROOT/bin/sde-config-ini -F "$SDESETTINGS" download )
+	eval $( $SDEROOT/bin/sde-config-ini -F "$SDESETTINGS" download-$sdever )
 fi
 
 this_is_the_2nd_run=0
@@ -133,7 +123,7 @@ while [ $# -gt 0 ]; do
 		else
 			options="$options -mirror $2"
 			mirror="$2"
-			ini_write "$SDESETTINGS" download-$sdever mirror
+			$SDEROOT/bin/sde-config-ini -F "$SDESETTINGS" "download-$sdever.mirror=$mirror"
 		fi
 		shift ;;
 
@@ -223,9 +213,12 @@ detect_mirror() {
 	fi 2>&1 | echo_info
 
 	# read new mirror info
-	eval $( ini_section_read "$SDESETTINGS" download-$sdever )
+	mirror=
+	eval $( $SDEROOT/bin/sde-config-ini -F "$SDESETTINGS" download-$sdever )
 
-	if [ "$mirror" == "broken" ]; then
+	if [ -z "$mirror" ]; then
+		echo_error "Mirror detection loop hit a bug!"
+	elif [ "$mirror" == "broken" ]; then
 		echo_warning "No Mirror Found!"
 	else
 		echo_info "Using mirror <$mirror>."
