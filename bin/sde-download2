@@ -13,7 +13,6 @@
 # GNU General Public License can be found in the file COPYING.
 # --- SDE-COPYRIGHT-NOTE-END ---
 
-
 #Description: Download sources
 
 [ -n "$SDEROOT" ] ||
@@ -131,7 +130,16 @@ while [ $# -gt 0 ]; do
 	shift
 done
 
-set -e
+# constants to pass to sde-download-get
+downloadgetopt=
+if [ $verbose -gt 1 ]; then
+	downloadgetopt='-v'
+elif [ $verbose -le 0 ]; then
+	downloadgetopt='-q'
+fi
+if [ -n "$dryrun" ]; then
+	downloadgetopt="$downloadgetopt --dry-run"
+fi
 
 case "$discriminator" in
 	package)
@@ -150,7 +158,19 @@ case "$discriminator" in
 		done
 		;;
 esac | while read pkg cksum file location; do
-	# TODO: download these files
-	echo "pkg:$pkg, cksum:$cksum, file:$cksum, location:$location"
+	# temporal download location
+	tmpfile="$SDEROOT/tmp/down.$( echo $file | tr '/' '-' )"
+
+	# debug output
+	[ $verbose -le 1 ] || echo_info "pkg:$pkg file:$file ($cksum) source:$location"
+
+	if [ -e "$tmpfile.lock" ]; then
+		echo_warning "$file: skipping."
+	else
+		"$SDEROOT"/bin/sde-download-get $downloadgetopt -- "$tmpfile" "$location"
+		if [ $? -ne 0 ]; then
+			echo_warning "$file: failed to download"
+		fi
+	fi
 done
 
