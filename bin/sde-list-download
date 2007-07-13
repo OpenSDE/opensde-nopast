@@ -25,8 +25,8 @@ Usage:	$progname [--cfg <config>] [-erkl] [ITEMS...]
 EOT
 }
 
-shortopts='c:erkl'
-longopts='cfg:,extenders,repositories,checksum,location'
+shortopts='c:erpkl'
+longopts='cfg:,extenders,repositories,package,checksum,location'
 options=$( getopt -o "$shortopts" -l "$longopts" -- "$@" )
 if [ $? -ne 0 ]; then
 	list_usage
@@ -39,8 +39,10 @@ eval set -- "$options"
 config=
 extenders=
 repositories=
-checksum=
-location=
+
+want_package=
+want_checksum=
+want_location=
 
 while [ $# -gt 0 ]; do
 	case "$1" in
@@ -52,12 +54,46 @@ while [ $# -gt 0 ]; do
 			extenders=yes ;;
 		-r|--repositories)
 			repositories=yes ;;
-		-k|--checksum)
-			checksum=yes ;;
-		-l|--location)
-			location=yes ;;
+
+		-p|--package)	want_package=yes ;;
+		-k|--checksum) 	want_checksum=yes ;;
+		-l|--location)	want_location=yes ;;
 	esac
 	shift
 done
 
-echo_abort 1 "Not yet implemented"
+# TODO: target/$target/download.txt
+
+$SDEROOT/bin/sde-list-pkg ${config:+-c $config} ${extenders:+-e} ${repositories:+-r} -- "$@" | while read descfile; do
+	pkg=$( echo "$descfile" | cut -d/ -f3 )
+	grep '^\[D\]' $descfile | while read x cksum gzfile location; do
+		output=
+
+		if [ "$location" != "${location#-}" ]; then
+			mirror=local
+			location="${location#-}"
+		else
+			mirror=mirror
+		fi
+
+		if [ "$location" != "${location#!}" ]; then
+			# keep untouched
+			source="${location#!}"
+		elif [ "$location" == "${location% *}" -a "$location" != "${location%/}" ]; then
+			# no spaces, and trailing '/', append gzfile
+			source="${location}${gzfile}"
+		else
+			source="$location"
+		fi
+
+		bz2file=$( echo "$gzfile" | sed -e 's,\.\(t\?\)\(gz\|Z\)$,.\1bz2,' -e 's,\.gpg$,,' -e 's,\.tar$,.tar.bz2,' )
+		target=download/$mirror/${bz2file:0:1}/$bz2file
+
+		[ -z "$want_package" ] || output="$pkg"
+		[ -z "$want_checksum" ] || output="${output:+$output\t}$cksum"
+		output="${output:+$output\t}$target"
+		[ -z "$want_location" ] || output="${output:+$output\t}$source"
+
+		echo -e "$output"
+	done
+done
