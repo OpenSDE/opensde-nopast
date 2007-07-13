@@ -44,7 +44,7 @@ Usage:
 	
 	Mirrors can also be a local directories in the form of 'file:///<dir>'.
 
-	sde download [ -list | -list-unknown | -list-missing | -list-cksums ]
+	sde download [ -list | -list-missing | -list-cksums ]
 
 	See '-mirror none' output for help on bypassing the official mirrors.
 EOT
@@ -641,20 +641,6 @@ list() {
 	trap INT
 }
 
-list_unknown() {
-	trap '' INT
-	mkdir -p tmp/ ; list | bz2filename > tmp/down.$$.lst
-	ls download/{Proxy,Proxy-auth,Me,Mirror} \
-	   download/mirror/{README,DOWNTEST,LAST-UPDATE} \
-						>> tmp/down.$$.lst 2> /dev/null
-	find download/* -type f -o -type l 2> /dev/null |
-	while read fn ; do
-		grep -qx "$fn" tmp/down.$$.lst || echo "Unknown file: $fn"
-	done
-	rm -f tmp/down.$$.lst
-	trap INT
-}
-
 list_missing() {
 	trap '' INT
 	list | bz2filename | \
@@ -805,7 +791,6 @@ fi
 
 case "$1" in
 	-list)		list ;;
-	-list-unknown)	list_unknown ;;
 	-list-missing)	list_missing ;;
 	-list-cksums)	list_cksums ;;
 
