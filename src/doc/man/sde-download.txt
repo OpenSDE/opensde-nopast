@@ -41,6 +41,9 @@ OPTIONS
 	No real download is performed but the list of missing files is
 	output.
 
+-c, --cfg::
+	Specify a config to restrict 'package' and 'repository' discriminators.
+
 --timeout::
 	Defines how tolerat to download delay are we. The default value
 	is 'normal', but you can choose between 'no' and 'long' too.
