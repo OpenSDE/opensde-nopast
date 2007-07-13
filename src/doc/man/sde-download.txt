@@ -10,6 +10,11 @@ SYNOPSIS
 --------
 'sde download' [DISCRIMINATOR] [OPTIONS] [ITEMS...]
 
+DESCRIPTION
+-----------
+sde-download downloads one or more packages indicated or belonging to the
+specified name (items). Multiple items can be specified.
+
 DISCRIMINATORS
 --------------
 
@@ -31,9 +36,6 @@ OPTIONS
 
 -v, --verbose::
 	Gives extra feedback.
-
--a, --all::
-	Downloads every package independently of the specified items.
 
 -d, --dry-run::
 	No real download is performed but the list of missing files is
@@ -65,9 +67,3 @@ OPTIONS
 -m, --move::
 	When the file is found on the alternative location the tool will
 	'move' it instead of doing a hardlink.
-
-DESCRIPTION
------------
-sde-download downloads one or more packages indicated or belonging to the
-specified name (items). Multiple items can be specified.
-

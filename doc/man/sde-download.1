@@ -1,11 +1,11 @@
 .\"     Title: sde-download
 .\"    Author: 
 .\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/10/2007
+.\"      Date: 07/13/2007
 .\"    Manual: 
 .\"    Source: 
 .\"
-.TH "SDE\-DOWNLOAD" "1" "07/10/2007" "" ""
+.TH "SDE\-DOWNLOAD" "1" "07/13/2007" "" ""
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
@@ -14,6 +14,9 @@
 sde\-download \- Downloads stuff
 .SH "SYNOPSIS"
 \fIsde download\fR [DISCRIMINATOR] [OPTIONS] [ITEMS\]
+.sp
+.SH "DESCRIPTION"
+sde\-download downloads one or more packages indicated or belonging to the specified name (items). Multiple items can be specified.
 .sp
 .SH "DISCRIMINATORS"
 .PP
@@ -41,11 +44,6 @@ Gives minimal feedback.
 \-v, \-\-verbose
 .RS 4
 Gives extra feedback.
-.RE
-.PP
-\-a, \-\-all
-.RS 4
-Downloads every package independently of the specified items.
 .RE
 .PP
 \-d, \-\-dry\-run
@@ -99,6 +97,3 @@ When the file is found on the alternative location the tool will
 \fImove\fR
 it instead of doing a hardlink.
 .RE
-.SH "DESCRIPTION"
-sde\-download downloads one or more packages indicated or belonging to the specified name (items). Multiple items can be specified.
-.sp
