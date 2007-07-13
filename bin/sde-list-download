@@ -69,6 +69,14 @@ $SDEROOT/bin/sde-list-pkg ${config:+-c $config} ${extenders:+-e} ${repositories:
 	grep '^\[D\]' $descfile | while read x cksum gzfile location; do
 		output=
 
+		# package name
+		[ -z "$want_package" ] || output="$pkg"
+
+		# checksum
+		[ -z "$want_checksum" ] || output="${output:+$output\t}$cksum"
+
+		# destination file
+
 		if [ "$location" != "${location#-}" ]; then
 			mirror=local
 			location="${location#-}"
@@ -76,23 +84,22 @@ $SDEROOT/bin/sde-list-pkg ${config:+-c $config} ${extenders:+-e} ${repositories:
 			mirror=mirror
 		fi
 
-		if [ "$location" != "${location#!}" ]; then
-			# keep untouched
-			source="${location#!}"
-		elif [ "$location" == "${location% *}" -a "$location" != "${location%/}" ]; then
-			# no spaces, and trailing '/', append gzfile
-			source="${location}${gzfile}"
-		else
-			source="$location"
-		fi
-
 		bz2file=$( echo "$gzfile" | sed -e 's,\.\(t\?\)\(gz\|Z\)$,.\1bz2,' -e 's,\.gpg$,,' -e 's,\.tar$,.tar.bz2,' )
-		target=download/$mirror/${bz2file:0:1}/$bz2file
+		output="${output:+$output\t}download/$mirror/${bz2file:0:1}/$bz2file"
 
-		[ -z "$want_package" ] || output="$pkg"
-		[ -z "$want_checksum" ] || output="${output:+$output\t}$cksum"
-		output="${output:+$output\t}$target"
-		[ -z "$want_location" ] || output="${output:+$output\t}$source"
+		# source location
+		if [ -n "$want_location" ]; then
+			if [ "$location" != "${location#!}" ]; then
+				# keep untouched
+				source="${location#!}"
+			elif [ "$location" == "${location% *}" -a "$location" != "${location%/}" ]; then
+				# no spaces, and trailing '/', append gzfile
+				source="${location}${gzfile}"
+			else
+				source="$location"
+			fi
+			output="$output\t$source"
+		fi
 
 		echo -e "$output"
 	done
