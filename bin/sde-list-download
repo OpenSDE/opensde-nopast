@@ -84,7 +84,7 @@ $SDEROOT/bin/sde-list-pkg ${config:+-c $config} ${extenders:+-e} ${repositories:
 			mirror=mirror
 		fi
 
-		bz2file=$( echo "$gzfile" | sed -e 's,\.\(t\?\)\(gz\|Z\)$,.\1bz2,' -e 's,\.gpg$,,' -e 's,\.tar$,.tar.bz2,' )
+		bz2file=$( echo "$gzfile" | sed -e 's,\.gpg$,,' -e 's,\.\(t\?\)\(gz\|Z\)$,.\1bz2,' -e 's,\.tar$,.tar.bz2,' )
 		output="${output:+$output\t}download/$mirror/${bz2file:0:1}/$bz2file"
 
 		# source location
