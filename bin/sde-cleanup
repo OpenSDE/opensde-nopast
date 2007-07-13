@@ -58,11 +58,7 @@ done
 #
 if [ $downclean -eq 1 ]; then
 	echo "Searching for obsolete downloads (this may take some time) ..."
-	$SDEROOT/bin/sde-download -list-unknown | cut -d ' ' -f 3 |
-	while read fn; do
-		[ "$fn" ] && rm -v "$fn"
-	done
-	exit
+	$SDEROOT/bin/sde-cleanup-download
 fi
 
 # Remove src.*
