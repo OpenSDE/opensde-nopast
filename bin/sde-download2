@@ -45,7 +45,7 @@ if [ $# -gt 0 ]; then
 		package|pkg)
 			discriminator=package; shift ;;
 		repository|repo)
-			discriminator=repository: shift ;;
+			discriminator=repository; shift ;;
 		*)
 			echo_error "$1: invalid discriminator"
 			download_usage
@@ -53,8 +53,8 @@ if [ $# -gt 0 ]; then
 	esac
 fi
 
-shortopts='dqvm:e'
-longopts='dry-run,quiet,verbose,timeout:,check:,mirror:,mode:,extenders'
+shortopts='dqvc:m:e'
+longopts='dry-run,quiet,verbose,cfg,timeout:,cfg,check:,mirror:,mode:,extenders'
 options=$( getopt -o "$shortopts" -l "$longopts" -- "$@" )
 
 if [ $? -ne 0 ]; then
@@ -72,9 +72,12 @@ check=always
 mirror=
 mode=hardlink
 extenders=
+config=
 
 while [ $# -gt 0 ]; do
 	case "$1" in
+		--)	shift; break ;;
+
 		-d|--dry-run)
 			dryrun=yes ;;
 		-e|--extenders)
@@ -120,11 +123,34 @@ while [ $# -gt 0 ]; do
 					echo_abort 1 "$1: invalid altdir mode [hardlink*|copy|move]"
 					;;
 			esac ;;
+		-c|--cfg)
+			shift
+			config=${1:-default}
+			;;
 	esac
 	shift
 done
 
-echo_abort 1 "$discriminator: Not yet implemented"
-
 set -e
+
+case "$discriminator" in
+	package)
+		$SDEROOT/bin/sde-list-download ${config:+--cfg $config} ${extenders:+--extenders} -pkl -- "$@"
+		;;
+	repository)
+		$SDEROOT/bin/sde-list-download ${config:+--cfg $config} ${extenders:+--extenders} -rpkl -- "$@"
+		;;
+	config)
+		[ -z "$config" ] || set -- "$config" "$@"
+
+		[ $# -gt 0 ] || set -- default
+
+		for config; do
+			$SDEROOT/bin/sde-list-download --cfg "$config" -pkl
+		done
+		;;
+esac | while read pkg cksum file location; do
+	# TODO: download these files
+	echo "pkg:$pkg, cksum:$cksum, file:$cksum, location:$location"
+done
 
