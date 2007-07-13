@@ -18,17 +18,60 @@
 
 . $SDEROOT/lib/libsde.in
 
+cleanup_usage() {
+	local progname=${0##*/}
+	cat <<EOT
+Usage:	$progname [--dry-run]
+EOT
+}
+
+shortopts='d'
+longopts='dry-run'
+options=$( getopt -o "$shortopts" -l "$longopts" -- "$@" )
+
+if [ $? -ne 0 ]; then
+	cleanup_usage
+	exit -1
+fi
+
+# load new arguments list
+eval set -- "$options"
+
+dryrun=
+
+while [ $# -gt 0 ]; do
+	case "$1" in
+		--)		shift; break ;;
+		-d|--dry-run)
+			dryrun=yes ;;
+	esac
+	shift
+done
+
+set -e
 trap '' INT
 
 mkdir -p "$SDEROOT/tmp"
 tmpfile="$SDEROOT/tmp/down.$$"
 
-# get list of wanted files
-. $SDEROOT/bin/sde-list-download > "$tmpfile"
+# get list of accepted files
+cat <<EOT > "$tmpfile"
+download/mirror
+download/local
+EOT
+. $SDEROOT/bin/sde-list-download >> "$tmpfile"
 
 # and check those I have against that list
 ( cd "$SDEROOT"; find download/ -type f ) | while read file; do
-	grep -q "^$file\$" "$tmpfile" || rm -vf -- "$file"
+	[ -f "$SDEROOT/$file" ] || continue
+
+	if ! grep -q "^$file\$" "$tmpfile"; then
+		if [ -n "$dryrun" ]; then
+			echo rm -vf -- "$SDEROOT/$file"
+		else
+			rm -vf -- "$SDEROOT/$file"
+		fi
+	fi
 done
 
 rm -f "$tmpfile"
