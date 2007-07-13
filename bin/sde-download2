@@ -53,8 +53,8 @@ if [ $# -gt 0 ]; then
 	esac
 fi
 
-shortopts='dqvm:'
-longopts='dry-run,quiet,verbose,timeout:,check:,mirror:,mode:,dependencies'
+shortopts='dqvm:e'
+longopts='dry-run,quiet,verbose,timeout:,check:,mirror:,mode:,extenders'
 options=$( getopt -o "$shortopts" -l "$longopts" -- "$@" )
 
 if [ $? -ne 0 ]; then
@@ -66,7 +66,65 @@ fi
 eval set -- "$options"
 
 dryrun=
+verbose=1
+timeout=normal
+check=always
+mirror=
+mode=hardlink
+extenders=
+
+while [ $# -gt 0 ]; do
+	case "$1" in
+		-d|--dry-run)
+			dryrun=yes ;;
+		-e|--extenders)
+			extenders=yes ;;
+		-v|--verbose)
+			let verbose++	;;
+		-q|--quiet)
+			let verbose--	;;
+
+		--timeout)
+			shift
+			case "$1" in
+				normal|long|no)
+					timeout="$1"	;;
+				*)
+					echo_abort 1 "$1: invalid timeout value: [normal*|long|no]"
+					;;
+			esac ;;
+		--check)
+			shift
+			case "$1" in
+				always|download|never)
+					check="$1"	;;
+				*)
+					echo_abort 1 "$1: invalid ckeck value: [always*|download|never]"
+					;;
+			esac ;;
+		--mirror)
+			shift
+			case "$1" in
+				none|auto|http://*|https://*|ftp://*|file://*)
+					mirror="$1"	;;
+				*)
+					echo_abort 1 "$1: invalid mirror value"
+					;;
+			esac ;;
+		-m|--mode)
+			shift
+			case "$1" in
+				hardlink|copy|move)
+					mode="$1"	;;
+				*)
+					echo_abort 1 "$1: invalid altdir mode [hardlink*|copy|move]"
+					;;
+			esac ;;
+	esac
+	shift
+done
 
 echo_abort 1 "$discriminator: Not yet implemented"
 
 set -e
+
