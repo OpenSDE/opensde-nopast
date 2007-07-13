@@ -75,6 +75,16 @@ Defines which mirror to use since now, replacing the value stored on the global 
 \fI'none\fR', or auto to detect again the best mirror for your location.
 .RE
 .PP
+\-\-m, \-mode
+.RS 4
+Defines what to do when taking a file from
+\fI$altdir\fR. By default it makes a
+\fIhardlink\fR, but you can also choose
+\fIcopy\fR
+or
+\fImove\fR.
+.RE
+.PP
 \-\-dependencies
 .RS 4
 When using
@@ -82,18 +92,4 @@ When using
 or
 \fIrepository\fR
 discriminators, download the active dependencies considering the specified config id.
-.RE
-.PP
-\-c, \-\-copy
-.RS 4
-When the file is found on the alternative location the tool will
-\fIcopy\fR
-it instead of doing a hardlink.
-.RE
-.PP
-\-m, \-\-move
-.RS 4
-When the file is found on the alternative location the tool will
-\fImove\fR
-it instead of doing a hardlink.
 .RE
