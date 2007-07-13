@@ -47,7 +47,7 @@ OPTIONS
 
 --check::
 	Defines when will the tool validate the downloaded file against
-	the checksum in the database. The defailt value is 'always', but
+	the checksum in the database. The default value is 'always', but
 	you can choose between 'download', meaning that it wont validate
 	when using the alternative download location, or 'never'.
 
@@ -60,7 +60,7 @@ OPTIONS
 	Defines what to do when taking a file from '$altdir'. By default
 	it makes a 'hardlink', but you can also choose 'copy' or 'move'.
 
---dependencies::
+-e, --extenders::
 	When using 'package' or 'repository' discriminators, download the
-	active dependencies considering the specified config id.
+	active extenders considering the specified config id.
 
