@@ -132,9 +132,9 @@ done
 
 # constants to pass to sde-download-get
 downloadgetopt=
-if [ $verbose -gt 1 ]; then
+if [ $verbose -gt 2 ]; then
 	downloadgetopt='-v'
-elif [ $verbose -le 0 ]; then
+elif [ $verbose -lt 0 ]; then
 	downloadgetopt='-q'
 fi
 if [ -n "$dryrun" ]; then
@@ -164,7 +164,9 @@ esac | while read pkg cksum file location; do
 	# debug output
 	[ $verbose -le 1 ] || echo_info "pkg:$pkg file:$file ($cksum) source:$location"
 
-	if [ -e "$tmpfile.lock" ]; then
+	if [ -s "$SDEROOT/$file" ]; then
+		:
+	elif [ -e "$tmpfile.lock" ]; then
 		echo_warning "$file: skipping."
 	else
 		"$SDEROOT"/bin/sde-download-get $downloadgetopt -- "$tmpfile" "$location"
