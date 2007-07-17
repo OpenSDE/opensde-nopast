@@ -99,10 +99,12 @@ fi
 if [ -z "$root" -a $stagelevel -le 1 ] ||
    [ -z "$root" -a $chroot -eq 1 ] ||
    [ "$root" = auto ]; then
-	# stage 0 cross compiler build
-	if [ $stagelevel -eq 0 ]; then root="build/$SDECFG_ID/TOOLCHAIN/$toolsdir"
-	# the new systems root
-	else root="build/$SDECFG_ID"; fi
+	if atstage toolchain; then
+		root="build/$SDECFG_ID/TOOLCHAIN/$toolsdir"
+	else
+		# the new systems root
+		root="build/$SDECFG_ID";
+	fi
 fi
 
 [ "$pkgdir" -a "${pkgdir#/}" = "$pkgdir" ] && pkgdir="$base/$pkgdir"
@@ -113,7 +115,7 @@ prefix=${prefix%/} ; prefix=${prefix#/} ; root=${root%/}
 
 # xroot is for internal use and always points to the new system
 xroot="$root"
-if [ $stagelevel -le 1 ]; then
+if ! atstage native; then
 	sysroot="$base/build/$SDECFG_ID" # always fresh sandbox
 else
 	root=
@@ -303,9 +305,12 @@ rm -f $root/var/adm/logs/$stagelevel-$xpkg.log
 rm -f $root/var/adm/logs/$stagelevel-$xpkg.err
 
 if [ $this_is_the_2nd_run = 0 ] ; then
-	[ $stagelevel -gt 1 ] && . /etc/profile
+	if [ "$toolsdir" == "tools.chroot" ]; then
+		. /etc/profile
+	fi
+
 	options="-this_is_the_2nd_run $options $pkg=$xpkg"
-	if [ "$SDECFG_CREATE_CACHE" = 1 -a $stagelevel -gt 1 ] ; then
+	if [ "$SDECFG_CREATE_CACHE" = 1 -a "$toolsdir" != "$tools.cross" ] ; then
 
 		mkdir -p $root/var/adm/cache
 		rm -f $root/var/adm/cache/$xpkg
@@ -394,19 +399,19 @@ targetdir="$base/target/$target"
 
 detect_patchfiles
 
-if [ $stagelevel -eq 0 ]; then
+if atstage toolchain; then
 	var_append patchfiles ' ' "`ls $confdir/*.patch.cross0{,.$arch} \
 	                            2>/dev/null | tr '\n' ' '`"
 fi
 
-if [ $stagelevel -le 1 ]; then
+if [ "$toolsdir" == "tools.cross" ]; then
 	var_append patchfiles ' ' "`ls $confdir/*.patch.cross{,.$arch} \
 	                            2>/dev/null | tr '\n' ' '`"
 fi
 
 set_confopt
 
-if [ $stagelevel -gt 1 ]; then
+if atstage native; then
 	for pc_file in $xroot/var/adm/parse-config/* ; do
 		if [ -s "$pc_file" -a "${pc_file##*/}" != "$xpkg" ]
 		then . "$pc_file" ; fi
@@ -650,8 +655,7 @@ abort() {
 		
 	if [ "$SDECFG_FLIST" = "flwrapper" -o \
 	     "$SDECFG_FLIST" = "strace" ] ; then
-		if [ "$stagelevel" -le 1 ]
-		then
+		if [ "$toolsdir" == "tools.cross" ]; then
 			xbase="$( cd $xroot/ 2> /dev/null ; pwd -P )"
 			flistvalid="$xbase|$flistvalid"
 			
@@ -741,7 +745,7 @@ abort() {
 	echo -n > var/adm/cksums/$xpkg
 
 	if [ "$SDECFG_FLIST" = "flwrapper" -o \
-	     "$SDECFG_FLIST" = "strace" ] && [ $stagelevel -gt 1 ] ; then
+	     "$SDECFG_FLIST" = "strace" ] && atstage native ; then
 		echo "Calculating package dependencies ..."
 
 		! egrep -v "^($flistrfilter)\$" $builddir/fl_wrapper.[rw]log |
