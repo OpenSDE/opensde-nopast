@@ -299,19 +299,23 @@ function run_check() {
 #
 postflist_static_lib() {
 	echo "Processing static lib corrections ..."
-	egrep '^(lib|lib64)/.*\.(a|la)$' $builddir/flist.txt |
+	egrep '^(lib|lib64)/.*\.(a\..*|a|la)$' $builddir/flist.txt |
 	while read fn ; do
 		[ -e $root/$fn -o -L $root/$fn ] || continue
-		if [[ $fn = *.a ]] ; then
-			mv -fv $root/$fn $root/usr/$fn
-		else
+
+		case "$fn" in
+		*.la)
 			sed "s,\([ =']\)/lib\(.*\),\1/usr/lib\2,g" \
 				$root/$fn > $root/usr/$fn
 			so=${fn%.la}.so
 			ln -svf $root/$so $root/usr/$so
 			add_flist $root/usr/$so
 			rm $root/$fn
-		fi
+			;;
+		*)
+			mv -fv $root/$fn $root/usr/$fn
+			;;
+		esac
 		add_flist $root/usr/$fn
 	done
 
