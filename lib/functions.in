@@ -236,7 +236,8 @@ set_confopt() {
 # eval_config_command $( eval echo $confopt )
 #
 function eval_config_command() {
-	local config_command
+	local config_command=
+	local config_cache=$builddir/config.cache.$buildloop
 
 	for x in /usr/share/automake/*
 	do
@@ -250,7 +251,7 @@ function eval_config_command() {
 
 	if [ -n "$configcache" ] || atstage cross; then
 		if atstage cross; then
-			create_config_cache >> $builddir/config.cache
+			create_config_cache >> $config_cache
 		fi
 
 		if [ -n "$configcache" ]; then
@@ -261,11 +262,11 @@ function eval_config_command() {
 			for x in $configcache; do
 				echo "$x"
 			done 
-		fi >> $builddir/config.cache
+		fi >> $config_cache
 
 		grep -q '.--cache-file=' $configscript &&
-			set -- "$@" "--cache-file=$builddir/config.cache"
-		export cache_file=$builddir/config.cache
+			set -- "$@" "--cache-file=$config_cache"
+		export cache_file=$config_cache
 	fi
 
 	config_command="$configprefix $configscript"
