@@ -26,6 +26,7 @@ while read name country admin url ; do
 		cl)	country="Chile"	;;
 		cr)	country="Costa Rica"	;;
 		de)	country="Germany"	;;
+		my)	country="Malaysia"	;;
 	esac
 
 	# no trailing /
