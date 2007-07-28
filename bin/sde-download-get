@@ -25,7 +25,7 @@ Usage:	$progname [-vqd] <target> <source>
 EOT
 }
 
-shortopts='dqv'
+shortopts='nqv'
 longopts='dry-run,quiet,verbose'
 options=$( getopt -o "$shortopts" -l "$longopts" -- "$@" )
 
@@ -46,7 +46,7 @@ while [ $# -gt 0 ]; do
 	case "$1" in
 		--)	shift; break ;;
 
-		-d|--dry-run)
+		-n|--dry-run)
 			dryrun="yes" ;;
 		-v|--verbose)
 			let verbose++ ;;
@@ -71,7 +71,11 @@ protocol=${source%%:*}
 [ $verbose -le 1 ] || echo_info "($protocol) $source"
 
 # find the right handler
-handler=$( grep -l "^#Protocol: $protocol\$" "$SDEROOT/bin"/sde-download-* 2> /dev/null )
+if [ -x "$SDEROOT/bin/sde-download-$protocol" ]; then
+    handler="$SDEROOT/bin/sde-download-$protocol"
+else
+    handler=$( grep -l "^#Protocol: $protocol\$" "$SDEROOT/bin"/sde-download-* 2> /dev/null )
+fi
 handleropt=
 
 [ -x "$handler" ] || echo_abort 2 "$protocol: protocol unhandled"

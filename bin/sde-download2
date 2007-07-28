@@ -52,7 +52,7 @@ if [ $# -gt 0 ]; then
 	esac
 fi
 
-shortopts='dqvc:m:e'
+shortopts='nqvc:m:e'
 longopts='dry-run,quiet,verbose,cfg,timeout:,cfg,check:,mirror:,mode:,extenders'
 options=$( getopt -o "$shortopts" -l "$longopts" -- "$@" )
 
@@ -77,7 +77,7 @@ while [ $# -gt 0 ]; do
 	case "$1" in
 		--)	shift; break ;;
 
-		-d|--dry-run)
+		-n|--dry-run)
 			dryrun=yes ;;
 		-e|--extenders)
 			extenders=yes ;;
@@ -162,7 +162,7 @@ esac | while read pkg cksum file location; do
 	tmpfile="$SDEROOT/tmp/down.$( echo $file | tr '/' '-' )"
 
 	# debug output
-	[ $verbose -le 1 ] || echo_info "pkg:$pkg file:$file ($cksum) source:$location"
+	[ $verbose -le 1 ] || echo_info "pkg:$pkg file:$file ($cksum) $location"
 
 	if [ -s "$SDEROOT/$file" ]; then
 		:
