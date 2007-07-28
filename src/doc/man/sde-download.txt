@@ -37,7 +37,7 @@ OPTIONS
 -v, --verbose::
 	Gives extra feedback.
 
--d, --dry-run::
+-n, --dry-run::
 	No real download is performed but the list of missing files is
 	output.
 
