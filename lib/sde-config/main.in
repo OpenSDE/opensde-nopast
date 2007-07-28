@@ -128,11 +128,13 @@ block_begin 7
 		if [ -f target/$target/pkgsel ]; then
 			if [ target/$target/pkgsel -nt $cfgtmpdir/pkgsel.$target.awk ]
 			then
-				( echo "# created from 'target-pkgsel'"
-				  pkgsel_init
-				  pkgsel_parse < target/$target/pkgsel
-				  pkgsel_finish
-				) > $cfgtmpdir/pkgsel.$target.awk
+				cat <<-EOT > $cfgtmpdir/pkgsel.$target.awk
+				# created from target/$target/pkgsel
+				#
+				EOT
+
+				lib/sde-config/pkgsel2awk.sh \
+					target/$target/pkgsel >> $cfgtmpdir/pkgsel.$target.awk
 			fi
 
 			if [ -s $cfgtmpdir/pkgsel.$target.awk ]; then
@@ -236,11 +238,13 @@ if [ "$SDECFG_PKGSEL" = 1 -a -f $cfgtmpdir/config/pkgsel ] ; then
 	fi
 	unset filter
 
-	( echo "# created from 'pkgsel'"
-	  pkgsel_init
-	  pkgsel_parse < $cfgtmpdir/config/pkgsel
-	  pkgsel_finish
-	) > $cfgtmpdir/pkgsel.awk
+	cat <<-EOT > $cfgtmpdir/pkgsel.awk
+	# created from config/$config/pkgsel
+	#
+	EOT
+
+	lib/sde-config/pkgsel2awk.sh \
+		$cfgtmpdir/config/pkgsel >> $cfgtmpdir/pkgsel.$target.awk
 
 	pkgout
 	gawk -f $cfgtmpdir/pkgsel.awk < $cfgtmpdir/config/packages \
