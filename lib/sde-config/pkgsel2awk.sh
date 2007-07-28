@@ -27,8 +27,32 @@
 #     Result: creates pkgsel.awk output
 #   pkgsel include file
 #     Result: continues processing file specified
+pkgsel_pattern() {
+	local pattern= xpattern=
+	local address=
+
+	for xpattern; do
+		pattern="${xpattern#\!}"
+		[ "$pattern" = "$xpattern" ]; neg=$?
+		[ "${pattern}" = "${pattern//\//}" ] && pattern="*/$pattern"
+		pattern="$( echo "$pattern" | sed \
+		            -e 's,[^a-zA-Z0-9_/\*+\-\[\]],,g' \
+		            -e 's,[/\.\+],\\\\&,g' \
+		            -e 's,\*,[^/]*,g' )"
+
+		[ -z "$address" ] || address="$address &&"
+
+		if [ $neg -eq 0 ]; then
+			address="$address( \$5 ~ \"^${pattern}\$\" )"
+		else
+			address="$address( \$5 !~ \"^${pattern}\$\" )"
+		fi
+	done
+	echo "$address"
+}
+
 pkgsel_parse() {
-	local action patterlist pattern
+	local action patterlist
 	local address first others
 
 	sed -e '/^#/d;' -e '/^[ \t]*$/d;' "$@" | while read action patternlist ; do
@@ -48,24 +72,9 @@ pkgsel_parse() {
 			echo '{ exit; }'
 			continue ;;
 		esac
-		address=""
-		while read xpattern ; do
-			pattern="${xpattern#\!}"
-			[ "$pattern" = "$xpattern" ]; neg=$?
-			[ "${pattern}" = "${pattern//\//}" ] && pattern="*/$pattern"
-			pattern="$( echo "$pattern" | sed \
-			            -e 's,[^a-zA-Z0-9_/\*+\-\[\]],,g' \
-			            -e 's,[/\.\+],\\\\&,g' \
-			            -e 's,\*,[^/]*,g' )"
 
-			[ -z "$address" ] || address="$address &&"
+		address=$( pkgsel_pattern "$patternlist" )
 
-			if [ $neg -eq 0 ]; then
-				address="$address( \$5 ~ \"^${pattern}\$\" )"
-			else
-				address="$address( \$5 !~ \"^${pattern}\$\" )"
-			fi
-		done < <( echo "$patternlist" | tr '\t ' '\n\n' )
 		echo "{ if ( $address ) { $action; } }"
 	done
 }
