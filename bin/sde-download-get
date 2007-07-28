@@ -57,18 +57,17 @@ while [ $# -gt 0 ]; do
 done
 
 # now take the real arguments
-if [ $# -ne 2 ]; then
+if [ $# -lt 2 ]; then
 	echo_error "Not enough arguments given."
 	download_usage
 	exit -1
 fi
 
-target="$1"
-source="$2"
-protocol=${source%%:*}
+target="$1"; shift
+protocol=${1%%:*}
 
 # debug output
-[ $verbose -le 1 ] || echo_info "($protocol) $source"
+[ $verbose -le 1 ] || echo_info "($protocol) $@"
 
 # find the right handler
 if [ -x "$SDEROOT/bin/sde-download-$protocol" ]; then
@@ -91,5 +90,5 @@ elif [ ! -e "$target.lock" ]; then
 		handleropt="-q"
 	fi
 
-	exec "$handler" $handleropt -- "$target" "$source"
+	exec "$handler" $handleropt -- "$target" "$@"
 fi
