@@ -57,10 +57,13 @@ pkgsel_parse() {
 			            -e 's,[^a-zA-Z0-9_/\*+\-\[\]],,g' \
 			            -e 's,[/\.\+],\\\\&,g' \
 			            -e 's,\*,[^/]*,g' )"
+
+			[ -z "$address" ] || address="$address &&"
+
 			if [ $neg -eq 0 ]; then
-				address="$address${address:+ && }( \$5 ~ \"^${pattern}\$\" )"
+				address="$address( \$5 ~ \"^${pattern}\$\" )"
 			else
-				address="$address${address:+ && }( \$5 !~ \"^${pattern}\$\" )"
+				address="$address( \$5 !~ \"^${pattern}\$\" )"
 			fi
 		done < <( echo "$patternlist" | tr '\t ' '\n\n' )
 		echo "{ if ( $address ) { $action; } }"
