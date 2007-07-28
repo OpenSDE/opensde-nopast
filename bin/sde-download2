@@ -162,16 +162,28 @@ esac | while read pkg cksum file location; do
 	tmpfile="$SDEROOT/tmp/down.$( echo $file | tr '/' '-' )"
 
 	# debug output
-	[ $verbose -le 1 ] || echo_info "pkg:$pkg file:$file ($cksum) $location"
+
 
 	if [ -s "$SDEROOT/$file" ]; then
 		:
 	elif [ -e "$tmpfile.lock" ]; then
 		echo_warning "$file: skipping."
 	else
-		"$SDEROOT"/bin/sde-download-get $downloadgetopt -- "$tmpfile" "$location"
+		if [ $verbose -le 0 ]; then
+			:
+		elif [ $verbose -le 1 ]; then
+			echo_info "Downloading $pkg:$file"
+		else
+			echo_info "Downloading $pkg:$file ($cksum) $location"
+		fi
+
+		"$SDEROOT"/bin/sde-download-get $downloadgetopt -- "$tmpfile" $location
 		if [ $? -ne 0 ]; then
 			echo_warning "$file: failed to download"
+			rm -f "$tmpfile"
+		else
+			mkdir -p "${file%/*}"
+			mv "${tmpfile}" "$file"
 		fi
 	fi
 done
