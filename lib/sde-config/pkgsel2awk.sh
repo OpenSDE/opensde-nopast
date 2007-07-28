@@ -30,7 +30,8 @@
 pkgsel_parse() {
 	local action patterlist pattern
 	local address first others
-	while read action patternlist ; do
+
+	sed -e '/^#/d;' -e '/^[ \t]*$/d;' "$@" | while read action patternlist ; do
  		case "$action" in
 		    [xX])
 			action='$1="X"' ;;
@@ -41,7 +42,7 @@ pkgsel_parse() {
 		    =)
 			action='$1=def' ;;
 		    include)
-		        egrep -v "^((^#.*$)|())$" $patternlist | pkgsel_parse
+		        pkgsel_parse $patternlist
 			continue ;;
 		    *)
 			echo '{ exit; }'
@@ -76,9 +77,7 @@ cat <<EOF
 }
 EOF
 
-for pkgsel; do
-	egrep -v "^((^#.*$)|())$" $pkgsel | pkgsel_parse
-done
+pkgsel_parse "$@"
 
 cat <<EOF
 { 
