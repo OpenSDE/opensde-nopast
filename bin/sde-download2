@@ -53,7 +53,7 @@ if [ $# -gt 0 ]; then
 fi
 
 shortopts='nqvc:m:e'
-longopts='dry-run,quiet,verbose,cfg,timeout:,cfg,check:,mirror:,mode:,extenders'
+longopts='dry-run,quiet,verbose,cfg,timeout:,cfg,check:,mirror:,alt-dir:,mode:,extenders'
 options=$( getopt -o "$shortopts" -l "$longopts" -- "$@" )
 
 if [ $? -ne 0 ]; then
@@ -118,6 +118,17 @@ while [ $# -gt 0 ]; do
 					echo_abort 1 "$1: invalid mirror value"
 					;;
 			esac ;;
+		--alt-dir)
+			shift
+			if [ "$1" == "none" -o -z "$1" ]; then
+				altdir=
+				$SDEROOT/bin/sde-config-ini --file=$SDESETTINGS --delete "download.altdir"
+			elif [ -d "$1/" ]; then
+				altdir="$( cd "$1"; pwd -P )"
+				$SDEROOT/bin/sde-config-ini --file=$SDESETTINGS "download.altdir=$altdir"
+			else
+				echo_abort 1 "$1: directory not found."
+			fi ;;
 		-m|--mode)
 			shift
 			case "$1" in
@@ -134,6 +145,11 @@ while [ $# -gt 0 ]; do
 	esac
 	shift
 done
+
+# verbose messages
+if [ $verbose -gt 1 -a -d "$altdir" ]; then
+	echo_info "Using '$altdir' to look for files locally."
+fi
 
 # constants to pass to sde-download-get
 downloadgetopt=
