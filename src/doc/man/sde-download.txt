@@ -59,7 +59,11 @@ OPTIONS
 	on the global config. Alternatively you can use ''none'', or auto
 	to detect again the best mirror for your location.
 
---m, -mode::
+--alt-dir::
+	Defines a local place where look initially for the files, and then
+	includes on the current working tree by the choosen mode. (see --mode)
+
+-m, --mode::
 	Defines what to do when taking a file from '$altdir'. By default
 	it makes a 'hardlink', but you can also choose 'copy' or 'move'.
 
