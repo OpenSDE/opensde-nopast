@@ -160,9 +160,8 @@ case "$discriminator" in
 esac | while read pkg cksum file location; do
 	# temporal download location
 	tmpfile="$SDEROOT/tmp/down.$( echo $file | tr '/' '-' )"
-
-	# debug output
-
+	mkdir -p "$SDEROOT/tmp"
+	[ $? -eq 0 ] || exit -1
 
 	if [ -s "$SDEROOT/$file" ]; then
 		:
