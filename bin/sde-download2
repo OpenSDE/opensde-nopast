@@ -189,22 +189,70 @@ esac | while read pkg cksum file location; do
 	elif [ -e "$tmpfile.lock" ]; then
 		echo_warning "$file: skipping."
 	else
-		if [ $verbose -le 0 ]; then
-			:
-		elif [ $verbose -le 1 ]; then
-			echo_info "Downloading $pkg:$file"
-		else
-			echo_info "Downloading $pkg:$file ($cksum) $location"
+		check_this=yes
+
+		# look on $altdir, to save time, bandwidth and diskspace
+		#
+		if [ -n "$altdir" ]; then
+			altfile=$(find $altdir/ -name ${file##*/} | head -n 1)
+
+			if [ -r "$altfile" ]; then
+				# a file was found, what should I do with it?
+				[ $verbose -le 0 ] || echo_info "$pkg:${file##*/} found in $altfile ($mode)."
+
+				[ "$check" == "always" ] || check_this=no
+
+				case "$mode" in
+					hardlink)	cp -lf "$altfile" "$tmpfile" ;;
+					copy)		cp -f "$altfile" "$tmpfile" ;;
+					move)		mv -f "$altfile" "$tmpfile" ;;
+				esac
+			fi
 		fi
 
-		"$SDEROOT"/bin/sde-download-get $downloadgetopt -- "$tmpfile" $location
-		if [ $? -ne 0 ]; then
-			echo_warning "$file: failed to download"
-			rm -f "$tmpfile"
-		else
-			mkdir -p "${file%/*}"
-			mv "${tmpfile}" "$file"
+		# try to download the file
+		#
+		if [ ! -s "$tmpfile" ]; then
+
+			[ "$check" != "never" ] || check_this=no
+
+			# verbose message
+			if [ $verbose -le 0 ]; then
+				:
+			elif [ $verbose -le 1 ]; then
+				echo_info "Downloading $pkg:$file"
+			else
+				echo_info "Downloading $pkg:$file ($cksum) $location"
+			fi
+
+			"$SDEROOT"/bin/sde-download-get $downloadgetopt -- "$tmpfile" $location
+			if [ $? -ne 0 ]; then
+				echo_warning "$file: failed to download"
+				rm -f "$tmpfile"
+			fi
 		fi
+
+		# validate the file against the known checksum
+		#
+		if [ -s "$tmpfile" -a "$check_this" == "yes" -a "$cksum" != "X" ]; then
+			cksum_real=$( sh $SDEROOT/lib/sde-download/cksum.sh $tmpfile | cut -d' ' -f2 )
+			if [ "$cksum" == "0" ]; then
+				echo_warning "$pkg:${file##*/} is missing a checksum value, ignoring. ($cksum_real)"
+			elif [ "$cksum" != "$cksum_real" ]; then
+				echo_error "$pkg:${file##*/} has a wrong checksum, failing. ($cksum != $cksum_real)"
+				mv -f "$tmpfile" "$tmpfile.cksum-err"
+			elif [ $verbose -gt 0 ]; then
+				echo_info "$pkg:${file##*/} is correct."
+			fi
+		fi
+		
+		# and finally accept the file
+		#
+		if [ -s "$tmpfile" ]; then
+			mkdir -p "${file%/*}"
+			mv -f "${tmpfile}" "$file"
+		fi
+
 	fi
 done
 
