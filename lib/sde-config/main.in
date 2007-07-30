@@ -244,7 +244,7 @@ if [ "$SDECFG_PKGSEL" = 1 -a -f $cfgtmpdir/config/pkgsel ] ; then
 	EOT
 
 	lib/sde-config/pkgsel2awk.sh \
-		$cfgtmpdir/config/pkgsel >> $cfgtmpdir/pkgsel.$target.awk
+		$cfgtmpdir/config/pkgsel >> $cfgtmpdir/pkgsel.awk
 
 	pkgout
 	gawk -f $cfgtmpdir/pkgsel.awk < $cfgtmpdir/config/packages \
