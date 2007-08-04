@@ -17,10 +17,10 @@ X samba
 X gnupg
 
 #miscelanous
-X sip
-X pyqt
-X pykde
-X pykde-extensions
+# X sip
+# X pyqt
+# X pykde
+# X pykde-extensions
 ##################### End Some left-overs not in Bare Desktop ##################
 ###################### Begin KDE requirements ##################################
 X postgresql
