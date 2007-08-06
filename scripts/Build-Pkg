@@ -262,6 +262,8 @@ export INSTALL_WRAPPER_LOGFILE="$builddir/install_wrapper.log"
 export CMD_WRAPPER_LOGFILE="$builddir/cmd_wrapper.log"
 export UNAME_WRAPPER_LOGFILE="$builddir/uname_wrapper.log"
 
+export HOME=$root/root
+
 if [ $norebuild = 1 -a -f $root/var/adm/logs/$stagelevel-$xpkg.log ] ; then
 	echo_pkg_deny $stagelevel $pkg "already built"
 	exit 0
