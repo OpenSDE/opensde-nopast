@@ -536,19 +536,24 @@ get_help() {
 	default_text="
 There is no help on '$1' available.
 
-This is the T2 $sdever Configuration Tool.
+This is the OpenSDE ($sdever) Configuration Tool.
 
-Please read the Quick Start and the Handbook on
-http://www.t2-project.org/buildintro.html    and
-http://www.t2-project.org/t2-handbook/ respectively
-before building T2.
+More information can be found on the OpenSDE Homepage:
 
-More information can be found on the T2 Homepage:
+	       http://www.opensde.org/
 
-	       http://www.t2-project.org/
+A Bugtracker, Source Browser and Wiki can be found here:
 
-Subscribe to the mailing list by sending an e-mail with the
-subject 'subscribe t2' to <lists@t2-project.org>."
+	       http://trac.opensde.org/
+
+
+
+Subscribe to the mailing list by sending an empty e-mail to:
+
+<list-subscribe@opensde.org>
+
+and confirm the subscription request by replying to the mail
+our mailing list manager will send you."
 	
 	# Ok let us find a help for the current item ...
 
