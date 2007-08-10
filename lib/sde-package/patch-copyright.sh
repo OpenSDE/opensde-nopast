@@ -70,7 +70,7 @@ else
 		files="$files $each/."
 	    done
 	else
-	    echo Cannot find \'$i\', ignoring. 1>&2
+	    echo "Cannot find '$i', ignoring." 1>&2
 	fi
     done
     set -- $files 
