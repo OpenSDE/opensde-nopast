@@ -8,46 +8,29 @@ sde-update - updates all or part of the system with upstream changes.
 
 SYNOPSIS
 --------
-'sde update' [DISCRIMINATORS] [OPTIONS] [ITEMS...]
+'sde update' [DISCRIMINATORS] [OPTIONS] ITEM [VERSION]
 
 DESCRIPTION
 -----------
 
 Updates part of the environment to the latest version from the 
-repository. Depending on the discriminator specified either the package
-tree, an identified target, the OpenSDE framework or all of then will 
-get updated
+repository. Depending on the discriminator specified either a package
+or a target can get updated.
 
 DISCRIMINATORS
 --------------
 
-all::
-	Update everything (system, packages and targets) to the latest
-	state from the repository. However, only items that came from
-	a repository will be updated to the latest version of that
-	repository. Other items will not be touched.
-	This discriminator does not require any items to be specified.
-
 package, pkg::
-	Updates the package tree to the latest state of the repository.
-	This discriminator does not require any items to be specified.
-
-system, sys::
-	Updates the OpenSDE framework to the latest state of the
-	repository.
-	This discriminator does not require any items to be specified.
+	Updates the package specified as item to the given version.
 
 target, tgt::
-	Updates the specified target to the latest state from its
-	repository, but only if it comes from a repository. If the
-	specified target does not come from a repository this command
-	will result in an error message.
+	Updates the target specified as item to the given version. Details
+	for updating will be taken from the OpenSDE Seedlings target 
+	database. When the target is not in the Seedlings target database
+	this command results into and error message.
 
-When no discriminator is specified, then the default discriminator depends
-on the current working directory. When the current working direcotry is 
-inside one of the targets, then that target will be updated. On the other 
-hand if it is inside the package tree, then the package tree will get updated.
-If neither of these is the case, then the OpenSDE system will get updated.
+When no discriminator is specified, package is used as the default 
+discriminator.
 
 OPTIONS
 -------
@@ -58,8 +41,5 @@ OPTIONS
 EXAMPLES
 --------
 
-	sde update 
-	sde update all
-	sde update system
-	sde update package
+	sde update package subversion 1.4.4
 	sde update target koala
