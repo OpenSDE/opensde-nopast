@@ -4,12 +4,62 @@ The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
-sde-update - updates part of the system with upstream info
+sde-update - updates all or part of the system with upstream changes.
 
 SYNOPSIS
 --------
-'sde update' [OPTIONS]
+'sde update' [DISCRIMINATORS] [OPTIONS] [ITEMS...]
 
 DESCRIPTION
 -----------
-TODO
+
+Updates part of the environment to the latest version from the 
+repository. Depending on the discriminator specified either the package
+tree, an identified target, the OpenSDE framework or all of then will 
+get updated
+
+DISCRIMINATORS
+--------------
+
+all::
+	Update everything (system, packages and targets) to the latest
+	state from the repository. However, only items that came from
+	a repository will be updated to the latest version of that
+	repository. Other items will not be touched.
+	This discriminator does not require any items to be specified.
+
+package, pkg::
+	Updates the package tree to the latest state of the repository.
+	This discriminator does not require any items to be specified.
+
+system, sys::
+	Updates the OpenSDE framework to the latest state of the
+	repository.
+	This discriminator does not require any items to be specified.
+
+target, tgt::
+	Updates the specified target to the latest state from its
+	repository, but only if it comes from a repository. If the
+	specified target does not come from a repository this command
+	will result in an error message.
+
+When no discriminator is specified, then the default discriminator depends
+on the current working directory. When the current working direcotry is 
+inside one of the targets, then that target will be updated. On the other 
+hand if it is inside the package tree, then the package tree will get updated.
+If neither of these is the case, then the OpenSDE system will get updated.
+
+OPTIONS
+-------
+
+-v, --verbose::
+	Give additional feedback on what is happening.
+
+EXAMPLES
+--------
+
+	sde update 
+	sde update all
+	sde update system
+	sde update package
+	sde update target koala
