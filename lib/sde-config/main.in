@@ -117,8 +117,10 @@ block_begin 7
 	then . architecture/$SDECFG_ARCH/config.in ; fi
 	bool 'This is a cross-build between architectures' SDECFG_CROSSBUILD 0
 	if [ "$SDECFG_CROSSBUILD" = 1 ] ; then
-		pkgfilter sed -e 's,^\(. ..\)[^ ]*,\1--------,'
+		pkgfilter sed -e 's,^\(. ..\)[^ ]*,\1--------,' -e 's,^\(. \)?,\10,' -e 's,^\(. .\)?,\11,'
 		SDECFG_ID="$SDECFG_ID-cross" ; SDECFGSET_USE_CROSSCC=1
+	else
+		pkgfilter sed -e 's,^\(. \)?,\1-,' -e 's,^\(. .\)?,\1-,'
 	fi
 block_end
 
