@@ -1,0 +1,60 @@
+.\"     Title: sde-sync
+.\"    Author: 
+.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
+.\"      Date: 08/14/2007
+.\"    Manual: 
+.\"    Source: 
+.\"
+.TH "SDE\-SYNC" "1" "08/14/2007" "" ""
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.SH "NAME"
+sde\-sync \- synchronizes all or part of the system with upstream changes.
+.SH "SYNOPSIS"
+\fIsde sync\fR [DISCRIMINATORS] [OPTIONS] [ITEMS\]
+.sp
+.SH "DESCRIPTION"
+Synchronizes part of the environment to the latest version from the repository. Depending on the discriminator specified either the package tree, an identified target, the OpenSDE framework or all of then will get synchronized
+.sp
+.SH "DISCRIMINATORS"
+.PP
+all
+.RS 4
+Synchronizes everything (system, packages and targets) to the latest changes in the upstream repository. However, only items that actually came from a repository will get synchronized. Other items will not be touched. This discriminator does not require any items to be specified.
+.RE
+.PP
+package, pkg
+.RS 4
+Synchronizes the package tree to the latest changes in the upstream repository. This discriminator does not require any items to be specified.
+.RE
+.PP
+system, sys
+.RS 4
+Synchronizes the OpenSDE framework to the latest changes in the upstream repository. This discriminator does not require any items to be specified.
+.RE
+.PP
+target, tgt
+.RS 4
+Synchronizes the specified target to the latest changes in the upstream repository, but only if it originally came from a repository. If the specified target does not originally come from a repository this command will result in an error message.
+.RE
+When no discriminator is specified, then the default discriminator depends on the current working directory. When the current working direcotry is inside one of the targets, then that target will get synchronized. on the other hand if it is inside the package tree, then the package tree will get synchronized. If neither of these is the case, then the OpenSDE system will get synchronized.
+.sp
+.SH "OPTIONS"
+.PP
+\-v, \-\-verbose
+.RS 4
+Give additional feedback on what is happening.
+.RE
+.SH "EXAMPLES"
+.sp
+.RS 4
+.nf
+sde sync
+sde sync all
+sde sync system
+sde sync package
+sde sync target koala
+.fi
+.RE
