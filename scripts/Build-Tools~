@@ -252,8 +252,8 @@ EOT
 			abort 'Unable to detect /lib/libc.* for flwrapper'
 		fi
 
-		if ! atstage native; then
-			FLWRAPPER_BASEDIR="-DFLWRAPPER_BASEDIR=\"$base\""
+		if [ $stagelevel -lt 2 ]; then
+			FLWRAPPER_BASEDIR=-DFLWRAPPER_BASEDIR=\"$base\"
 		else
 			FLWRAPPER_BASEDIR=
 		fi
@@ -313,7 +313,7 @@ EOT
 		fi
 	done
 
-	if atstage rebuild; then
+	if [ $stagelevel -eq 9 ]; then
 		for x in /var/adm/packages/*; do
 			ls -1d package/*/${x##*/}/pkg_*_{pre,post}.conf 2> /dev/null
 		done
