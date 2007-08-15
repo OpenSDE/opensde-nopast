@@ -200,15 +200,17 @@ EOT
 		fi
 	done
 	#
-	echo_status "Building $toolsdir/wrapper/{uname,arch}."
+	if [ "$toolsdir" == "tools.chroot" ]; then
+		echo_status "Building $toolsdir/wrapper/{uname,arch}."
 
-	sed -e "s,@@ARCH_MACHINE@@,$arch_machine,g" \
-		src/tools-source/uname_wrapper.in.sh > build/$SDECFG_ID/TOOLCHAIN/$toolsdir/wrapper/uname
-	sed -e "s,@@ARCH@@,$( echo $arch | arch2uname ),g" \
-		src/tools-source/arch_wrapper.in.sh > build/$SDECFG_ID/TOOLCHAIN/$toolsdir/wrapper/arch
+		sed -e "s,@@ARCH_MACHINE@@,$arch_machine,g" \
+			src/tools-source/uname_wrapper.in.sh > build/$SDECFG_ID/TOOLCHAIN/$toolsdir/wrapper/uname
+		sed -e "s,@@ARCH@@,$( echo $arch | arch2uname ),g" \
+			src/tools-source/arch_wrapper.in.sh > build/$SDECFG_ID/TOOLCHAIN/$toolsdir/wrapper/arch
 
-	chmod +x build/$SDECFG_ID/TOOLCHAIN/$toolsdir/wrapper/{uname,arch}
-	wrappers="$wrappers uname arch"
+		chmod +x build/$SDECFG_ID/TOOLCHAIN/$toolsdir/wrapper/{uname,arch}
+		wrappers="$wrappers uname arch"
+	fi
 	#
 	echo_status "Building $toolsdir/wrapper/install_wrapper."
 	cp src/tools-source/install_wrapper.sh build/$SDECFG_ID/TOOLCHAIN/$toolsdir/wrapper/install_wrapper
