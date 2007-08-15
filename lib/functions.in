@@ -248,11 +248,24 @@ function eval_config_command() {
 		fi
 	done
 
-	if atstage cross; then
-		create_config_cache >> config.cache
+	if [ -n "$configcache" ] || atstage cross; then
+		if atstage cross; then
+			create_config_cache >> $builddir/config.cache
+		fi
+
+		if [ -n "$configcache" ]; then
+			cat <<-EOT
+
+			# Some custom values
+			EOT
+			for x in $configcache; do
+				echo "$x"
+			done 
+		fi >> $builddir/config.cache
+
 		grep -q '.--cache-file=' $configscript &&
-			set -- "$@" "--cache-file=./config.cache"
-		export cache_file=./config.cache
+			set -- "$@" "--cache-file=$builddir/config.cache"
+		export cache_file=$builddir/config.cache
 	fi
 
 	config_command="$configprefix $configscript"
@@ -426,7 +439,6 @@ rock_substitute() {
 # packages to cross-build correctly in stages 0 and 1.
 #
 create_config_cache() {
-	local x=
 	cat $base/scripts/config.cache
 
 	if [ $createarchcache -eq 1 ]; then
@@ -441,16 +453,6 @@ create_config_cache() {
 		ac_cv_sizeof_void_p=$arch_sizeof_char_p
 		ac_cv_c_bigendian=$arch_bigendian
 		EOT
-	fi
-
-	if [ "$configcache" ]; then
-		cat <<-EOT
-
-		# And some custom values
-		EOT
-		for x in $configcache; do
-			echo "$x"
-		done
 	fi
 }
 
