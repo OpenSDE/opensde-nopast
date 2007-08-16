@@ -131,12 +131,8 @@ X xfsprogs
 X zip
 X zlib
 
-# Subversion, to let people get our source
-X apr
-X apr-util
-X neon
-X subversion
-X cvs
+# Git, to let people get our source
+X git
 
 # and let people create ISOs here
 X dvdrtools
