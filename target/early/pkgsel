@@ -3,7 +3,7 @@ X 00-dirtree
 X sysfiles
 
 X linux-header
-X uclibc
+X dietlibc
 
 X automake
 X autoconf
@@ -21,7 +21,3 @@ X hotplug2
 X device-mapper
 X lvm2
 X mdadm
-
-X util-linux
-X e2fsprogs
-X reiserfsprogs
