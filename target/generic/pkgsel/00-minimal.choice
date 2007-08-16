@@ -66,7 +66,6 @@ X gpm
 X grep
 X groff
 X gzip
-X unifdef
 X iproute2
 X iptables
 X jfsutils
@@ -79,6 +78,7 @@ X libpng
 X libtiff
 X libungif
 X linux26
+X linux26-src
 X linux-header
 X m4
 X make
