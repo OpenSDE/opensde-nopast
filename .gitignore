@@ -5,3 +5,4 @@ iso
 regressions
 package
 tmp
+src.*
