@@ -63,6 +63,6 @@ echo "INFO: adding flist files ..." 1>&2
 	cp build/$SDECFG_ID/var/adm/flists/* $tmpdir/flist/
 #done
 
-tar -C $tmpdir -jcf cachepack-$config-t2-r${rev:-0}.tar.bz2 .
+tar -C $tmpdir -jcf cachepack-$config-opensde-r${rev:-0}.tar.bz2 .
 
 rm -rf $tmpdir

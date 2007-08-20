@@ -46,7 +46,7 @@ if [ -z "$root" ]; then
 fi
 
 if [ ! -d "$root/var/adm/flists" ]; then
-	echo "ERROR: '$root' is not a valid T2 box/sandbox root"
+	echo "ERROR: '$root' is not a valid OpenSDE box/sandbox root"
 	exit 3
 fi	
 

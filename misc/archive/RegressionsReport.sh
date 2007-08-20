@@ -45,7 +45,7 @@ echo "[$( date +%T )] Rendering report..."
 {
 cat <<EOT
 <html>
-	<head><title>T2 r$revision - $( date )</title></head>
+	<head><title>OpenSDE $revision - $( date )</title></head>
 <body>
 <table border="0">
 <tr><th colspan="2">$SDECFG_ID ($revision)</th></tr>
