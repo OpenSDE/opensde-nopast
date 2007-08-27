@@ -1,0 +1,195 @@
+diff -ur slim-1.3.0.orig/app.cpp slim-1.3.0/app.cpp
+--- slim-1.3.0.orig/app.cpp	2007-07-15 15:09:28.000000000 +0100
++++ slim-1.3.0/app.cpp	2007-08-27 15:49:20.000000000 +0100
+@@ -556,6 +556,14 @@
+         string loginCommand = cfg->getOption("login_cmd");
+         replaceVariables(loginCommand, SESSION_VAR, session);
+         replaceVariables(loginCommand, THEME_VAR, themeName);
++	if(loginCommand=="default"){
++		if (session=="default"||session==""){
++			loginCommand=". /etc/profile;exec $WINDOWMANAGER";
++		} else {
++			loginCommand="exec ";
++			loginCommand+=cfg->session_map.find(session)->second;
++		}
++	}
+         string sessStart = cfg->getOption("sessionstart_cmd");
+         if (sessStart != "") {
+             replaceVariables(sessStart, USER_VAR, pw->pw_name);
+diff -ur slim-1.3.0.orig/cfg.cpp slim-1.3.0/cfg.cpp
+--- slim-1.3.0.orig/cfg.cpp	2007-07-15 15:09:28.000000000 +0100
++++ slim-1.3.0/cfg.cpp	2007-08-25 13:55:19.000000000 +0100
+@@ -23,6 +23,75 @@
+ 
+ typedef pair<string,string> option;
+ 
++int dir_sel(const struct dirent *entry){
++	char *c;
++	if ((c=strrchr(entry->d_name,'.'))){
++		if (strcmp(c,".desktop")==0){
++			return 1;
++		}
++	}
++	return 0;
++}
++
++int parse_session(string &path,string &name,string &exec){
++	string line;
++	int rc=0;
++	ifstream file(path.c_str());
++	if (!file.is_open()){
++		return 0;
++	}
++	while(!file.eof()){
++		getline(file,line);
++		const char *s=line.c_str();	
++		char *s2;
++		if(!(s2=strchr(s,'='))){
++			continue;
++		}
++		s2++;
++		if(line.compare(0,s2-s,"Name=")==0){
++			line.erase(0,s2-s);
++			name=line;
++			rc++;
++		}else if(line.compare(0,s2-s,"Exec=")==0){
++			line.erase(0,s2-s);
++			exec=line;
++			rc++;
++		}
++		if (rc==2){
++			return rc;
++		}
++	}
++	return rc;
++}
++
++int get_sessions(map<string,string> &m){
++	struct dirent **entries;
++	int i,n;
++	n=scandir("/usr/share/xsessions",&entries,dir_sel,alphasort);
++	for(i=0;i<n;i++){
++		string s,s2;
++		string path("/usr/share/xsessions/");
++		path+=entries[i]->d_name;
++		if (parse_session(path,s,s2)==2){
++			m.insert(pair<string,string>(s,s2));
++		}
++	}
++	return (n?1:0);
++}
++
++const char *get_sessions_str(map<string,string> &m){
++	string s("default");;
++	map<string,string>::iterator it;
++	for(it=m.begin();it!=m.end();it++){
++		/*if(it!=m.begin()){
++			s+=",";
++		}*/
++		s+=",";
++		s+=(*it).first;
++	}
++	return s.c_str();
++}
++
+ Cfg::Cfg() 
+     : currentSession(-1)
+ {
+@@ -33,7 +102,8 @@
+     options.insert(option("numlock",""));
+     options.insert(option("daemon",""));
+     options.insert(option("xauth_path","/usr/X11R6/bin/xauth"));
+-    options.insert(option("login_cmd","exec /bin/bash -login ~/.xinitrc %session"));
++    //options.insert(option("login_cmd","exec /bin/bash -login ~/.xinitrc %session"));
++    options.insert(option("login_cmd","default"));
+     options.insert(option("halt_cmd","/sbin/shutdown -h now"));
+     options.insert(option("reboot_cmd","/sbin/shutdown -r now"));
+     options.insert(option("suspend_cmd",""));
+@@ -49,7 +119,9 @@
+     options.insert(option("authfile","/var/run/slim.auth"));
+     options.insert(option("shutdown_msg","The system is halting..."));
+     options.insert(option("reboot_msg","The system is rebooting..."));
+-    options.insert(option("sessions","wmaker,blackbox,icewm"));
++    //options.insert(option("sessions","wmaker,blackbox,icewm"));
++    get_sessions(session_map);
++    options.insert(option("sessions",get_sessions_str(session_map)));
+     options.insert(option("sessiondir",""));
+     options.insert(option("hidecursor","false"));
+ 
+@@ -108,6 +180,7 @@
+     options.insert(option("msg_shadow_color","#FFFFFF"));
+ 
+     error = "";
++ 
+ 
+ }
+ 
+diff -ur slim-1.3.0.orig/cfg.h slim-1.3.0/cfg.h
+--- slim-1.3.0.orig/cfg.h	2007-07-15 15:09:28.000000000 +0100
++++ slim-1.3.0/cfg.h	2007-08-25 13:06:11.000000000 +0100
+@@ -43,6 +43,7 @@
+ 
+     string nextSession(string current);
+ 
++    map<string,string>session_map;
+ private:
+     void fillSessionList();
+ 
+diff -ur slim-1.3.0.orig/Makefile slim-1.3.0/Makefile
+--- slim-1.3.0.orig/Makefile	2007-07-15 15:09:28.000000000 +0100
++++ slim-1.3.0/Makefile	2007-08-25 13:04:25.000000000 +0100
+@@ -5,9 +5,9 @@
+ #######################################################
+ CXX=/usr/bin/g++
+ CC=/usr/bin/gcc
+-CFLAGS=-Wall -I. -I/usr/X11R6/include -I/usr/include/freetype2 -I/usr/include/freetype2/config -I/usr/include/libpng12 -I/usr/include
++CFLAGS=-Wall -I. -I/usr/X11R6/include -I/usr/include/freetype2 -I/usr/include/freetype2/config -I/usr/include/libpng12 -I/usr/include -I/usr/X11R7/include/
+ CXXFLAGS=$(CFLAGS)
+-LDFLAGS=-L/usr/X11R6/lib -lXft -lX11 -lfreetype -lXrender -lfontconfig -lpng12 -lz -lm -lcrypt -lXmu -lpng -ljpeg
++LDFLAGS=-L/usr/X11R6/lib -L/usr/X11R7/lib -lXft -lX11 -lfreetype -lXrender -lfontconfig -lpng12 -lz -lm -lcrypt -lXmu -lpng -ljpeg
+ CUSTOM=-DHAVE_SHADOW
+ ifdef USE_PAM
+ LDFLAGS+= -lpam
+diff -ur slim-1.3.0.orig/slim.conf slim-1.3.0/slim.conf
+--- slim-1.3.0.orig/slim.conf	2007-07-15 15:09:28.000000000 +0100
++++ slim-1.3.0/slim.conf	2007-08-27 15:59:33.000000000 +0100
+@@ -1,17 +1,17 @@
+ # Path, X server and arguments (if needed)
+ # Note: -xauth $authfile is automatically appended
+-default_path        ./:/bin:/usr/bin:/usr/local/bin:/usr/X11R6/bin
+-default_xserver     /usr/X11R6/bin/X
++default_path        ./:/bin:/usr/bin:/usr/local/bin:/usr/X11/bin
++default_xserver     /usr/X11/bin/X
+ #xserver_arguments   -dpi 75
+ 
+ # Commands for halt, login, etc.
+ halt_cmd            /sbin/shutdown -h now
+ reboot_cmd          /sbin/shutdown -r now
+-console_cmd         /usr/X11R6/bin/xterm -C -fg white -bg black +sb -T "Console login" -e /bin/sh -c "/bin/cat /etc/issue; exec /bin/login"
++console_cmd         /usr/X11/bin/xterm -C -fg white -bg black +sb -T "Console login" -e /bin/sh -c "/bin/cat /etc/issue; exec /bin/login"
+ #suspend_cmd        /usr/sbin/suspend
+ 
+ # Full path to the xauth binary
+-xauth_path         /usr/X11R6/bin/xauth 
++xauth_path         /usr/X11/bin/xauth 
+ 
+ # Xauth file for server
+ authfile           /var/run/slim.auth
+@@ -33,7 +33,7 @@
+ # to adjust the command according to your preferred shell,
+ # i.e. for freebsd use:
+ # login_cmd           exec /bin/sh - ~/.xinitrc %session
+-login_cmd           exec /bin/bash -login ~/.xinitrc %session
++#login_cmd           exec /bin/bash -login ~/.xinitrc %session
+ 
+ # Commands executed when starting and exiting a session.
+ # They can be used for registering a X11 session with
+@@ -51,7 +51,7 @@
+ # The current chosen session name is replaced in the login_cmd
+ # above, so your login command can handle different sessions.
+ # see the xinitrc.sample file shipped with slim sources
+-sessions            xfce4,icewm,wmaker,blackbox
++#sessions            xfce4,icewm,wmaker,blackbox
+ 
+ # Executed when pressing F11 (requires imagemagick)
+ screenshot_cmd      import -window root /slim.png
