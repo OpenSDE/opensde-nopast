@@ -74,9 +74,16 @@ O libchipcard2
 O runit-shutdown
 O runit-logacct
 
+# ----------------------------------------
 # Disabled due to shared files.
-
+# ----------------------------------------
+# format is:
+#   X enabled-pkg
+#   O disabled-pkg
+# ----------------------------------------
 X dhcpcd
 O dhcpcd-scriptconfig
 X nvidia
 O nvidia-legacy
+X xf86-video-intel
+O xf86-video-i810
