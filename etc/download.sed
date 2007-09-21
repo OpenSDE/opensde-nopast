@@ -22,7 +22,7 @@ s,^http://www.mysql.org/Downloads/,http://www.mirrorservice.org/sites/ftp.mysql.
 #s,^ftp://ftp.kde.org/pub/kde/,http://ibiblio.org/pub/mirrors/kde/,
 
 # loadbalancer is working weird these days
-s,^http://.*dl.\(sourceforge\|sf\).net/,http://surfnet.dl.sourceforge.net/,
+s,^http://.*dl.\(sourceforge\|sf\).net/,http://prdownloads.sourceforge.net/,
 
 # PostgreSQL Team does not like us to use their ftp
 s,^ftp://ftp.postgresql.org/pub/source/,ftp://ftp.us.postgresql.org/pub/mirrors/postgresql/source/,
