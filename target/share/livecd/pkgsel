@@ -75,7 +75,7 @@ X xscreensaver
 = fonts/*
 
 # kde
-X qt
+X qt3
 X arts
 X kdelibs
 X kdebase
