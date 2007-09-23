@@ -26,6 +26,3 @@ choice SDECFG_X8664_OPT generic   \
 if [ $SDECFG_X8664_OPT != generic ] ; then
 	SDECFG_ID="$SDECFG_ID-$SDECFG_X8664_OPT"
 fi
-
-SDECFGSET_MULTILIB=1
-
