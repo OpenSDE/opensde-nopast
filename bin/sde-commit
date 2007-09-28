@@ -29,6 +29,14 @@ Usage:	$progname [--file <message file>] [FILES...]
 EOT
 }
 
+commit_abort() {
+	echo_error "Got SIGINT (Crtl-C)."
+	rm -f $tmpfile.status $tmpfile.diff
+
+	[ $logfile != $tmpfile.log ] || rm -f $logfile
+	exit 1
+}
+
 shortopts='F:'
 longopts='file:'
 options=$( getopt -o "$shortopts" -l "$longopts" -- "$@" )
@@ -74,13 +82,12 @@ root=$( echo "$roots" | head -n 1 )
 locations=$( echo "$locations" | cut -d'	' -f2 )
 [ -n "$locations" ] || echo_abort 1 "No locations, aborting."
 
-echo_abort 0 "Not yet reimplemented."
-
 # and here we go
 #
-trap 'echo_error "Got SIGINT (Crtl-C)." ; rm $tmpfile.status $tmpfile.diff ; [ $logfile != $tmpfile.log ] || rm $logfile; exit 1' INT
-cd "$SDEROOT"
+trap 'commit_abort' INT
+echo_abort 0 "Not yet reimplemented."
 
+cd "$SDEROOT"
 (
 $SVN st $locations | tee $tmpfile.status | grep '^\(A\|M\)' | tr -s ' ' | cut -d' ' -f2- | while read f; do
 	f=${f#+ }
