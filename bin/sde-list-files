@@ -55,25 +55,28 @@ done
 
 print_error() { echo "$@" >&2; }
 
+# prints an absolute path $SDEROOT relative if wanted
 print_file() {
-	local file="$1" root="$2"
+	local file="$1"
 
-	if [ -z "$root" ]; then
-		# only filename
-		[ -n "$show_absolute_path" ] || file="${file#$SDEROOT/}"
-	elif [ "$root" == "." ]; then
-		# $SDEROOT is the root
-
-		[ -z "$show_absolute_path" ] || root="$SDEROOT"
+	if [ "$file" == "$SDEROOT" ]; then
+		[ -n "$show_absolute_path" ] || file="."
 	else
-		[ -z "$show_absolute_path" ] || root="$SDEROOT/$root"
+		[ -n "$show_absolute_path" ] || file="${file#$SDEROOT/}"
+	fi
+
+	echo "$file"
+}
+
+# prints a roota relative path
+print_file_root() {
+	local file="$1" root="$2"	# $file arrives relative
+
+	if [ "$root" == "." -a -n "$show_absolute_path" ]; then
+		root="$SDEROOT"
 	fi
 		
-	if [ -n "$root" ]; then
-		echo "$root	${file#$SDEROOT/}"
-	else
-		echo "$file"
-	fi
+	echo "$root	$file"
 }
 
 for x; do
@@ -100,13 +103,35 @@ for x; do
 		print_error "$x: not found."
 	elif [ "$y" == "$SDEROOT" ]; then
 		# uh, the root itself
-		print_file "." "."
+		if [ -n "$show_roots" ]; then
+			print_file_root "." "."
+		else
+			print_file "$SDEROOT"
+		fi
 	elif ! expr "$y" : "$SDEROOT/*" > /dev/null; then
 		# missing
 		print_error "$x: outside the tree."
 	elif [ -n "$show_roots" ]; then
 		# detect the right VCS roots and split the output accordingly
-		print_file "$y" "."
+		file="${y#$SDEROOT/}"
+		root=.
+		case "$file" in
+			target/*)	# targets may be their own svn or git repository
+					root=$( echo "$file" | cut -d/ -f'1,2' )
+					[ -e "$SDEROOT/$root/.svn" -o -e "$SDEROOT/$root/.git" ] || root=.
+					;;
+			package)	# package is an standalone git repo
+					root="package"	file="."	;;
+			package/*)	# each package/* may be it's own svn or git repo
+					root=$( echo "$file" | cut -d/ -f'1,2' )
+					[ -e "$SDEROOT/$root/.svn" -o -e "$SDEROOT/$root/.git" ] || root=package
+					;;
+		esac
+
+		# trim filename to be $root relative
+		[ "$root" == "." ] || file="${file#$root/}"
+
+		print_file_root "$file" "$root"
 	else
 		# just output the list
 		print_file "$y"
