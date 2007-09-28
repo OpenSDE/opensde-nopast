@@ -17,76 +17,64 @@
 #Description: Commits into svn the changes on the given locations
 #Alias: ci
 
-set -e
-
 [ -n "$SDEROOT" ] ||
 	export SDEROOT=$( cd "${0%/*}/.."; pwd -P )
 
 . $SDEROOT/lib/libsde.in
 
-# svn or svk ?
-#
-if [ -d $SDEROOT/.svn/ ]; then
-	SVN=svn
-else
-	SVN=svk
+commit_usage() {
+	local progname=${0##*/}
+	cat <<EOT
+Usage:	$progname [--file <message file>] [FILES...]
+EOT
+}
+
+shortopts='F:'
+longopts='file:'
+options=$( getopt -o "$shortopts" -l "$longopts" -- "$@" )
+if [ $? -ne 0 ]; then
+	commit_usage
+	exit -1
 fi
 
-locations= x= y=
+# load new arguments list
+eval set -- "$options"
+
 logfile=
 tmpfile=$SDEROOT/tmp/$$
 
 mkdir -p "$SDEROOT/tmp"
 
-if [ "$1" == "--file" ]; then
-	logfile="`readlink -f $2 2> /dev/null`"; shift; shift;
-fi
+while [ $# -gt 0 ]; do
+	case "$1" in
+		-F|--file)	logfile="`readlink -f $2 2> /dev/null`"; shift ;;
 
-# validate locations
-#
-for x; do
-	if [ -z "$x" ]; then
-		continue
-	elif [ -e "$x" ]; then
-		# exists, normalize
-		y="$( readlink -f $x )"
-		if [ "$y" == "${y#$SDEROOT}" ]; then
-			echo_warning "'$COLOR_MESSAGE$x$COLOR_NORMAL'" \
-				"is out of the tree, skipping."
-			continue
-		fi
-		x="${y#$SDEROOT/}"
-	elif [ -e "$SDEROOT/$x" ]; then
-		# root relative
-		true
-	elif [ -d "$( echo "$SDEROOT/package/"*"/$x" )" ]; then
-		# package from this tree
-		x="$( cd "$SDEROOT"; echo "package/"*"/$x" )"
-	elif [ -n "$( $SVN st "$x" 2> /dev/null )" ]; then
-		# oh, it use was deleted
-		y="$PWD/$x"
-		y="$( readlink -f ${y%/*} )"
-		if [ "$y" == "${y#$SDEROOT}" ]; then
-			echo_warning "'$COLOR_MESSAGE$x$COLOR_NORMAL'" \
-				"is out of the tree, skipping."
-			continue
-		fi
-		x="${y#$SDEROOT/}/${x##*/}"
-	else
-		echo_warning "'$COLOR_MESSAGE$x$COLOR_NORMAL' not found, skipping."
-		continue
-	fi
-
-	locations="$locations $x"
-done	
-
-if [ -z "$( echo $locations )" ]; then
-	echo_abort 1 "No locations, bye."
-fi
+		--)	shift; break ;;
+		*)	echo_abort 1 "Unknown argument '$1', aborting."
+	esac
+	shift
+done
 
 if [ -n "$logfile" -a ! -r "$logfile" ]; then
 	echo_abort 2 "File '$logfile' not found."
 fi
+
+# validate locations
+#
+[ $# -gt 0 ] || set -- .
+# extract roots at root relative paths of the given locations
+locations=$( $SDEROOT/bin/sde-list-files --roots "$@" )
+
+# we only accept one root at the time
+roots=$( echo "$locations" | cut -d'	' -f1 | sort -u )
+root=$( echo "$roots" | head -n 1 )
+[ "$root" == "$roots" ] || echo_abort 1 "Locations from multiple repositories given, aborting."
+
+# $root relative locations
+locations=$( echo "$locations" | cut -d'	' -f2 )
+[ -n "$locations" ] || echo_abort 1 "No locations, aborting."
+
+echo_abort 0 "Not yet reimplemented."
 
 # and here we go
 #
