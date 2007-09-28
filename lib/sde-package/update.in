@@ -60,39 +60,7 @@ package_update_md5() {
 	fi
 
 	baseurl="${md5%/*}"
-	curl "$md5" | while read md5sum file; do
-		pkg=$( echo "$file" | sed -e 's,-[0-9].*,,' | tr [A-Z] [a-z] )
-		if [ -z "$pkg" ]; then
-			echo_error "Failed to detect package name for '$file'."
-			continue
-		fi
-		case "$pkg" in
-			exo)	
-				pkg=lib${pkg}	;;
-			gtk-xfce-engine)
-				pkg=${pkg}2	;;
-			libxml2)
-				pkg=${pkg%2}	;;
-			terminal)
-				pkg=xfce4-terminal	;;
-			mono/gtk-sharp)
-				pkg=gtk-sharp2	;;
-			kde-i18n/*|c++/*|java/*|python/*)
-				pkg=${pkg#*/}
-		esac
-
-		confdir=$( ls -1d $SDEROOT/package/*/$pkg 2> /dev/null || true )
-		if [ -z "$confdir" -o ! -f "$confdir/$pkg.desc" ]; then
-			echo_error "Failed to detect package name for '$file' ($pkg)."
-			continue
-		fi
-
-		ver=$( echo "$file" | sed -n -e 's,.*-\([0-9].*\)\.tar\.bz2,\1,p' )
-		if [ -z "$ver" ]; then
-			echo_error "Failed to detect new version for $pkg ($file)."
-			continue
-		fi
-
+	$SDEROOT/bin/sde-parse-md5 "$md5" | while read pkg ver file; do
 		if [ -z "$nolocation" ]; then
 			location="$baseurl/$file";
 			package_do_update "$pkg" "$ver" "${location%/*}/"
