@@ -22,9 +22,9 @@ BEGIN { FS="[ /]" }
 /^\+\[V\] / {
 	newver=$2
 	if ( oldver )
-		print "\t* updated " pkg " (" oldver " -> " newver ")"
+		print "Updated " pkg " (" oldver " -> " newver ")"
 	else {
-		print "\t* added " pkg " (" newver ")" info
+		print "Added " pkg " (" newver ")" info
 	}
 	oldver="" ; newver="" ; info=""
 }
