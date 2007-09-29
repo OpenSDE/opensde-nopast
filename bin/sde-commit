@@ -121,15 +121,13 @@ cd "$SDEROOT/$root"
 if [ ".git" ]; then
 	# git status
 	git-diff-index -M --color --stat=80,65 HEAD > $tmpfile.status
-	git-diff-index -M --color -p HEAD > $tmpfile.status
+	git-diff-index -M --color -p HEAD > $tmpfile.diff
 else
 	echo_abort "$root: unknown version control system."
 fi
 
-echo_abort 0 "Not yet reimplemented."
-
 echo_msg "Changes:"
-$SVN diff $locations | tee $tmpfile.diff
+cat $tmpfile.diff
 
 if [ -z "$logfile" ]; then
 	logfile=$tmpfile.log
@@ -160,9 +158,9 @@ if [ -s $tmpfile.diff ] || grep -q '^A' $tmpfile.status; then
 
 		case "$opt" in
 		  c*)	if [ -n "$commit" ]; then
-		  		$SVN commit $locations --file $logfile && rm "$logfile" ; quit=1
+				git commit --file $logfile && rm "$logfile" ; quit=1
 			fi ;;
-		  d*)	less $tmpfile.diff ;;
+		  d*)	${PAGER:-less -R} $tmpfile.diff ;;
 		  s*)	cat $tmpfile.status ;;
 		  e*)	${EDITOR:-vi} $logfile ;;
 		  q*)	quit=1 ;;
