@@ -122,19 +122,18 @@ if [ ".git" ]; then
 	# git status
 	git-diff-index -M --color --cached --stat=80,65 HEAD > $tmpfile.status
 	git-diff-index -M --color --cached -p HEAD | sed -e "s,^\(.\[1m\|\)\(---\|\+\+\+\) [ab]/,\1\2 $root/," > $tmpfile.diff
+
+	if [ -z "$logfile" ]; then
+		logfile=$tmpfile.log
+		git-diff-index -M --cached -p HEAD | sed -e "s,^\(---\|\+\+\+\) [ab]/,\1 $root/," |
+			awk -f $SDEROOT/lib/sde-commit/commit-message.awk > $logfile
+	fi
 else
 	echo_abort "$root: unknown version control system."
 fi
 
 echo_msg "Changes:"
 cat $tmpfile.diff
-
-if [ -z "$logfile" ]; then
-	logfile=$tmpfile.log
-	# the grep -v === is a hack - somehow the svn === lines confuse awk ... ?!?
-	grep -v === $tmpfile.diff |
-		awk -f $SDEROOT/lib/sde-commit/commit-message.awk > $logfile
-fi
 
 echo_msg "Status:"
 cat $tmpfile.status
