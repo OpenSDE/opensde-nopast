@@ -21,12 +21,12 @@
 list_usage() {
 	local progname=${0##*/}
 	cat <<EOT
-Usage:	$progname [-C <directory>] [LOCATIONS...]
+Usage:	$progname [-C <directory>] [--status] [LOCATIONS...]
 EOT
 }
 
 shortopts='C:'
-longopts='directory:'
+longopts='directory:,status'
 options=$( getopt -o "$shortopts" -l "$longopts" -- "$@" )
 if [ $? -ne 0 ]; then
 	list_usage
@@ -37,10 +37,12 @@ fi
 eval set -- "$options"
 
 root=.
+show_status=
 
 while [ $# -gt 0 ]; do
 	case "$1" in
 		-C|--directory)	root="$2"; shift ;;
+		--status)	show_status=1 ;;
 
 		--)	shift; break ;;
 		*)	echo_abort 1 "Unknown argument '$1', aborting."
@@ -59,7 +61,12 @@ if [ -d '.git' ]; then
 	#
 
 	# changed files
-	git-diff-index --name-only HEAD "$@" -M -C &
+	if [ -n "$show_status" ]; then
+		status=--name-status
+	else
+		status=--name-only
+	fi
+	git-diff-index $status HEAD "$@" &
 
 	# untracked files
 	exclude=
@@ -69,6 +76,8 @@ if [ -d '.git' ]; then
 		if [ -d "$f/.git" -o -d "$f/.svn" ]; then
 			# skip sub-projects
 			continue
+		elif [ -n "$show_status" ]; then
+			echo "?	$f"
 		else
 			echo "$f"
 		fi
