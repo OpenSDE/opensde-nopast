@@ -132,13 +132,14 @@ else
 	echo_abort "$root: unknown version control system."
 fi
 
-echo_msg "Changes:"
-cat $tmpfile.diff
+if [ -s $tmpfile.diff -o -s $tmpfile.status ]; then
 
-echo_msg "Status:"
-cat $tmpfile.status
+	echo_msg "Changes:"
+	cat $tmpfile.diff
 
-if [ -s $tmpfile.diff ] || grep -q '^A' $tmpfile.status; then
+	echo_msg "Status:"
+	cat $tmpfile.status
+
 	quit=0
 	until [ $quit -ne 0 ]; do
 
@@ -167,7 +168,7 @@ if [ -s $tmpfile.diff ] || grep -q '^A' $tmpfile.status; then
 		esac
 	done
 else
-	echo_warning "No changes detected at:$locations"
+	echo_warning "No changes detected."
 fi
 
 rm -f $tmpfile.status $tmpfile.diff
