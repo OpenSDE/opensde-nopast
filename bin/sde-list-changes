@@ -54,9 +54,28 @@ print_error() { echo "$@" >&2; }
 [ -d "$root" ] || echo_abort 1 "$root: Invalid root directory."
 cd "$root"
 
-if [ -d ".git" ]; then
+if [ -d '.git' ]; then
 	# git
-	true
+	#
+
+	# changed files
+	git-diff-index --name-only HEAD "$@" -M -C &
+
+	# untracked files
+	exclude=
+	[ ! -f '.gitignore' ] || exclude="-X .gitignore"
+	git-ls-files --others --directory $exclude "$@" | while read f; do
+		# be sure to not include sub-projects
+		if [ -d "$f/.git" -o -d "$f/.svn" ]; then
+			# skip sub-projects
+			continue
+		else
+			echo "$f"
+		fi
+	done	
+
+	# wait for git-diff-index
+	wait
 else
 	print_error "$root: Invalid Version Control System."
 fi
