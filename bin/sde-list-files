@@ -129,7 +129,11 @@ for x; do
 		esac
 
 		# trim filename to be $root relative
-		[ "$root" == "." ] || file="${file#$root/}"
+		case "$root" in
+			.)	;;
+			$file)	file=. ;;
+			*)	file="${file#$root/}"
+		esac
 
 		print_file_root "$file" "$root"
 	else
