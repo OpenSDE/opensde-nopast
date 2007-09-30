@@ -17,7 +17,7 @@
 # --- SDE-COPYRIGHT-NOTE-END ---
 
 if [ "$1" = "-all" ] ; then
-	$0 -repository `ls package/. | egrep -v '(CVS|\.svn)'`
+	$0 -repository `ls package/. | egrep -v '(CVS|\.svn|\.git)'`
 	exit 0
 fi
 
