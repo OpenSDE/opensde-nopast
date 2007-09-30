@@ -58,7 +58,7 @@ X gconf
 X orbit2
 
 # kde
-X qt
+X qt3
 X arts
 X kdelibs
 
