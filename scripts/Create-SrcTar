@@ -53,7 +53,8 @@ for x in $sderootfiles; do
 done
 
 tar --owner root --group root \
-    --exclude .svn --exclude CVS -cO $y
+    --exclude .svn --exclude CVS \
+    --exclude .git  -cO $y
 ) | bzip2 -c - > ${1:-$srctar.tar.bz2}.$$
 
 # Done.
