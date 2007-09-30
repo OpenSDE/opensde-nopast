@@ -21,5 +21,5 @@
 dirs=""; while [ -n "${1##[-\(\!]*}" ]; do dirs="$dirs $1"; shift; done
 if [ $# -eq 0 ]; then set -- -print; fi; 
 action=") -print"; if [ "${*#-print}" != "$*" ]; then action=""; fi
-find $dirs '(' -path '*/.svn' -o -path '*/CVS' ')' -prune -o ${action:+\(} "$@" $action
+find $dirs '(' -path '*/.svn' -o -path '*/CVS' -o -path '*/.git' ')' -prune -o ${action:+\(} "$@" $action
 
