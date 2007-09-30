@@ -58,16 +58,16 @@ for x in . package package/* target/*; do
 	if [ ! -d "$x" ]; then
 		case "$x" in
 			package)
-				echo -n "$tree/$x: clonning..."
+				echo -n "$tree/$x: "
 				git clone --quiet "$GITSERVER/opensde/$x-nopast.git" "$x"
 				;;
 			*)
-				echo_warning "$tree/$x: missing"
+				echo "$tree/$x: missing" >&2
 				;;
 		esac
 	elif [ -d "$x/.git" ]; then
 		cd "$x";
-		echo -n "$tree/$x: syncing..."
+		echo -n "$tree/$x: "
 		git fetch --quiet && git reset && git rebase origin
 		cd - > /dev/null
 	fi
