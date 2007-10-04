@@ -54,7 +54,7 @@ cd "$SDEROOT"
 tree="${SDEROOT##*/}"
 # hunt for the roots of the sub-working trees
 #
-for x in $( ls -1d . package package/* target/* 2> /dev/null ); do
+for x in . package $( ls -1d package/* target/* 2> /dev/null ); do
 	if [ ! -d "$x" ]; then
 		case "$x" in
 			package)
