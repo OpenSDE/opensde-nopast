@@ -35,7 +35,7 @@ initrd_flist_install_filter() {
 			cp "$root/usr/bin/strace" "$initrddir/bin/"
 			;;
 		sysfiles)
-			for x in etc/{,SDE-}VERSION etc/{passwd,group} etc/rc.d/functions{,-ansi,-std}.in; do
+			for x in etc/{,SDE-}VERSION etc/{passwd,group} etc/rc.d/functions{,-ansi}.in; do
 				cp "$root/$x" "$initrddir/$x"
 			done
 			for x in etc/{fstab,hosts,resolv.conf}; do
