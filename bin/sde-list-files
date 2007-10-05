@@ -92,6 +92,12 @@ for x; do
 	elif [ -e "$SDEROOT/$x" ]; then
 		# $SDEROOT relative
 		y="$SDEROOT/$x"
+	elif [ -e "$SDEROOT/package"/*/"$x" ]; then
+		# package name
+		y=$( echo "$SDEROOT/package"/*/"$x" )
+	elif [ -e "$SDEROOT/target/$x" ]; then
+		# package name
+		y="$SDEROOT/target/$x"
 	fi
 
 	# canonicalize
