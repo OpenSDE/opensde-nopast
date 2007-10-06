@@ -369,7 +369,13 @@ fi
 # ----  Setting Build Variables
 #
 
-flistroot="bin boot etc lib lib64 sbin usr var opt"
+# allowed toplevel directories that will be flisted
+flistroot="bin boot etc lib sbin usr var opt"
+
+# add lib32 and lib64 in the case the target has multilib support
+if [ "$SDECFG_MULTILIB" = 1 ]; then
+	var_append flistroot ' ' "lib32 lib64"
+fi
 
 # remove the obvious noise: ldconfig and our /var/adm as well as due to
 # rare i18n locale directories ...
