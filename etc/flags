@@ -48,3 +48,4 @@ SQUIRRELMAIL	Package is SquirrelMail addon/plugin
 CLAWS		Package is a Claws-mail plugin
 
 SETUPTOOLS	Package is installed using setuptools
+QT3-PLUGIN	Package is or contains qt3 plugins.
