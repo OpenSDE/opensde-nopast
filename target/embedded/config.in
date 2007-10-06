@@ -29,7 +29,7 @@ s,^. \(.\)[^ ]*,X \11--------,;
 
 # select some packages (and repositories) explicitely
 
-/ 00-dirtree /		{ p; d; };
+/ fhs /		{ p; d; };
 / sysfiles /		{ p; d; };
 / iana-etc /		{ p; d; };
 / rocknet /		{ p; d; };

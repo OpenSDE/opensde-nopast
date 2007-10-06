@@ -22,7 +22,7 @@ rm -rf $disksdir/2nd_stage*
 mkdir -p $disksdir/2nd_stage; cd $disksdir/2nd_stage
 
 #
-package_map='00-dirtree
+package_map='fhs
 glibc
 parted             mac-fdisk          pdisk
 xfsprogs           mkdosfs            jfsutils

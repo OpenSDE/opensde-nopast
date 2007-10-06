@@ -28,7 +28,7 @@ s,^. \(.\)[^ ]*,X \11--------,;
 
 # select some packages (and repositories) explicitely
 
-/ 00-dirtree /		{ p; d; };
+/ fhs /		{ p; d; };
 / linux-header /	{ p; d; };
 / binutils /		{ s,^. [^ ]*,X 0---------,; p; d; }
 / gcc /			{ s,^. [^ ]*,X 0---------,; p; d; }

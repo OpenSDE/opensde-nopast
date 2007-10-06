@@ -25,7 +25,7 @@ O *
 X dietlibc
 
 # Add strictly required packages
-X 00-dirtree
+X fhs
 X cpio
 X dhcp
 X dialog
