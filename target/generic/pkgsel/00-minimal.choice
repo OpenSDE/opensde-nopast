@@ -22,7 +22,6 @@
 # TODO: for now:
 O *
 = glibc
-= glibc32
 X dietlibc
 
 # Add strictly required packages
