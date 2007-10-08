@@ -87,3 +87,5 @@ X nvidia
 O nvidia-legacy
 X xf86-video-intel
 O xf86-video-i810
+X cron
+O bcron
