@@ -28,14 +28,19 @@ mount -t usbfs none /proc/bus/usb
 mount -t sysfs none /sys
 ln -s /proc/self/fd /dev/fd
 
+if [ ! -c /dev/console ]; then
+	mknod /dev/console c 5 1
+fi
+if [ ! -c /dev/null ]; then
+	mknod /dev/null c 1 3
+fi
+if [ ! -c /dev/zero ]; then
+	mknod /dev/zero c 1 5
+fi
+
 echo "Populating /dev (u/dev) ..."
 udevd --daemon
 udevtrigger
-if [ ! -f /dev/console ]; then
-	mknod /dev/console c 5 1
-	mknod /dev/null c 1 3
-	mknod /dev/zero c 1 5
-fi
 
 echo "Running hotplug++ hardware detection ..."
 /sbin/hotplug++ -synth
@@ -76,9 +81,13 @@ doboot()
 		mount /proc /mnt_root/proc -t none -o move
 		mount /sys /mnt_root/sys -t none -o move
 
-		if [ ! -f /mnt_root/dev/console ]; then
+		if [ ! -c /mnt_root/dev/console ]; then
 			mknod /mnt_root/dev/console c 5 1
+		fi
+		if [ ! -c /mnt_root/dev/null ]; then
 			mknod /mnt_root/dev/null c 1 3
+		fi
+		if [ ! -c /mnt_root/dev/zero ]; then
 			mknod /mnt_root/dev/zero c 1 5
 		fi
 
