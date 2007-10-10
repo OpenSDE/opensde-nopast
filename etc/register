@@ -30,7 +30,7 @@ Reserved User and Group IDs:
 - hardware access:
 16			video
 17			audio
-31			modem
+31			uucp
 32			lp
 33			floppy
 34			cdrom
