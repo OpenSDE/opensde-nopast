@@ -115,6 +115,7 @@ block_begin 7
 
 	if [ -f architecture/$SDECFG_ARCH/config.in ]
 	then . architecture/$SDECFG_ARCH/config.in ; fi
+	bool 'Enable c-compiler multilib support' SDECFG_MULTILIB 0
 	bool 'This is a cross-build between architectures' SDECFG_CROSSBUILD 0
 	if [ "$SDECFG_CROSSBUILD" = 1 ] ; then
 		pkgfilter sed -e 's,^\(. ..\)[^ ]*,\1--------,' -e 's,^\(. \)?,\10,' -e 's,^\(. .\)?,\11,'
@@ -382,7 +383,6 @@ break packages!'
 	bool 'Enable PIE (Position Independent Code)' SDECFG_PIE 0
 
 	bool 'Disable exceptions and rtti in C++' SDECFG_LIMITCXX 0
-	bool 'Enable c-compiler multilib support' SDECFG_MULTILIB 0
 
 	bool 'Disable National Language Support' SDECFG_DISABLE_NLS 0
 	if [ "$SDECFG_DISABLE_NLS" = 1 ] ; then
