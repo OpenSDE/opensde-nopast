@@ -77,11 +77,8 @@ elif [ ! -e "$root" ]; then
 fi
 
 if [ -n "$root" ]; then
-	for x in $( seq 1 10 ); do
-		[ ! -e "$root" ] || break
-		sleep 1
-	done
-		
+	udevsettle
+
 	if [ -e "$root" ]; then
 		title "Mounting $root"
 		check mount ${mode:+-o $mode} "$root" /rootfs
