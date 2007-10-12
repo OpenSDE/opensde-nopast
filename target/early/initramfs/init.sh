@@ -48,6 +48,11 @@ status
 
 [ -x /bin/dmesg ] && /bin/dmesg -n 3
 
+title "Preparing /dev"
+check mount -n -t tmpfs none /dev
+check cp -a /lib/udev/devices/* /dev
+status
+
 title "Starting udev daemon"
 echo "" > /sys/kernel/uevent_helper
 check udevd --daemon
@@ -91,14 +96,14 @@ fi
 # wait for /sbin/init
 while [ ! -x "/rootfs$initrd" ]; do
 	echo "Please mount root device on /rootfs and exit to continue"
-	setsid /bin/sh < /dev/vc/1 > /dev/vc/1 2> /dev/vc1
+	setsid /bin/sh < /dev/vc/1 > /dev/vc/1 2> /dev/vc/1
 done
 
 title "Cleaning up"
 check killall udevd
-check umount /sys
-check umount /proc/bus/usb
-check umount /proc
+check mount -t none -o move /dev /rootfs/dev
+check mount -t none -o move /sys /rootfs/sys
+check mount -t none -o move /proc /rootfs/proc
 status
 	
 exec switch_root /rootfs "$initrd" "$initargs"
