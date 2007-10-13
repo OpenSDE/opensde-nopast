@@ -419,21 +419,24 @@ static void sort_of_realpath (const char *file, char *absfile)
 	/* till the end, remove ./ and ../ parts */
 	while (dst < absfile + PATH_MAX && *src) {
 		if (*src == '.') {
-			if (src[1] == '.' && src[2] == '/') {
-				if (dst > file) --dst; /* jump to last '/' */
-				while (dst > file && dst[-1] != '/')
+			if (src[1] == '.' && (src[2] == '/' || src[2] == 0)) {
+				if (dst > absfile+1) --dst; /* jump to last '/' */
+				while (dst >absfile+1 && dst[-1] != '/')
 					--dst;
-				src += 3;
+				src += 2; if (*src) src++;
 				continue;
 			}
-			else if (src[1] == '/') {
-				src += 2;
+			else if (src[1] == '/' || src[1] == 0) {
+				src += 1; if (*src) src++;
 				continue;
 			}
 		}
 		*dst++ = *src++;
 	}
 	*dst = 0;
+	/* remove trailing slashes */
+	while (--dst, dst > absfile+1 && *dst == '/')
+		*dst = 0;
 }
 
 static void handle_file_access_after(const char * func, const char * file,
