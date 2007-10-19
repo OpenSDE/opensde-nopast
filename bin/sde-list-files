@@ -81,23 +81,21 @@ print_file_root() {
 
 for x; do
 	y=
-	if [ -e "$x" ]; then
-		if [ "${x:0:1}" == "/" ]; then
-			# absolute
-			y="$x"
-		else
-			# $PWD relative
-			y="$PWD/$x"
-		fi
-	elif [ -e "$SDEROOT/$x" ]; then
-		# $SDEROOT relative
-		y="$SDEROOT/$x"
+	if [ "${x:0:1}" == "/" -a -e "$x" ]; then
+		# absolute
+		y="$x"
 	elif [ -e "$SDEROOT/package"/*/"$x" ]; then
 		# package name
 		y=$( echo "$SDEROOT/package"/*/"$x" )
 	elif [ -e "$SDEROOT/target/$x" ]; then
-		# package name
+		# target name
 		y="$SDEROOT/target/$x"
+	elif [ -e "$SDEROOT/$x" ]; then
+		# $SDEROOT relative
+		y="$SDEROOT/$x"
+	else [ -e "$x" ]
+		# $PWD relative
+		y="$PWD/$x"
 	fi
 
 	# canonicalize
