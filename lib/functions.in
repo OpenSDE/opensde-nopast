@@ -764,19 +764,24 @@ apply_patchfiles() {
 			x="$base/download/mirror/${x:0:1}/$x"
 		fi
 
-		echo "Apply patch $x ..."
+		# Apply the patch if the file does exist or issue a warning
+		if [ -f "$x" ] ; then
+			echo "Apply patch $x ..."
 
-		if [[ $x = *.bz2 ]] ; then
-			patch_file=`mktemp` ; patch_del=1
-			bzcat $x > $patch_file
+			if [[ $x = *.bz2 ]] ; then
+				patch_file=`mktemp` ; patch_del=1
+				bzcat $x > $patch_file
+			else
+				patch_file=$x ; patch_del=0
+			fi
+
+			$filter $patch_file | patch $patchopt
+
+			[ $patch_del = 1 ] && rm $patch_file
+			eval "$hook"
 		else
-			patch_file=$x ; patch_del=0
+			echo_warning "Unable to apply patch: $x (File not found!)"
 		fi
-
-		$filter $patch_file | patch $patchopt
-
-		[ $patch_del = 1 ] && rm $patch_file
-		eval "$hook"
         done
 }
 
