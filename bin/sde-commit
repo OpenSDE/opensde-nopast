@@ -93,7 +93,7 @@ trap 'commit_abort' INT
 # find changes on these locations, and apply copyright patch
 #  - in the case of git working trees we populate the index
 #
-$SDEROOT/bin/sde-list-changes -C "$SDEROOT/$root" --status "$locations" | ( while read status file; do
+$SDEROOT/bin/sde-list-changes -C "$SDEROOT/$root" --status $locations | ( while read status file; do
 	# work sitting on the root of the working tree
 	cd "$SDEROOT/$root"
 
