@@ -100,8 +100,7 @@ package_update() {
 		pkg=$( package_autodetect )
 	else
 		echo_error "Invalid Syntax."
-		. $SDEROOT/lib/sde-help.in
-		help_command package
+		package_usage
 		return 1	
 	fi
 
@@ -109,8 +108,7 @@ package_update() {
 		package_do_update "$pkg" "$ver" "${location}"
 	else
 		echo_error "I could't guess which package you want to update."
-		. $SDEROOT/lib/sde-help.in
-		help_command package
+		package_usage
 		return 2
 	fi
 }
