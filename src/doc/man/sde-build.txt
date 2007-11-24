@@ -8,7 +8,7 @@ sde-build - Build or prepare packages for being build.
 
 SYNOPSIS
 --------
-'sde build' [DISCRIMINATOR] [OPTIONS] ITEMS
+'sde build' [DISCRIMINATOR] [OPTIONS] [ITEMS]
 
 DESCRIPTION
 -----------
@@ -17,7 +17,9 @@ Builds, enqueues or dequeues specified items.
 DISCRIMINATORS
 --------------
 config, cfg::
-	Start building the full configuration or queued packages.
+	Start building the full configuration or queued packages of the
+	config identified by item. If no item specified the config will
+	use 'default'.
 package, pkg::
 	Builds single packages, but also allows adding or removing packages
 	to/from the build queue without actually starting the build.
@@ -26,7 +28,7 @@ repository, repo::
 	removing all packages in a repository to/from the build queue 
 	without actually starting the build
 
-OPTIONS FOR 'CONFIG' DISCRIMINATOR
+OPTIONS FOR CONFIG DISCRIMINATOR
 ----------------------------------
 --queued::
 	Only build queued packages.
@@ -34,7 +36,7 @@ OPTIONS FOR 'CONFIG' DISCRIMINATOR
 	Only build the given stage if possible. The stage will only build
 	if previous stage have been build in the past.
 
-OPTIONS FOR 'PACKAGE' DISCRIMINATOR
+OPTIONS FOR PACKAGE DISCRIMINATOR
 -----------------------------------
 -c, --cfg, --config name::
 	Use the given config to perform the specified action.
@@ -48,7 +50,7 @@ OPTIONS FOR 'PACKAGE' DISCRIMINATOR
 --stage name::
 	Only perfom the action (build/enqueue/dequeue) for the given stage.
 
-OPTIONS FOR 'REPOSITORY' DISCRIMINATOR
+OPTIONS FOR REPOSITORY DISCRIMINATOR
 -----------------------------------
 -c, --cfg, --config name::
 	Use the given config to perform the specified action.
