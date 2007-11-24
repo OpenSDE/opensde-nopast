@@ -4,13 +4,42 @@ The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
-sde-copy - copy part of the system
+sde-copy - copies part of the system
 
 SYNOPSIS
 --------
-'sde copy' [OPTIONS]
+'sde copy' [DISCRIMINATOR] [OPTIONS] [ITEM] [ITEMNEW]
 
 DESCRIPTION
 -----------
-Copies the identified part (item) of the sde environment indicated by the
-discriminator.
+Copies part of the system to a new name. The discriminator indicates in 
+what section of the sde system the copy will take place. The item indicates
+what part will be copied to the new item name.
+
+DISCRIMINATORS
+--------------
+build::
+	Copies an existing build to a new one. The item specifies the 
+	config name that was used for the build. The new item name specifies
+	the new config name. With this discriminator both the build and
+	the accompanying config will be copied.
+config, cfg::
+	Copies an existing config identified by item to a new one. When no
+	item name is specified, 'default' will be used.
+package, pkg::
+	Copies an existing package (item) to a new one. For this discriminator
+	full qualified package names are required. Fully qualified package
+	names are names in which the actual package name is preceded by
+	the repository name separated by a dot (.).
+target, tgt::
+	Copies an existing target identified by item to a new one.
+
+OPTIONS FOR ALL DISCRIMINATORS
+------------------------------
+-f, --force::
+	Allows to overwrite existing items in case the specified new item
+	already exists.
+-q, --quiet::
+        Reduces feedback to an absolute minimum.
+-v, --verbose:
+        Gives additional feedback.
