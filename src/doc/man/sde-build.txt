@@ -4,7 +4,7 @@ The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
-sde-build - Build stuff
+sde-build - Build or prepare packages for being build.
 
 SYNOPSIS
 --------
@@ -12,31 +12,51 @@ SYNOPSIS
 
 DESCRIPTION
 -----------
-Builds all or TODO
+Builds, enqueues or dequeues specified items. 
 
 DISCRIMINATORS
 --------------
-
 config, cfg::
-	Start building the full configuration
+	Start building the full configuration or queued packages.
 package, pkg::
-	Allows to add or remove packages to/from the build queue without
-	actually starting the build
+	Builds single packages, but also allows adding or removing packages
+	to/from the build queue without actually starting the build.
 repository, repo::
-	Allows to add or remove all packages in a repository to/from the
-	build queue without actually starting the build
+	Builds all packages in a repository, but also allows adding or 
+	removing all packages in a repository to/from the build queue 
+	without actually starting the build
 
-OPTIONS
--------
+OPTIONS FOR 'CONFIG' DISCRIMINATOR
+----------------------------------
+--queued::
+	Only build queued packages.
+--stage name::
+	Only build the given stage if possible. The stage will only build
+	if previous stage have been build in the past.
 
+OPTIONS FOR 'PACKAGE' DISCRIMINATOR
+-----------------------------------
+-c, --cfg, --config name::
+	Use the given config to perform the specified action.
 --enqueue::
-	Adds the given item (packages or all packages in a repository) to
+	Adds the given items (packages) to the build queue.
+--dequeue::
+	Removes the given items (packages) from the build queue
+--dependent::
+	Besides adding packages, all packages depending on one of these
+	packages will also be added or removed to/from the build queue.
+--stage name::
+	Only perfom the action (build/enqueue/dequeue) for the given stage.
+
+OPTIONS FOR 'REPOSITORY' DISCRIMINATOR
+-----------------------------------
+-c, --cfg, --config name::
+	Use the given config to perform the specified action.
+--enqueue::
+	Adds the given items (all packages in the specified repositories) to
 	the build queue
 --dequeue::
-	Removes the given item (packages or all packages in a repository)
+	Removes the given items (all packages in the specified repositories)
 	from the build queue
---dependees::
-	Instead of adding the package, all its dependees will be added to
-	the build queue.
---stage::
+--stage name::
 	Only perfom the action (build/enqueue/dequeue) for the given stage.
