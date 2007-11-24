@@ -1,0 +1,60 @@
+sde-clean(1)
+==============
+The OpenSDE Community <list@opensde.org>
+
+NAME
+----
+sde-clean - Cleans up part of the system
+
+SYNOPSIS
+--------
+'sde cleanup' [DISCRIMINATOR] [OPTIONS] [ITEMS]
+
+DESCRIPTION
+-----------
+Cleans up the identified part (item) of your 'sde' environment indicated 
+by the discriminator. If no item is specified the whole section
+(discriminator) in your 'sde' environment will be cleaned. Depending on 
+the specified item or discriminator, cleanup indicates tidying things up 
+or removing it completely
+
+DISCRIMINATORS
+--------------
+build::
+	Removes actual builds specified by their actual location or
+	the config name used to create it.
+cache::
+	Removes ccache files for the specified architectures (items). If
+	no architectures specified, ccache files for all architectrues
+	will be removed.
+config, cfg::
+	Removed specified configurations (items).
+download::
+	Removes old downloads from your old local download mirror. Only 
+	downloads still specified in .desc files will not be removed.
+package, pkg::
+	Brings all specified packages (items) back to their original 
+	state. All uncommitted changes will be lost. 
+repository, repo::
+	Brings the specified repositories (items) back to their original
+	state. All uncommitted changes will be lost.
+system, sys::
+	Brings your 'sde' environment back to its original state. All
+	uncommitted changes will be lost.
+target, tgt::
+	Brings all specified targets (items) back to their original state.
+	All uncommitted changes will be lost.
+
+OPTIONS FOR ALL DISCRIMINATORS
+------------------------------
+--dry-run::
+	Processes normally, but does not clean or modify anything.
+-f, --force::
+	Prevents user interaction. Cleaning will continue without explicit
+	acknowlegdement from the user.
+-q, --quiet::
+	Reduces feedback to an absolute minimum.
+-v, --verbose:
+	Gives additional feedback.
+
+The options 'verbose' and 'quiet' are mutually exclusive.
