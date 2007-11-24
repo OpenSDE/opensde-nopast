@@ -8,7 +8,7 @@ sde-commit - Commit changes
 
 SYNOPSIS
 --------
-'sde commit' [DISCRIMINATORS] [OPTIONS] [ITEMS...]
+'sde commit' [DISCRIMINATORS] [OPTIONS] [ITEMS]
 
 DESCRIPTION
 -----------
@@ -20,23 +20,21 @@ changes will be wrapped up in a patch and send to the mailing list.
 
 DISCRIMINATORS
 --------------
-
 package, pkg::
-	Commits changes to the specified package(s).
+	Commits changes to the specified packages (items).
 repository, repo::
-	Commits all modified pkgs in the specified repository.
+	Commits all modified pkgs in the specified repositories (items).
 system, sys::
 	Commits all changes to the sde framework itself. For this 
 	discriminator no items should be provided.
 target, tgt::
-	Commits changes to the specified target(s).
+	Commits all changes to the specified targets (items).
 
-When no discriminator is specified, package will be used as the default
-discriminator.
+When no discriminator is specified, this command will default to the closest
+discriminator in regard to the current working directory.
 
 OPTIONS
 -------
-
 --dry-run, -d::
 	Gives feedback of what would be done, but does not really
 	commit.
