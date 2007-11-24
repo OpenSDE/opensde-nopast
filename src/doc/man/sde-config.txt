@@ -8,59 +8,50 @@ sde-config - configures part of the system
 
 SYNOPSIS
 --------
-'sde config' [DISCRIMINATOR] [OPTIONS]
+'sde config' [DISCRIMINATOR] [OPTIONS] [ITEM]
+
+DESCRIPTION
+-----------
+sde-config configures part of your sde environment specified by the given
+discriminator. 
 
 DISCRIMINATORS
 --------------
 config, cfg::
-	TODO
-	(this is the default if none is given)
-
+	Configures the config identified by ITEM. If no item specified the
+	config will be named 'default'.
 system, sys::
-	Allows to query or modify global sde configuration parameters.
+	Makes it possible to query or modify global sde configuration 
+	parameters. For this discriminator no item should be specified.
 
+When no discriminator is detected, this command will default to the 'config'
+discriminator.
 
-OPTIONS FOR 'CONFIG' DISCRIMINATOR
+OPTIONS FOR CONFIG DISCRIMINATOR
 ----------------------------------
 -n, --non-interactive::
 	Reconfigures an existing config without the interactive 
 	configuration application.
-
--c, --cfg name::
-	Defines the name to be used for a given 'config', the name 'default' is
-	used if this option is not supplied.
-		
 --nobashmod::
 	Don't use the bash config helper plugin
-
 --profile::
 	Create a config.profile with profiling data
-
 -q, --quiet::
-	Feedback will be reduced to an absolute minimum.
+	Reduces feedback to an absolute minimum.
+-v, --verbose:
+	Gives additional feedback.
 
--v, --verbose::
-	Feedback will be augmented with additional information.
-
-OPTIONS FOR 'SYSTEM' DISCRIMINATOR
+OPTIONS FOR SYSTEM DISCRIMINATOR
 ----------------------------------
 -g, --get key::
 	returns the value of a specified 'section.key'
-
 -s, --set key=value::
 	sets the value of a specified 'section.key'
-
 --dump::
 	dumps the relevant content of the 'settings' file for the 
 	current sde instance.
-
 --path::
 	outputs the full path to the 'settings' file in use.
-
-DESCRIPTION
------------
-sde-config configures the identified part (item) within the sde
-environment section indicated by the discriminator.
 
 SECTIONS AND KEYS ON GLOBAL SDE CONFIGURATION
 ---------------------------------------------
