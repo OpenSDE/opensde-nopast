@@ -1,20 +1,63 @@
 .\"     Title: sde-copy
 .\"    Author: 
 .\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/10/2007
+.\"      Date: 11/25/2007
 .\"    Manual: 
 .\"    Source: 
 .\"
-.TH "SDE\-COPY" "1" "07/10/2007" "" ""
+.TH "SDE\-COPY" "1" "11/25/2007" "" ""
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-sde\-copy \- copy part of the system
+sde\-copy \- copies part of the system
 .SH "SYNOPSIS"
-\fIsde copy\fR [OPTIONS]
+\fBsde\-copy\fR [\fIDISCRIMINATOR\fR] [\fIOPTIONS\fR] [\fIITEM\fR] [\fIITEMNEW\fR]
 .sp
 .SH "DESCRIPTION"
-Copies the identified part (item) of the sde environment indicated by the discriminator.
+Copies part of the system to a new name. The discriminator indicates in what section of the sde system the copy will take place. The item indicates what part will be copied to the new item name.
+.sp
+.SH "DISCRIMINATORS"
+.PP
+\fBbuild\fR
+.RS 4
+Copies an existing build to a new one. The item specifies the config name that was used for the build. The new item name specifies the new config name. With this discriminator both the build and the accompanying config will be copied.
+.RE
+.PP
+\fBconfig, cfg\fR
+.RS 4
+Copies an existing config identified by item to a new one. When no item name is specified,
+\fIdefault\fR
+will be used.
+.RE
+.PP
+\fBpackage, pkg\fR
+.RS 4
+Copies an existing package (item) to a new one. For this discriminator full qualified package names are required. Fully qualified package names are names in which the actual package name is preceded by the repository name separated by a dot (.).
+.RE
+.PP
+\fBtarget, tgt\fR
+.RS 4
+Copies an existing target identified by item to a new one.
+.RE
+.SH "OPTIONS FOR ALL DISCRIMINATORS"
+.PP
+\fB\-f, \-\-force\fR
+.RS 4
+Allows to overwrite existing items in case the specified new item already exists.
+.RE
+.PP
+\fB\-q, \-\-quiet\fR
+.RS 4
+Reduces feedback to an absolute minimum. \-v, \-\-verbose: Gives additional feedback.
+.RE
+.SH "AUTHOR"
+Written by Minto van der Sluis (misl).
+.sp
+.SH "REPORTING BUGS"
+Report bugs to <list@opensde.org>.
+.sp
+.SH "COPYRIGHT"
+Copyright \(co 2007 The OpenSDE project. This is free software; see the source for copying conditions. There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 .sp

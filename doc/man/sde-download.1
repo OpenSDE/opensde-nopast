@@ -1,19 +1,19 @@
 .\"     Title: sde-download
 .\"    Author: 
 .\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/28/2007
+.\"      Date: 11/25/2007
 .\"    Manual: 
 .\"    Source: 
 .\"
-.TH "SDE\-DOWNLOAD" "1" "07/28/2007" "" ""
+.TH "SDE\-DOWNLOAD" "1" "11/25/2007" "" ""
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-sde\-download \- Downloads stuff
+sde\-download \- Downloads packages
 .SH "SYNOPSIS"
-\fIsde download\fR [DISCRIMINATOR] [OPTIONS] [ITEMS\]
+\fIsde download\fR [DISCRIMINATOR] [OPTIONS] [ITEMS]
 .sp
 .SH "DESCRIPTION"
 sde\-download downloads one or more packages indicated or belonging to the specified name (items). Multiple items can be specified.
@@ -22,12 +22,12 @@ sde\-download downloads one or more packages indicated or belonging to the speci
 .PP
 config, cfg
 .RS 4
-Downloads all packages in the config specified by item.
+Downloads all selected packages in the specified config (item).
 .RE
 .PP
 package, pkg
 .RS 4
-Downloads the packages specified by item. (this is the default if none is given)
+Downloads single packages specified by item.
 .RE
 .PP
 repository, repo
@@ -38,26 +38,12 @@ Downloads all packages in the repositories specified by item.
 .PP
 \-q, \-\-quiet
 .RS 4
-Gives minimal feedback.
-.RE
-.PP
-\-v, \-\-verbose
-.RS 4
-Gives extra feedback.
+Reduces feedback to an absolute minimum. \-v, \-\-verbose: Gives additional feedback.
 .RE
 .PP
 \-n, \-\-dry\-run
 .RS 4
 No real download is performed but the list of missing files is output.
-.RE
-.PP
-\-c, \-\-cfg
-.RS 4
-Specify a config to restrict
-\fIpackage\fR
-and
-\fIrepository\fR
-discriminators.
 .RE
 .PP
 \-\-timeout

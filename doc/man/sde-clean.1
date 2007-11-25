@@ -1,0 +1,90 @@
+.\"     Title: sde-clean
+.\"    Author: 
+.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
+.\"      Date: 11/25/2007
+.\"    Manual: 
+.\"    Source: 
+.\"
+.TH "SDE\-CLEAN" "1" "11/25/2007" "" ""
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.SH "NAME"
+sde\-clean \- Cleans up part of the system
+.SH "SYNOPSIS"
+\fBsde cleanup\fR [\fIDISCRIMINATOR\fR] [\fIOPTIONS\fR] [\fIITEMS\fR]
+.sp
+.SH "DESCRIPTION"
+Cleans up the identified part (item) of your \fBsde\fR environment indicated by the discriminator. If no item is specified the whole section (discriminator) in your \fBsde\fR environment will be cleaned. Depending on the specified item or discriminator, cleanup indicates tidying things up or removing it completely
+.sp
+.SH "DISCRIMINATORS"
+.PP
+\fBbuild\fR
+.RS 4
+Removes actual builds specified by their actual location or the config name used to create it.
+.RE
+.PP
+\fBcache\fR
+.RS 4
+Removes ccache files for the specified architectures (items). If no architectures specified, ccache files for all architectrues will be removed.
+.RE
+.PP
+\fBconfig, cfg\fR
+.RS 4
+Removed specified configurations (items).
+.RE
+.PP
+\fBdownload\fR
+.RS 4
+Removes old downloads from your old local download mirror. Only downloads still specified in .desc files will not be removed.
+.RE
+.PP
+\fBpackage, pkg\fR
+.RS 4
+Brings all specified packages (items) back to their original state. All uncommitted changes will be lost.
+.RE
+.PP
+\fBrepository, repo\fR
+.RS 4
+Brings the specified repositories (items) back to their original state. All uncommitted changes will be lost.
+.RE
+.PP
+\fBsystem, sys\fR
+.RS 4
+Brings your
+\fIsde\fR
+environment back to its original state. All uncommitted changes will be lost.
+.RE
+.PP
+\fBtarget, tgt\fR
+.RS 4
+Brings all specified targets (items) back to their original state. All uncommitted changes will be lost.
+.RE
+.SH "OPTIONS FOR ALL DISCRIMINATORS"
+.PP
+\fB\-\-dry\-run\fR
+.RS 4
+Processes normally, but does not clean or modify anything.
+.RE
+.PP
+\fB\-f, \-\-force\fR
+.RS 4
+Prevents user interaction. Cleaning will continue without explicit acknowlegdement from the user.
+.RE
+.PP
+\fB\-q, \-\-quiet\fR
+.RS 4
+Reduces feedback to an absolute minimum. \-v, \-\-verbose: Gives additional feedback.
+.RE
+The options \fIverbose\fR and \fIquiet\fR are mutually exclusive.
+.sp
+.SH "AUTHOR"
+Written by Minto van der Sluis (misl).
+.sp
+.SH "REPORTING BUGS"
+Report bugs to <list@opensde.org>.
+.sp
+.SH "COPYRIGHT"
+Copyright \(co 2007 The OpenSDE project. This is free software; see the source for copying conditions. There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+.sp

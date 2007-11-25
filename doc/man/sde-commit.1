@@ -1,11 +1,11 @@
 .\"     Title: sde-commit
 .\"    Author: 
 .\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 08/10/2007
+.\"      Date: 11/25/2007
 .\"    Manual: 
 .\"    Source: 
 .\"
-.TH "SDE\-COMMIT" "1" "08/10/2007" "" ""
+.TH "SDE\-COMMIT" "1" "11/25/2007" "" ""
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
@@ -13,47 +13,47 @@
 .SH "NAME"
 sde\-commit \- Commit changes
 .SH "SYNOPSIS"
-\fIsde commit\fR [DISCRIMINATORS] [OPTIONS] [ITEMS\]
+\fBsde commit\fR [\fICMMAND\fR] [\fIDISCRIMINATOR\fR] [\fIOPTIONS\fR] [\fIITEMS\fR]
 .sp
 .SH "DESCRIPTION"
 Commits changes to the identified part (item) within the sde environment section indicated by the discriminator. When the user has commit rights to the SCM repository containing the item, using this command will indeed commit the changes. If there are no commit rights to the repository, all changes will be wrapped up in a patch and send to the mailing list.
 .sp
 .SH "DISCRIMINATORS"
 .PP
-package, pkg
+\fBpackage, pkg\fR
 .RS 4
-Commits changes to the specified package(s).
+Commits changes to the specified packages (items).
 .RE
 .PP
-repository, repo
+\fBrepository, repo\fR
 .RS 4
-Commits all modified pkgs in the specified repository.
+Commits all modified pkgs in the specified repositories (items).
 .RE
 .PP
-system, sys
+\fBsystem, sys\fR
 .RS 4
 Commits all changes to the sde framework itself. For this discriminator no items should be provided.
 .RE
 .PP
-target, tgt
+\fBtarget, tgt\fR
 .RS 4
-Commits changes to the specified target(s).
+Commits all changes to the specified targets (items).
 .RE
-When no discriminator is specified, package will be used as the default discriminator.
+When no discriminator is specified, this command will default to the closest discriminator in regard to the current working directory.
 .sp
 .SH "OPTIONS"
 .PP
-\-\-dry\-run, \-d
+\fB\-\-dry\-run, \-d\fR
 .RS 4
 Gives feedback of what would be done, but does not really commit.
 .RE
 .PP
-\-\-message, \-m
+\fB\-\-message, \-m\fR
 .RS 4
 Allows to specify the commit message on the command line. The argument specifies the actual commit message.
 .RE
 .PP
-\-\-file, \-f
+\fB\-\-file, \-f\fR
 .RS 4
 Allows long commit message to be read frome file. The argument specifies the file from which to read the message.
 .RE
@@ -64,3 +64,12 @@ Allows long commit message to be read frome file. The argument specifies the fil
 sde ci .
 .fi
 .RE
+.SH "AUTHOR"
+Written by Minto van der Sluis (misl).
+.sp
+.SH "REPORTING BUGS"
+Report bugs to <list@opensde.org>.
+.sp
+.SH "COPYRIGHT"
+Copyright \(co 2007 The OpenSDE project. This is free software; see the source for copying conditions. There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+.sp

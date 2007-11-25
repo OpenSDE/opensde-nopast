@@ -1,57 +1,108 @@
 .\"     Title: sde-build
 .\"    Author: 
 .\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/10/2007
+.\"      Date: 11/25/2007
 .\"    Manual: 
 .\"    Source: 
 .\"
-.TH "SDE\-BUILD" "1" "07/10/2007" "" ""
+.TH "SDE\-BUILD" "1" "11/25/2007" "" ""
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-sde\-build \- Build stuff
+sde\-build \- Build or prepare packages for being build.
 .SH "SYNOPSIS"
-\fIsde build\fR [DISCRIMINATOR] [OPTIONS] ITEMS
+\fBsde build\fR [\fIDISCRIMINATOR\fR] [\fIOPTIONS\fR] [\fIITEMS\fR]
 .sp
 .SH "DESCRIPTION"
-Builds all or TODO
+Builds, enqueues or dequeues specified items.
 .sp
 .SH "DISCRIMINATORS"
 .PP
-config, cfg
+\fBconfig, cfg\fR
 .RS 4
-Start building the full configuration
+Start building the full configuration or queued packages of the config identified by item. If no item specified the config will use
+\fIdefault\fR.
 .RE
 .PP
-package, pkg
+\fBpackage, pkg\fR
 .RS 4
-Allows to add or remove packages to/from the build queue without actually starting the build
+Builds single packages, but also allows adding or removing packages to/from the build queue without actually starting the build.
 .RE
 .PP
-repository, repo
+\fBrepository, repo\fR
 .RS 4
-Allows to add or remove all packages in a repository to/from the build queue without actually starting the build
+Builds all packages in a repository, but also allows adding or removing all packages in a repository to/from the build queue without actually starting the build
 .RE
-.SH "OPTIONS"
+.SH "OPTIONS FOR CONFIG DISCRIMINATOR"
 .PP
-\-\-enqueue
+\fB\-\-queued\fR
 .RS 4
-Adds the given item (packages or all packages in a repository) to the build queue
-.RE
-.PP
-\-\-dequeue
-.RS 4
-Removes the given item (packages or all packages in a repository) from the build queue
+Only build queued packages.
 .RE
 .PP
-\-\-dependees
+\fB\-\-stage name\fR
 .RS 4
-Instead of adding the package, all its dependees will be added to the build queue.
+Only build the given stage if possible. The stage will only build if previous stages have been build in the past.
+.RE
+.SH "OPTIONS FOR PACKAGE DISCRIMINATOR"
+.PP
+\fB\-c, \-\-cfg, \-\-config name\fR
+.RS 4
+Use the given config to perform the specified action.
 .RE
 .PP
-\-\-stage
+\fB\-\-enqueue\fR
 .RS 4
-Only perfom the action (build/enqueue/dequeue) for the given stage.
+Adds the given items (packages) to the build queue.
 .RE
+.PP
+\fB\-\-dequeue\fR
+.RS 4
+Removes the given items (packages) from the build queue
+.RE
+.PP
+\fB\-\-dependent\fR
+.RS 4
+Besides adding packages, all packages depending on one of these packages will also be added or removed to/from the build queue.
+.RE
+.PP
+\fB\-\-stage name\fR
+.RS 4
+Only perfom the action (build/enqueue/dequeue) for the given stage. Without this option packages will be queued for all valid stages. What stages are valid can be found in package
+\fB.desc\fR
+files.
+.RE
+.SH "OPTIONS FOR REPOSITORY DISCRIMINATOR"
+.PP
+\fB\-c, \-\-cfg, \-\-config name\fR
+.RS 4
+Use the given config to perform the specified action.
+.RE
+.PP
+\fB\-\-enqueue\fR
+.RS 4
+Adds the given items (all packages in the specified repositories) to the build queue
+.RE
+.PP
+\fB\-\-dequeue\fR
+.RS 4
+Removes the given items (all packages in the specified repositories) from the build queue
+.RE
+.PP
+\fB\-\-stage name\fR
+.RS 4
+Only perfom the action (build/enqueue/dequeue) for the given stage. Without this option packages will be queued for all valid stages. What stages are valid can be found in package
+\fB.desc\fR
+files.
+.RE
+.SH "AUTHOR"
+Written by Minto van der Sluis (misl).
+.sp
+.SH "REPORTING BUGS"
+Report bugs to <list@opensde.org>.
+.sp
+.SH "COPYRIGHT"
+Copyright \(co 2007 The OpenSDE project. This is free software; see the source for copying conditions. There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+.sp

@@ -1,11 +1,11 @@
 .\"     Title: sde-config
 .\"    Author: 
 .\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/12/2007
+.\"      Date: 11/25/2007
 .\"    Manual: 
 .\"    Source: 
 .\"
-.TH "SDE\-CONFIG" "1" "07/12/2007" "" ""
+.TH "SDE\-CONFIG" "1" "11/25/2007" "" ""
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
@@ -13,87 +13,78 @@
 .SH "NAME"
 sde\-config \- configures part of the system
 .SH "SYNOPSIS"
-\fIsde config\fR [DISCRIMINATOR] [OPTIONS]
+\fBsde\-config\fR [\fIDISCRIMINATOR\fR] [\fIOPTIONS\fR] [\fIITEM\fR]
+.sp
+.SH "DESCRIPTION"
+sde\-config configures part of your sde environment specified by the given discriminator.
 .sp
 .SH "DISCRIMINATORS"
 .PP
-config, cfg
+\fBconfig, cfg\fR
 .RS 4
-TODO (this is the default if none is given)
+Configures the config identified by ITEM. If no item specified the config will be named
+\fIdefault\fR.
 .RE
 .PP
-system, sys
+\fBsystem, sys\fR
 .RS 4
-Allows to query or modify global sde configuration parameters.
+Makes it possible to query or modify global sde configuration parameters. For this discriminator no item should be specified.
 .RE
-.SH "OPTIONS FOR \fICONFIG\fR DISCRIMINATOR"
+When no discriminator is detected, this command will default to the \fBconfig\fR discriminator.
+.sp
+.SH "OPTIONS FOR CONFIG DISCRIMINATOR"
 .PP
-\-n, \-\-non\-interactive
+\fB\-n, \-\-non\-interactive\fR
 .RS 4
 Reconfigures an existing config without the interactive configuration application.
 .RE
 .PP
-\-c, \-\-cfg name
-.RS 4
-Defines the name to be used for a given
-\fIconfig\fR, the name
-\fIdefault\fR
-is used if this option is not supplied.
-.RE
-.PP
-\-\-nobashmod
+\fB\-\-nobashmod\fR
 .RS 4
 Don't use the bash config helper plugin
 .RE
 .PP
-\-\-profile
+\fB\-\-profile\fR
 .RS 4
 Create a config.profile with profiling data
 .RE
 .PP
-\-q, \-\-quiet
+\fB\-q, \-\-quiet\fR
 .RS 4
-Feedback will be reduced to an absolute minimum.
+Reduces feedback to an absolute minimum. \-v, \-\-verbose: Gives additional feedback.
 .RE
+.SH "OPTIONS FOR SYSTEM DISCRIMINATOR"
 .PP
-\-v, \-\-verbose
-.RS 4
-Feedback will be augmented with additional information.
-.RE
-.SH "OPTIONS FOR \fISYSTEM\fR DISCRIMINATOR"
-.PP
-\-g, \-\-get key
+\fB\-g, \-\-get key\fR
 .RS 4
 returns the value of a specified
 \fIsection.key\fR
 .RE
 .PP
-\-s, \-\-set key=value
+\fB\-s, \-\-set key=value\fR
 .RS 4
 sets the value of a specified
 \fIsection.key\fR
 .RE
 .PP
-\-\-dump
+\fB\-\-dump\fR
 .RS 4
 dumps the relevant content of the
 \fIsettings\fR
 file for the current sde instance.
 .RE
 .PP
-\-\-path
+\fB\-\-path\fR
 .RS 4
 outputs the full path to the
 \fIsettings\fR
 file in use.
 .RE
-.SH "DESCRIPTION"
-sde\-config configures the identified part (item) within the sde environment section indicated by the discriminator.
-.sp
 .SH "SECTIONS AND KEYS ON GLOBAL SDE CONFIGURATION"
 .RS 4
 \h'-04'\(bu\h'+03'
 \fIdownload\fR
+.RE
 .RS 4
 \h'-04'\(bu\h'+03'
 \fIaltdir\fR
@@ -107,4 +98,12 @@ sde\-config configures the identified part (item) within the sde environment sec
 \fImirror\fR
 (kept unique per version only)
 .RE
-.RE
+.SH "AUTHOR"
+Written by Minto van der Sluis (misl).
+.sp
+.SH "REPORTING BUGS"
+Report bugs to <list@opensde.org>.
+.sp
+.SH "COPYRIGHT"
+Copyright \(co 2007 The OpenSDE project. This is free software; see the source for copying conditions. There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+.sp

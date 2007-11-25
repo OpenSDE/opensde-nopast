@@ -1,20 +1,67 @@
 .\"     Title: sde-create
 .\"    Author: 
 .\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/10/2007
+.\"      Date: 11/25/2007
 .\"    Manual: 
 .\"    Source: 
 .\"
-.TH "SDE\-CREATE" "1" "07/10/2007" "" ""
+.TH "SDE\-CREATE" "1" "11/25/2007" "" ""
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
 .ad l
 .SH "NAME"
-sde\-create \- enhance the system with new parts
+sde\-create \- enhance your sde system with new parts
 .SH "SYNOPSIS"
-\fIsde create\fR [OPTIONS]
+\fBsde\-create\fR [\fIDISCRIMINATOR\fR] [\fIOPTIONS\fR] [\fIITEM\fR]
 .sp
 .SH "DESCRIPTION"
 Create a new part with the identified name (item) within the sde environment section indicated by the discriminator.
+.sp
+.SH "DISCRIMINATORS"
+.PP
+\fBconfig, cfg\fR
+.RS 4
+Creates a new default configured config with the given name (item).
+.RE
+.PP
+\fBpackage, pkg\fR
+.RS 4
+Creates a new package. The given item is expected to be the fully qualified package name. This is the package name preceded by the repository it should be placed in, separated by a dot.
+.RE
+.PP
+\fBtarget, tgt\fR
+.RS 4
+Creates a new target with the given name (item).
+.RE
+.SH "OPTIONS FOR ALL DISCRIMINATORS"
+.PP
+\fB\-q, \-\-quiet\fR
+.RS 4
+Reduces feedback to an absolute minimum.
+.RE
+.PP
+\fB\-v, \-\-verbose\fR
+.RS 4
+Gives additional feedback.
+.RE
+.SH "OPTIONS FOR PACKAGE DISCRIMINATOR"
+.PP
+\fB\-\-hive hive.index\fR
+.RS 4
+Makes it Possible to create new packages from available package hives like freshmeat or sourceforge. With this flag you need to specify which hive to use and what the ID of the package in that hive is.
+.RE
+.PP
+\fB\-\-hivelist\fR
+.RS 4
+Does not create a package but shows a list of all available hives.
+.RE
+.SH "AUTHOR"
+Written by Minto van der Sluis (misl).
+.sp
+.SH "REPORTING BUGS"
+Report bugs to <list@opensde.org>.
+.sp
+.SH "COPYRIGHT"
+Copyright \(co 2007 The OpenSDE project. This is free software; see the source for copying conditions. There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 .sp
