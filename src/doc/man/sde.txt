@@ -8,9 +8,58 @@ sde - front end wrapper
 
 SYNOPSIS
 --------
-'sde' [COMMAND] [DISCRIMINATOR] [OPTIONS]
+*sde* ['COMMAND'] ['DISCRIMINATOR'] ['OPTIONS'] ['ITEMS']
 
 DESCRIPTION
 -----------
-The `sde` frontend wrapper is supposed to help to use the 'sde'
-commands from within multiple 'sde' trees, from '$PATH'
+The *sde* frontend wrapper is a single command to access all OpenSDE
+functionality. It is a wrapper since it wraps all existing commands in
+a single interface. Beyond this simple wrapping the command makes it 
+also possible to work with separate sde environments. For this the 
+environment variable *SDEROOT* is used.
+
+COMMANDS
+--------
+Various commands are available, each one targeting a special 
+operation. Amongst these commands are:
+
+	build    - building packages
+	clean    - cleaning part of your environment
+	config   - configuring part of your environment
+	create   - creating new packages or target
+	download - downloading packages
+	install  - installing sde or packages on your current system
+	update   - updating packages
+
+For a complete list of commands execute the following command:
+	sde help
+
+DISCRIMINATORS
+--------------
+OpenSDE supports various discriminators, however what discriminators 
+are valid depends on the command being used.
+
+OPTIONS
+-------
+
+ENVIRONMENT
+-----------
+*SDEROOT*::
+	When *SDEROOT* is set, sde uses it as the path to your
+	sde environment. If not specified the current working
+	directory is used.
+
+AUTHOR
+------
+Written by Minto van der Sluis (misl).
+
+REPORTING BUGS
+--------------
+Report bugs to <list@opensde.org>.
+
+COPYRIGHT
+---------
+Copyright (C) 2007 The OpenSDE project.
+This is free software; see the source for copying conditions.  There is
+NO  warranty;  not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.
