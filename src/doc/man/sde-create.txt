@@ -4,13 +4,40 @@ The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
-sde-create - enhance the system with new parts
+sde-create - enhance your sde system with new parts
 
 SYNOPSIS
 --------
-'sde create' [OPTIONS]
+'sde create' [DISCRIMINATOR] [OPTIONS] [ITEM]
 
 DESCRIPTION
 -----------
 Create a new part with the identified name (item) within the sde environment
 section indicated by the discriminator.
+
+DISCRIMINATORS
+--------------
+config, cfg::
+	Creates a new default configured config with the given name (item).
+package, pkg::
+	Creates a new package. The given item is expected to be the fully
+	qualified package name. This is the package name preceded by the 
+	repository it should be placed in, separated by a dot.
+target, tgt::
+	Creates a new target with the given name (item).
+
+OPTIONS FOR ALL DISCRIMINATORS
+------------------------------
+-q, --quiet::
+        Reduces feedback to an absolute minimum.
+-v, --verbose::
+        Gives additional feedback.
+
+OPTIONS FOR PACKAGE DISCRIMINATOR
+---------------------------------
+--hive hive.index::
+	Makes it Possible to create new packages from available package hives
+	like freshmeat or sourceforge. With this flag you need to specify 
+	which hive to use and what the ID of the package in that hive is.
+--hivelist::
+	Does not create a package but shows a list of all available hives.
