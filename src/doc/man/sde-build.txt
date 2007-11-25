@@ -8,7 +8,7 @@ sde-build - Build or prepare packages for being build.
 
 SYNOPSIS
 --------
-'sde build' [DISCRIMINATOR] [OPTIONS] [ITEMS]
+*sde build* ['DISCRIMINATOR'] ['OPTIONS'] ['ITEMS']
 
 DESCRIPTION
 -----------
@@ -16,49 +16,68 @@ Builds, enqueues or dequeues specified items.
 
 DISCRIMINATORS
 --------------
-config, cfg::
+*config, cfg*::
 	Start building the full configuration or queued packages of the
 	config identified by item. If no item specified the config will
 	use 'default'.
-package, pkg::
+*package, pkg*::
 	Builds single packages, but also allows adding or removing packages
 	to/from the build queue without actually starting the build.
-repository, repo::
+*repository, repo*::
 	Builds all packages in a repository, but also allows adding or 
 	removing all packages in a repository to/from the build queue 
 	without actually starting the build
 
 OPTIONS FOR CONFIG DISCRIMINATOR
 --------------------------------
---queued::
+*--queued*::
 	Only build queued packages.
---stage name::
+*--stage name*::
 	Only build the given stage if possible. The stage will only build
-	if previous stage have been build in the past.
+	if previous stages have been build in the past.
 
 OPTIONS FOR PACKAGE DISCRIMINATOR
 ---------------------------------
--c, --cfg, --config name::
+*-c, --cfg, --config name*::
 	Use the given config to perform the specified action.
---enqueue::
+*--enqueue*::
 	Adds the given items (packages) to the build queue.
---dequeue::
+*--dequeue*::
 	Removes the given items (packages) from the build queue
---dependent::
+*--dependent*::
 	Besides adding packages, all packages depending on one of these
 	packages will also be added or removed to/from the build queue.
---stage name::
+*--stage name*::
 	Only perfom the action (build/enqueue/dequeue) for the given stage.
+	Without this option packages will be queued for all valid stages.
+	What stages are valid can be found in package *.desc* files.
 
 OPTIONS FOR REPOSITORY DISCRIMINATOR
 ------------------------------------
--c, --cfg, --config name::
+*-c, --cfg, --config name*::
 	Use the given config to perform the specified action.
---enqueue::
+*--enqueue*::
 	Adds the given items (all packages in the specified repositories) to
 	the build queue
---dequeue::
+*--dequeue*::
 	Removes the given items (all packages in the specified repositories)
 	from the build queue
---stage name::
+*--stage name*::
 	Only perfom the action (build/enqueue/dequeue) for the given stage.
+	Without this option packages will be queued for all valid stages.
+	What stages are valid can be found in package *.desc* files.
+
+AUTHOR
+------
+Written by Minto van der Sluis (misl).
+
+REPORTING BUGS
+--------------
+Report bugs to <list@opensde.org>.
+
+COPYRIGHT
+---------
+Copyright (C) 2007 The OpenSDE project.
+This is free software; see the source for copying conditions. There is
+NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.
