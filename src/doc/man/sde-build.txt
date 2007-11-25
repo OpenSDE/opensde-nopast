@@ -29,7 +29,7 @@ repository, repo::
 	without actually starting the build
 
 OPTIONS FOR CONFIG DISCRIMINATOR
-----------------------------------
+--------------------------------
 --queued::
 	Only build queued packages.
 --stage name::
@@ -37,7 +37,7 @@ OPTIONS FOR CONFIG DISCRIMINATOR
 	if previous stage have been build in the past.
 
 OPTIONS FOR PACKAGE DISCRIMINATOR
------------------------------------
+---------------------------------
 -c, --cfg, --config name::
 	Use the given config to perform the specified action.
 --enqueue::
@@ -51,7 +51,7 @@ OPTIONS FOR PACKAGE DISCRIMINATOR
 	Only perfom the action (build/enqueue/dequeue) for the given stage.
 
 OPTIONS FOR REPOSITORY DISCRIMINATOR
------------------------------------
+------------------------------------
 -c, --cfg, --config name::
 	Use the given config to perform the specified action.
 --enqueue::
