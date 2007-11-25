@@ -28,7 +28,7 @@ When no discriminator is detected, this command will default to the 'config'
 discriminator.
 
 OPTIONS FOR CONFIG DISCRIMINATOR
-----------------------------------
+--------------------------------
 -n, --non-interactive::
 	Reconfigures an existing config without the interactive 
 	configuration application.
@@ -42,7 +42,7 @@ OPTIONS FOR CONFIG DISCRIMINATOR
 	Gives additional feedback.
 
 OPTIONS FOR SYSTEM DISCRIMINATOR
-----------------------------------
+--------------------------------
 -g, --get key::
 	returns the value of a specified 'section.key'
 -s, --set key=value::
