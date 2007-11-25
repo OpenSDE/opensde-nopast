@@ -8,7 +8,7 @@ sde-commit - Commit changes
 
 SYNOPSIS
 --------
-'sde commit' [DISCRIMINATORS] [OPTIONS] [ITEMS]
+*sde commit* ['CMMAND'] ['DISCRIMINATOR'] ['OPTIONS'] ['ITEMS']
 
 DESCRIPTION
 -----------
@@ -20,14 +20,14 @@ changes will be wrapped up in a patch and send to the mailing list.
 
 DISCRIMINATORS
 --------------
-package, pkg::
+*package, pkg*::
 	Commits changes to the specified packages (items).
-repository, repo::
+*repository, repo*::
 	Commits all modified pkgs in the specified repositories (items).
-system, sys::
+*system, sys*::
 	Commits all changes to the sde framework itself. For this 
 	discriminator no items should be provided.
-target, tgt::
+*target, tgt*::
 	Commits all changes to the specified targets (items).
 
 When no discriminator is specified, this command will default to the closest
@@ -35,13 +35,13 @@ discriminator in regard to the current working directory.
 
 OPTIONS
 -------
---dry-run, -d::
+*--dry-run, -d*::
 	Gives feedback of what would be done, but does not really
 	commit.
---message, -m::
+*--message, -m*::
 	Allows to specify the commit message on the command line. The
 	argument specifies the actual commit message.
---file, -f::
+*--file, -f*::
 	Allows long commit message to be read frome file. The argument 
 	specifies the file from which to read the message.
 
@@ -49,3 +49,18 @@ EXAMPLES
 --------
 
 	sde ci .
+
+AUTHOR
+------
+Written by Minto van der Sluis (misl).
+
+REPORTING BUGS
+--------------
+Report bugs to <list@opensde.org>.
+
+COPYRIGHT
+---------
+Copyright (C) 2007 The OpenSDE project.
+This is free software; see the source for copying conditions. There is
+NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.
