@@ -29,9 +29,9 @@ target, tgt::
 OPTIONS FOR ALL DISCRIMINATORS
 ------------------------------
 -q, --quiet::
-        Reduces feedback to an absolute minimum.
+	Reduces feedback to an absolute minimum.
 -v, --verbose::
-        Gives additional feedback.
+	Gives additional feedback.
 
 OPTIONS FOR PACKAGE DISCRIMINATOR
 ---------------------------------
