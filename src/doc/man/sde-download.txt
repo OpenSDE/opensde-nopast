@@ -4,11 +4,11 @@ The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
-sde-download - Downloads stuff
+sde-download - Downloads packages
 
 SYNOPSIS
 --------
-'sde download' [DISCRIMINATOR] [OPTIONS] [ITEMS...]
+'sde download' [DISCRIMINATOR] [OPTIONS] [ITEMS]
 
 DESCRIPTION
 -----------
@@ -17,56 +17,40 @@ specified name (items). Multiple items can be specified.
 
 DISCRIMINATORS
 --------------
-
 config, cfg::
-	Downloads all packages in the config specified by item.
-
+	Downloads all selected packages in the specified config (item).
 package, pkg::
-	Downloads the packages specified by item.
-	(this is the default if none is given)
-	
+	Downloads single packages specified by item.
 repository, repo::
 	Downloads all packages in the repositories specified by item.
 
 OPTIONS
 -------
-
 -q, --quiet::
-	Gives minimal feedback.
-
--v, --verbose::
-	Gives extra feedback.
-
+	Reduces feedback to an absolute minimum.
+-v, --verbose:
+	Gives additional feedback.
 -n, --dry-run::
 	No real download is performed but the list of missing files is
 	output.
-
--c, --cfg::
-	Specify a config to restrict 'package' and 'repository' discriminators.
-
 --timeout::
 	Defines how tolerat to download delay are we. The default value
 	is 'normal', but you can choose between 'no' and 'long' too.
-
 --check::
 	Defines when will the tool validate the downloaded file against
 	the checksum in the database. The default value is 'always', but
 	you can choose between 'download', meaning that it wont validate
 	when using the alternative download location, or 'never'.
-
 --mirror::
 	Defines which mirror to use since now, replacing the value stored
 	on the global config. Alternatively you can use ''none'', or auto
 	to detect again the best mirror for your location.
-
 --alt-dir::
 	Defines a local place where look initially for the files, and then
 	includes on the current working tree by the choosen mode. (see --mode)
-
 -m, --mode::
 	Defines what to do when taking a file from '$altdir'. By default
 	it makes a 'hardlink', but you can also choose 'copy' or 'move'.
-
 -e, --extenders::
 	When using 'package' or 'repository' discriminators, download the
 	active extenders considering the specified config id.
