@@ -8,7 +8,7 @@ sde-config - configures part of the system
 
 SYNOPSIS
 --------
-'sde config' [DISCRIMINATOR] [OPTIONS] [ITEM]
+*sde-config* ['DISCRIMINATOR'] ['OPTIONS'] ['ITEM']
 
 DESCRIPTION
 -----------
@@ -17,46 +17,61 @@ discriminator.
 
 DISCRIMINATORS
 --------------
-config, cfg::
+*config, cfg*::
 	Configures the config identified by ITEM. If no item specified the
 	config will be named 'default'.
-system, sys::
+*system, sys*::
 	Makes it possible to query or modify global sde configuration 
 	parameters. For this discriminator no item should be specified.
 
-When no discriminator is detected, this command will default to the 'config'
+When no discriminator is detected, this command will default to the *config*
 discriminator.
 
 OPTIONS FOR CONFIG DISCRIMINATOR
 --------------------------------
--n, --non-interactive::
+*-n, --non-interactive*::
 	Reconfigures an existing config without the interactive 
 	configuration application.
---nobashmod::
+*--nobashmod*::
 	Don't use the bash config helper plugin
---profile::
+*--profile*::
 	Create a config.profile with profiling data
--q, --quiet::
+*-q, --quiet*::
 	Reduces feedback to an absolute minimum.
 -v, --verbose:
 	Gives additional feedback.
 
 OPTIONS FOR SYSTEM DISCRIMINATOR
 --------------------------------
--g, --get key::
+*-g, --get key*::
 	returns the value of a specified 'section.key'
--s, --set key=value::
+*-s, --set key=value*::
 	sets the value of a specified 'section.key'
---dump::
+*--dump*::
 	dumps the relevant content of the 'settings' file for the 
 	current sde instance.
---path::
+*--path*::
 	outputs the full path to the 'settings' file in use.
 
 SECTIONS AND KEYS ON GLOBAL SDE CONFIGURATION
 ---------------------------------------------
 
-* 'download'
+- 'download'
   - 'altdir'
   - 'curl-opt'
   - 'mirror' (kept unique per version only)
+
+AUTHOR
+------
+Written by Minto van der Sluis (misl).
+
+REPORTING BUGS
+--------------
+Report bugs to <list@opensde.org>.
+
+COPYRIGHT
+---------
+Copyright (C) 2007 The OpenSDE project.
+This is free software; see the source for copying conditions. There is
+NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.
