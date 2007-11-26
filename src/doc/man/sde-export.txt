@@ -8,14 +8,55 @@ sde-export - Export stuff out of the system
 
 SYNOPSIS
 --------
-'sde export' [OPTIONS]
+*sde export* ['DISCRIMINATOR'] ['OPTIONS'] ['ITEM'] filename
 
 DESCRIPTION
 -----------
 Exports part of the sde system specified by item. All information belonging to
-the specified item will be wrapped up in a single file specified by filename.
-This file can be imported again elsewhere. The option is ideal for sending
-information to the opensde mailing list.
+the specified item will be wrapped up in a single bundle and written to the
+specified file. This file can be imported (*sde import*) again later or on a 
+different host elsewhere. This command is ideal for sending information to the 
+opensde mailing list or sharing uncommitted changes with co-workers.
 
-If the file specified by filename already exists the command will abort unless
-the --force option is specified.  In this case the file will be overwritten.
+DISCRIMINATORS
+--------------
+*config, cfg*::
+	Wraps up the config specified by item and writes it to the specified 
+	file. Besides the config information, also information about the
+	host system is included. This is needed to detect difference between
+	the current host and the target system where the exported results will
+	be imported.
+*package, pkg*::
+	Wraps up the package specified by item and writes it to the specified 
+	file. Besides the package content, also the fully qualified package
+	name will be stored. This is needed to be able to recreate the 
+	package at the exact same location on import.
+*target, tgt*::
+	Wraps up the target specified by item and writes it to the specified 
+	file.
+
+OPTIONS FOR ALL DISCRIMINATORS
+------------------------------
+*-f, --force*::
+	Makes it possible to overwrite existing files. Normally processing
+	abort when the given file already exists.
+
+OPTIONS FOR PACKAGE AND TARGET DISCRIMINATORS
+---------------------------------------------
+*-d, --diff*::
+	Only wraps up changes to reduce filesize.
+
+AUTHOR
+------
+Written by Minto van der Sluis (misl).
+
+REPORTING BUGS
+--------------
+Report bugs to <list@opensde.org>.
+
+COPYRIGHT
+---------
+Copyright (C) 2007 The OpenSDE project.
+This is free software; see the source for copying conditions. There is
+NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.
