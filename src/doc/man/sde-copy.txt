@@ -8,7 +8,7 @@ sde-copy - copies part of the system
 
 SYNOPSIS
 --------
-*sde-copy* ['DISCRIMINATOR'] ['OPTIONS'] ['ITEM'] ['ITEMNEW']
+*sde copy* ['DISCRIMINATOR'] ['OPTIONS'] ['ITEM'] ['ITEMNEW']
 
 DESCRIPTION
 -----------
