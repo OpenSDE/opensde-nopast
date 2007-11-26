@@ -8,7 +8,7 @@ sde-config - configures part of the system
 
 SYNOPSIS
 --------
-*sde-config* ['DISCRIMINATOR'] ['OPTIONS'] ['ITEM']
+*sde config* ['DISCRIMINATOR'] ['OPTIONS'] ['ITEM']
 
 DESCRIPTION
 -----------
