@@ -8,14 +8,14 @@ sde-clean - Cleans up part of the system
 
 SYNOPSIS
 --------
-*sde cleanup* ['DISCRIMINATOR'] ['OPTIONS'] ['ITEMS']
+*sde clean* ['DISCRIMINATOR'] ['OPTIONS'] ['ITEMS']
 
 DESCRIPTION
 -----------
 Cleans up the identified part (item) of your *sde* environment indicated 
 by the discriminator. If no item is specified the whole section
 (discriminator) in your *sde* environment will be cleaned. Depending on 
-the specified item or discriminator, cleanup indicates tidying things up 
+the specified item or discriminator, clean indicates tidying things up 
 or removing it completely
 
 DISCRIMINATORS
