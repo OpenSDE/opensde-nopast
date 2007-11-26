@@ -4,13 +4,29 @@ The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
-sde-install - install the wrapper
+sde-install - Takes care of installing software on you host system.
 
 SYNOPSIS
 --------
-'sde install'
+*sde install* 
 
 DESCRIPTION
 -----------
-Install the `sde` wrapper on '$HOME/bin' which is expected to be
-on your '$PATH'.
+Install the *sde* wrapper on *$HOME/bin* which is expected to be
+on your *$PATH*. The *sde* wrapper is only copied if the current
+version is newer than an existing one. 
+
+AUTHOR
+------
+Written by Minto van der Sluis (misl).
+
+REPORTING BUGS
+--------------
+Report bugs to <list@opensde.org>.
+
+COPYRIGHT
+---------
+Copyright (C) 2007 The OpenSDE project.
+This is free software; see the source for copying conditions. There is
+NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.
