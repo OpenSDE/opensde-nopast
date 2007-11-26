@@ -39,9 +39,6 @@ DISCRIMINATORS
 OpenSDE supports various discriminators, however what discriminators 
 are valid depends on the command being used.
 
-OPTIONS
--------
-
 ENVIRONMENT
 -----------
 *SDEROOT*::
