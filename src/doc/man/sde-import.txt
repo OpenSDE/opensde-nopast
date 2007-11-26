@@ -4,16 +4,53 @@ The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
-sde-import - import stuff into the system
+*sde import* - import stuff into the system
 
 SYNOPSIS
 --------
-'sde import' [OPTIONS]
+*sde import* ['DISCRIMINATOR'] ['OPTIONS'] ['ITEM'] filename
 
 DESCRIPTION
 -----------
 Imports the specified filename into the opensde environment under the name
-specified by item. If no item name is specified the original, as it was
-exported, item name will be used. The content of the specified file need to
+specified by item. If no item name is specified the original name as stored 
+in the imported file will be used. The content of the specified file needs to
 match the kind of content specified by the discriminator. In case the content
 does not match the command will abort with an error message.
+
+DISCRIMINATORS
+--------------
+*config, cfg*::
+	Forces the imported file to be a config.
+*package, pkg*::
+	Forces the imported file to be a package.
+*target, tgt*::
+	Forces the imported file to be a target.
+
+When no discriminator specified the imported file will be processed without
+checking against a discriminator.
+
+OPTIONS FOR ALL DISCRIMINATORS
+------------------------------
+*-n, --dry-run*::
+	Instead of really importing the file it is normally processed but
+	not imported. This can be used to see what would happen if the
+	file were imported.
+*-f, --force*::
+	Makes it possible to overwrite existing items with imported 
+	information.
+
+AUTHOR
+------
+Written by Minto van der Sluis (misl).
+
+REPORTING BUGS
+--------------
+Report bugs to <list@opensde.org>.
+
+COPYRIGHT
+---------
+Copyright (C) 2007 The OpenSDE project.
+This is free software; see the source for copying conditions. There is
+NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.
