@@ -1,11 +1,11 @@
 .\"     Title: sde-download
 .\"    Author: 
 .\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 11/25/2007
+.\"      Date: 11/26/2007
 .\"    Manual: 
 .\"    Source: 
 .\"
-.TH "SDE\-DOWNLOAD" "1" "11/25/2007" "" ""
+.TH "SDE\-DOWNLOAD" "1" "11/26/2007" "" ""
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
@@ -13,83 +13,114 @@
 .SH "NAME"
 sde\-download \- Downloads packages
 .SH "SYNOPSIS"
-\fIsde download\fR [DISCRIMINATOR] [OPTIONS] [ITEMS]
+\fBsde download\fR [\fIDISCRIMINATOR\fR] [\fIOPTIONS\fR] [\fIITEMS\fR]
 .sp
 .SH "DESCRIPTION"
-sde\-download downloads one or more packages indicated or belonging to the specified name (items). Multiple items can be specified.
+sde\-download downloads one or more packages indicated by or belonging to the specified items. Multiple items can be specified.
 .sp
 .SH "DISCRIMINATORS"
 .PP
-config, cfg
+\fBconfig, cfg\fR
 .RS 4
 Downloads all selected packages in the specified config (item).
 .RE
 .PP
-package, pkg
+\fBpackage, pkg\fR
 .RS 4
 Downloads single packages specified by item.
 .RE
 .PP
-repository, repo
+\fBrepository, repo\fR
 .RS 4
 Downloads all packages in the repositories specified by item.
 .RE
-.SH "OPTIONS"
+When no discriminitor is given on the command line the current working directory will be used to determine the discriminator. If still no discriminator can be determined, the \fBpackage\fR discriminator will be used.
+.sp
+.SH "OPTIONS FOR ALL DISCRIMINATORS"
 .PP
-\-q, \-\-quiet
+\fB\-q, \-\-quiet\fR
 .RS 4
-Reduces feedback to an absolute minimum. \-v, \-\-verbose: Gives additional feedback.
+Reduces feedback to an absolute minimum.
 .RE
 .PP
-\-n, \-\-dry\-run
+\fB\-v, \-\-verbose\fR
 .RS 4
-No real download is performed but the list of missing files is output.
+Gives additional feedback.
 .RE
 .PP
-\-\-timeout
+\fB\-n, \-\-dry\-run\fR
+.RS 4
+Process normally, but instead of downloading missing files a message will be written to the terminal for every missing file.
+.RE
+.PP
+\fB\-\-timeout none|normal|long\fR
 .RS 4
 Defines how tolerat to download delay are we. The default value is
-\fInormal\fR, but you can choose between
-\fIno\fR
+\fBnormal\fR. Other values are
+\fBnone\fR
+for no timeout at all and
+\fBlong\fR
+for a longer than normal timeout.
+.RE
+.PP
+\fB\-\-check never|download|always\fR
+.RS 4
+Defines when downloads should be checked against the checksum in package
+\fB.desc\fR
+files. By default checksums will
+\fBalways\fR
+checked. Other possible values are
+\fBnever\fR
+to disable checksum verification and
+\fBdownload\fR
+to only verify on downloading. In this last case checksums will not be validated when an alternative (\fB\-\-alt\-dir\fR) download location is used.
+.RE
+.PP
+\fB\-\-mirror none|auto|URL\fR
+.RS 4
+Defines which mirror to use. Whatever is selected here overrides the default stored on the global config settings. Alternatively you can use
+\fBnone\fR
+for disabling mirroring or
+\fBauto\fR
+to detect the best mirror for your location.
+.RE
+.PP
+\fB\-\-alt\-dir location\fR
+.RS 4
+Defines an alternative download location. The OpenSDe downloader will first look for files in this location. When not present download will continue as usual. Also have a look at option
+\fB\-\-mode\fR.
+.RE
+.PP
+\fB\-m, \-\-mode hardlink|copy|move\fR
+.RS 4
+Defines how files from an alternative download location will be handled. By default a
+\fBhardlink\fR
+to these files will be created. Other options are
+\fBcopy\fR
 and
-\fIlong\fR
-too.
+\fBmove\fR
+to copy/move the file over to the local download repository.
 .RE
+.SH "OPTIONS FOR PACKAGE AND REPOSITORY DISCRIMINATORS"
 .PP
-\-\-check
+\fB\-e, \-\-extenders configname\fR
 .RS 4
-Defines when will the tool validate the downloaded file against the checksum in the database. The default value is
-\fIalways\fR, but you can choose between
-\fIdownload\fR, meaning that it wont validate when using the alternative download location, or
-\fInever\fR.
+Besided downloading files for specified packages, also downloads for packages extending the given packages will be retrieved. However only the extenders activated in the given config will be taken into account.
 .RE
-.PP
-\-\-mirror
+.SH "EXAMPLES"
+.sp
 .RS 4
-Defines which mirror to use since now, replacing the value stored on the global config. Alternatively you can use
-\fI'none\fR', or auto to detect again the best mirror for your location.
+.nf
+sde download .
+sde download package \-\-extenders myconfig mypackage
+.fi
 .RE
-.PP
-\-\-alt\-dir
-.RS 4
-Defines a local place where look initially for the files, and then includes on the current working tree by the choosen mode. (see \-\-mode)
-.RE
-.PP
-\-m, \-\-mode
-.RS 4
-Defines what to do when taking a file from
-\fI$altdir\fR. By default it makes a
-\fIhardlink\fR, but you can also choose
-\fIcopy\fR
-or
-\fImove\fR.
-.RE
-.PP
-\-e, \-\-extenders
-.RS 4
-When using
-\fIpackage\fR
-or
-\fIrepository\fR
-discriminators, download the active extenders considering the specified config id.
-.RE
+.SH "AUTHOR"
+Written by Minto van der Sluis (misl).
+.sp
+.SH "REPORTING BUGS"
+Report bugs to <list@opensde.org>.
+.sp
+.SH "COPYRIGHT"
+Copyright \(co 2007 The OpenSDE project. This is free software; see the source for copying conditions. There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+.sp

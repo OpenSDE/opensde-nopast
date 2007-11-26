@@ -1,11 +1,11 @@
 .\"     Title: sde-list
 .\"    Author: 
 .\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/12/2007
+.\"      Date: 11/26/2007
 .\"    Manual: 
 .\"    Source: 
 .\"
-.TH "SDE\-LIST" "1" "07/12/2007" "" ""
+.TH "SDE\-LIST" "1" "11/26/2007" "" ""
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
@@ -13,68 +13,77 @@
 .SH "NAME"
 sde\-list \- produce lists needed by other commands
 .SH "SYNOPSIS"
-\fIsde list\fR [DISCRIMINATOR] [OPTIONS] [ITEMS\]
+\fBsde list\fR [\fIDISCRIMINATOR\fR] [\fIOPTIONS\fR] [\fIITEMS\fR]
 .sp
 .SH "DISCRIMINATORS"
 .PP
-package, pkg
+\fBpackage, pkg\fR
 .RS 4
 packages
 .RE
 .PP
-download
+\fBdownload\fR
 .RS 4
 downloadable files of a list of packages, or all if no package is given
 .RE
 .SH "OPTIONS FOR PACKAGES"
 .PP
-\-a, \-\-arch
+\fB\-a, \-\-arch\fR
 .RS 4
 list the packages available for the specified architecture, ignoring the given items and other options.
 .RE
 .PP
-\-c, \-\-cfg
+\fB\-c, \-\-cfg\fR
 .RS 4
 use an specified config to see the active packages, instead of all of them.
 .RE
 .PP
-\-r, \-\-repositories
+\fB\-r, \-\-repositories\fR
 .RS 4
 the given list is a list of repositories, not packages.
 .RE
 .PP
-\-e, \-\-extenders
+\fB\-e, \-\-extenders\fR
 .RS 4
 include the packages which extend the given items.
 .RE
 .SH "OPTIONS FOR DOWNLOAD"
 .PP
-\-c, \-\-cfg
+\fB\-c, \-\-cfg\fR
 .RS 4
 list the download files needed for a given config.
 .RE
 .PP
-\-r, \-\-repositories
+\fB\-r, \-\-repositories\fR
 .RS 4
 the given list is a list of repositories, not packages.
 .RE
 .PP
-\-e, \-\-extenders
+\fB\-e, \-\-extenders\fR
 .RS 4
 include the download files of the active extenders on the specified config.
 .RE
 .PP
-\-p,\-\-package
+\fB\-p,\-\-package\fR
 .RS 4
 include the package name when listing
 .RE
 .PP
-\-k, \-\-checksum
+\fB\-k, \-\-checksum\fR
 .RS 4
 include the checksum value when listing.
 .RE
 .PP
-\-l, \-\-location
+\fB\-l, \-\-location\fR
 .RS 4
 include the download location when listing.
 .RE
+.SH "AUTHOR"
+Written by Minto van der Sluis (misl).
+.sp
+.SH "REPORTING BUGS"
+Report bugs to <list@opensde.org>.
+.sp
+.SH "COPYRIGHT"
+Copyright \(co 2007 The OpenSDE project. This is free software; see the source for copying conditions. There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+.sp

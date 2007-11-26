@@ -1,11 +1,11 @@
 .\"     Title: sde-update
 .\"    Author: 
 .\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 08/14/2007
+.\"      Date: 11/26/2007
 .\"    Manual: 
 .\"    Source: 
 .\"
-.TH "SDE\-UPDATE" "1" "08/14/2007" "" ""
+.TH "SDE\-UPDATE" "1" "11/26/2007" "" ""
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
@@ -13,19 +13,19 @@
 .SH "NAME"
 sde\-update \- updates all or part of the system with upstream changes.
 .SH "SYNOPSIS"
-\fIsde update\fR [DISCRIMINATORS] [OPTIONS] ITEM [VERSION]
+\fBsde update\fR [\fIDISCRIMINATOR\fR] [\fIOPTIONS\fR] [\fIITEM\fR] [\fIVERSION\fR]
 .sp
 .SH "DESCRIPTION"
 Updates part of the environment to the latest version from the repository. Depending on the discriminator specified either a package or a target can get updated.
 .sp
 .SH "DISCRIMINATORS"
 .PP
-package, pkg
+\fBpackage, pkg\fR
 .RS 4
 Updates the package specified as item to the given version.
 .RE
 .PP
-target, tgt
+\fBtarget, tgt\fR
 .RS 4
 Updates the target specified as item to the given version. Details for updating will be taken from the OpenSDE Seedlings target database. When the target is not in the Seedlings target database this command results into and error message.
 .RE
@@ -33,7 +33,7 @@ When no discriminator is specified, package is used as the default discriminator
 .sp
 .SH "OPTIONS"
 .PP
-\-v, \-\-verbose
+\fB\-v, \-\-verbose\fR
 .RS 4
 Give additional feedback on what is happening.
 .RE
@@ -45,3 +45,12 @@ sde update package subversion 1.4.4
 sde update target koala
 .fi
 .RE
+.SH "AUTHOR"
+Written by Minto van der Sluis (misl).
+.sp
+.SH "REPORTING BUGS"
+Report bugs to <list@opensde.org>.
+.sp
+.SH "COPYRIGHT"
+Copyright \(co 2007 The OpenSDE project. This is free software; see the source for copying conditions. There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+.sp

@@ -1,11 +1,11 @@
 .\"     Title: sde
 .\"    Author: 
 .\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 07/10/2007
+.\"      Date: 11/26/2007
 .\"    Manual: 
 .\"    Source: 
 .\"
-.TH "SDE" "1" "07/10/2007" "" ""
+.TH "SDE" "1" "11/26/2007" "" ""
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
@@ -13,8 +13,45 @@
 .SH "NAME"
 sde \- front end wrapper
 .SH "SYNOPSIS"
-\fIsde\fR [COMMAND] [DISCRIMINATOR] [OPTIONS]
+\fBsde\fR [\fICOMMAND\fR] [\fIDISCRIMINATOR\fR] [\fIOPTIONS\fR] [\fIITEMS\fR]
 .sp
 .SH "DESCRIPTION"
-The sde frontend wrapper is supposed to help to use the \fIsde\fR commands from within multiple \fIsde\fR trees, from \fI$PATH\fR
+The \fBsde\fR frontend wrapper is a single command to access all OpenSDE functionality. It is a wrapper since it wraps all existing commands in a single interface. Beyond this simple wrapping the command makes it also possible to work with separate sde environments. For this the environment variable \fBSDEROOT\fR is used.
+.sp
+.SH "COMMANDS"
+Various commands are available, each one targeting a special operation. Amongst these commands are:
+.sp
+.sp
+.RS 4
+.nf
+build    \- building packages
+clean    \- cleaning part of your environment
+config   \- configuring part of your environment
+create   \- creating new packages or target
+download \- downloading packages
+install  \- installing sde or packages on your current system
+update   \- updating packages
+.fi
+.RE
+For a complete list of commands execute the following command: sde help
+.sp
+.SH "DISCRIMINATORS"
+OpenSDE supports various discriminators, however what discriminators are valid depends on the command being used.
+.sp
+.SH "ENVIRONMENT"
+.PP
+\fBSDEROOT\fR
+.RS 4
+When
+\fBSDEROOT\fR
+is set, sde uses it as the path to your sde environment. If not specified the current working directory is used.
+.RE
+.SH "AUTHOR"
+Written by Minto van der Sluis (misl).
+.sp
+.SH "REPORTING BUGS"
+Report bugs to <list@opensde.org>.
+.sp
+.SH "COPYRIGHT"
+Copyright \(co 2007 The OpenSDE project. This is free software; see the source for copying conditions. There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 .sp
