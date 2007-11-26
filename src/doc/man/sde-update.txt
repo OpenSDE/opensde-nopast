@@ -8,7 +8,7 @@ sde-update - updates all or part of the system with upstream changes.
 
 SYNOPSIS
 --------
-'sde update' [DISCRIMINATORS] [OPTIONS] ITEM [VERSION]
+*sde update* ['DISCRIMINATOR'] ['OPTIONS'] ['ITEM'] ['VERSION']
 
 DESCRIPTION
 -----------
@@ -19,11 +19,9 @@ or a target can get updated.
 
 DISCRIMINATORS
 --------------
-
-package, pkg::
+*package, pkg*::
 	Updates the package specified as item to the given version.
-
-target, tgt::
+*target, tgt*::
 	Updates the target specified as item to the given version. Details
 	for updating will be taken from the OpenSDE Seedlings target 
 	database. When the target is not in the Seedlings target database
@@ -34,12 +32,25 @@ discriminator.
 
 OPTIONS
 -------
-
--v, --verbose::
+*-v, --verbose*::
 	Give additional feedback on what is happening.
 
 EXAMPLES
 --------
-
 	sde update package subversion 1.4.4
 	sde update target koala
+
+AUTHOR
+------
+Written by Minto van der Sluis (misl).
+
+REPORTING BUGS
+--------------
+Report bugs to <list@opensde.org>.
+
+COPYRIGHT
+---------
+Copyright (C) 2007 The OpenSDE project.
+This is free software; see the source for copying conditions. There is
+NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.
