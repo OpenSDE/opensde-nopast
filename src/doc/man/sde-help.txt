@@ -4,13 +4,30 @@ The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
-sde-help - provides help about the usage of the 'sde' wrapper
+sde-help - provides help about the usage of the *sde* wrapper
 
 SYNOPSIS
 --------
-'sde help' [COMMAND]
+*sde help* ['COMMAND']
 
 DESCRIPTION
 -----------
-Provides help about the commands available for the 'sde' wrapper
-on the current tree.
+Provides help about the commands available for the *sde* wrapper
+on the current tree. To see a full list of available commands, issue 
+the *sde help* without any arguments. To get help on a specific command,
+use that command as an argument
+
+AUTHOR
+------
+Written by Minto van der Sluis (misl).
+
+REPORTING BUGS
+--------------
+Report bugs to <list@opensde.org>.
+
+COPYRIGHT
+---------
+Copyright (C) 2007 The OpenSDE project.
+This is free software; see the source for copying conditions. There is
+NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.
