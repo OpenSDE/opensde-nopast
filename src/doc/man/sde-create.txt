@@ -8,7 +8,7 @@ sde-create - enhance your sde system with new parts
 
 SYNOPSIS
 --------
-*sde-create* ['DISCRIMINATOR'] ['OPTIONS'] ['ITEM']
+*sde create* ['DISCRIMINATOR'] ['OPTIONS'] ['ITEM']
 
 DESCRIPTION
 -----------
