@@ -8,50 +8,84 @@ sde-download - Downloads packages
 
 SYNOPSIS
 --------
-'sde download' [DISCRIMINATOR] [OPTIONS] [ITEMS]
+*sde download* ['DISCRIMINATOR'] ['OPTIONS'] ['ITEMS']
 
 DESCRIPTION
 -----------
-sde-download downloads one or more packages indicated or belonging to the
-specified name (items). Multiple items can be specified.
+sde-download downloads one or more packages indicated by or belonging to the
+specified items. Multiple items can be specified.
 
 DISCRIMINATORS
 --------------
-config, cfg::
+*config, cfg*::
 	Downloads all selected packages in the specified config (item).
-package, pkg::
+*package, pkg*::
 	Downloads single packages specified by item.
-repository, repo::
+*repository, repo*::
 	Downloads all packages in the repositories specified by item.
+
+When no discriminitor is given on the command line the current working 
+directory will be used to determine the discriminator. If still no 
+discriminator can be determined, the *package* discriminator will be used.
 
 OPTIONS
 -------
--q, --quiet::
+*-q, --quiet*::
 	Reduces feedback to an absolute minimum.
--v, --verbose:
+*-v, --verbose*::
 	Gives additional feedback.
--n, --dry-run::
-	No real download is performed but the list of missing files is
-	output.
---timeout::
+*-n, --dry-run*::
+	Process normally, but instead of downloading missing files a message
+	will be written to the terminal for every missing file.
+*--timeout none|normal|long*::
 	Defines how tolerat to download delay are we. The default value
-	is 'normal', but you can choose between 'no' and 'long' too.
---check::
-	Defines when will the tool validate the downloaded file against
-	the checksum in the database. The default value is 'always', but
-	you can choose between 'download', meaning that it wont validate
-	when using the alternative download location, or 'never'.
---mirror::
-	Defines which mirror to use since now, replacing the value stored
-	on the global config. Alternatively you can use ''none'', or auto
-	to detect again the best mirror for your location.
---alt-dir::
-	Defines a local place where look initially for the files, and then
-	includes on the current working tree by the choosen mode. (see --mode)
--m, --mode::
-	Defines what to do when taking a file from '$altdir'. By default
-	it makes a 'hardlink', but you can also choose 'copy' or 'move'.
--e, --extenders::
-	When using 'package' or 'repository' discriminators, download the
-	active extenders considering the specified config id.
+	is *normal*. Other values are *none* for no timeout at all and 
+	*long* for a longer than normal timeout.
+*--check never|download|always*::
+	Defines when downloads should be checked against the checksum in
+	package *.desc* files. By default checksums will *always* checked.
+	Other possible values are *never* to disable checksum verification
+	and *download* to only verify on downloading. In this last case
+	checksums will not be validated when an alternative (*--alt-dir*)
+	download location is used.
+*--mirror none|auto|URL*::
+	Defines which mirror to use. Whatever is selected here overrides the
+	default stored on the global config settings. Alternatively you can 
+	use *none* for disabling mirroring or *auto* to detect the best 
+	mirror for your location.
+*--alt-dir location*::
+	Defines an alternative download location. The OpenSDe downloader 
+	will first look for files in this location. When not present download
+	will continue as usual. Also have a look at option *--mode*.
+*-m, --mode hardlink|copy|move*::
+	Defines how files from an alternative download location will be 
+	handled. By default a *hardlink* to these files will be created.
+	Other options are *copy* and *move* to copy/move the file over to 
+	the local download repository.
 
+OPTIONS FOR PACKAGE AND REPOSITORY DISCRIMINATORS
+-------------------------------------------------
+*-e, --extenders configname*::
+	Besided downloading files for specified packages, also downloads for
+	packages extending the given packages will be retrieved. However only
+	the extenders activated in the given config will be taken into account.
+
+EXAMPLES
+--------
+	sde download .
+	sde download package --extenders myconfig mypackage
+
+AUTHOR
+------
+Written by Minto van der Sluis (misl).
+
+REPORTING BUGS
+--------------
+Report bugs to <list@opensde.org>.
+
+COPYRIGHT
+---------
+Copyright (C) 2007 The OpenSDE project.
+This is free software; see the source for copying conditions. There is
+NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.
