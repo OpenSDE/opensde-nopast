@@ -4,41 +4,36 @@ The OpenSDE Community <list@opensde.org>
 
 NAME
 ----
-sde-sync - synchronizes all or part of the system with upstream changes.
+*sde-sync* - synchronizes all or part of the system with upstream changes.
 
 SYNOPSIS
 --------
-'sde sync' [DISCRIMINATORS] [OPTIONS] [ITEMS...]
+'sde sync' ['DISCRIMINATOR'] ['OPTIONS'] ['ITEMS']
 
 DESCRIPTION
 -----------
-
 Synchronizes part of the environment to the latest version from the 
 repository. Depending on the discriminator specified either the package
 tree, an identified target, the OpenSDE framework or all of then will 
-get synchronized
+get synchronized with upstream changes.
 
 DISCRIMINATORS
 --------------
-
-all::
+*all*::
 	Synchronizes everything (system, packages and targets) to the 
 	latest changes in the upstream repository. However, only items 
 	that actually came from a repository will get synchronized. Other
 	items will not be touched.
 	This discriminator does not require any items to be specified.
-
-package, pkg::
+*package, pkg*::
 	Synchronizes the package tree to the latest changes in the upstream
 	repository.
 	This discriminator does not require any items to be specified.
-
-system, sys::
+*system, sys*::
 	Synchronizes the OpenSDE framework to the latest changes in the 
 	upstream repository.
 	This discriminator does not require any items to be specified.
-
-target, tgt::
+*target, tgt*::
 	Synchronizes the specified target to the latest changes in the 
 	upstream repository, but only if it originally came from a 
 	repository. If the specified target does not originally come from 
@@ -53,8 +48,7 @@ get synchronized.
 
 OPTIONS
 -------
-
--v, --verbose::
+*-v, --verbose*::
 	Give additional feedback on what is happening.
 
 EXAMPLES
@@ -65,3 +59,18 @@ EXAMPLES
 	sde sync system
 	sde sync package
 	sde sync target koala
+
+AUTHOR
+------
+Written by Minto van der Sluis (misl).
+
+REPORTING BUGS
+--------------
+Report bugs to <list@opensde.org>.
+
+COPYRIGHT
+---------
+Copyright (C) 2007 The OpenSDE project.
+This is free software; see the source for copying conditions. There is
+NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.
