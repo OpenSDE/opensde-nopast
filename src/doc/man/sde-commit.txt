@@ -8,7 +8,7 @@ sde-commit - Commit changes
 
 SYNOPSIS
 --------
-*sde commit* ['CMMAND'] ['DISCRIMINATOR'] ['OPTIONS'] ['ITEMS']
+*sde commit* ['DISCRIMINATOR'] ['OPTIONS'] ['ITEMS']
 
 DESCRIPTION
 -----------
