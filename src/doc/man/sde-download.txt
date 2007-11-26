@@ -28,8 +28,8 @@ When no discriminitor is given on the command line the current working
 directory will be used to determine the discriminator. If still no 
 discriminator can be determined, the *package* discriminator will be used.
 
-OPTIONS
--------
+OPTIONS FOR ALL DISCRIMINATORS
+------------------------------
 *-q, --quiet*::
 	Reduces feedback to an absolute minimum.
 *-v, --verbose*::
