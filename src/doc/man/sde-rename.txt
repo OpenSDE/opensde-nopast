@@ -1,0 +1,56 @@
+sde-copy(1)
+===========
+The OpenSDE Community <list@opensde.org>
+
+NAME
+----
+sde-rename - renames part of the system
+
+SYNOPSIS
+--------
+*sde rename* ['DISCRIMINATOR'] ['OPTIONS'] ['ITEM'] ['ITEMNEW']
+
+DESCRIPTION
+-----------
+Renames part of the system to a new name. The discriminator indicates in 
+what section of the sde system the rename will take place. The item indicates
+what part will be renamed to the new item name.
+
+DISCRIMINATORS
+--------------
+*config, cfg*::
+	Renames an existing config identified by item to a new name. When no
+	item name is specified, 'default' will be used.
+*package, pkg*::
+	Renames an existing package (item) to a new name and/or location. 
+	For this discriminator fully qualified package names are required. 
+	Fully qualified package names are names in which the actual package 
+	name is preceded by the repository name separated by a dot (.).
+*target, tgt*::
+	Renames an existing target identified by item to a new name.
+
+OPTIONS FOR ALL DISCRIMINATORS
+------------------------------
+*-f, --force*::
+	Allows to overwrite existing items in case the specified new item
+	already exists. In case the new new already exists, it will be 
+	removed prior to the requested action.
+*-q, --quiet*::
+        Reduces feedback to an absolute minimum.
+-v, --verbose:
+        Gives additional feedback.
+
+AUTHOR
+------
+Written by Minto van der Sluis (misl).
+
+REPORTING BUGS
+--------------
+Report bugs to <list@opensde.org>.
+
+COPYRIGHT
+---------
+Copyright (C) 2007 The OpenSDE project.
+This is free software; see the source for copying conditions. There is
+NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.
