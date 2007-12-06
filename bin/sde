@@ -84,7 +84,7 @@ elif [ -x "$SDEROOT/bin/sde-$1" ]; then
 	command="$1"; shift
 elif grep -q "^#Alias: $1$" $SDEROOT/bin/sde-* 2> /dev/null; then
 	# use alias
-	command="$( grep -l "^#Alias: $1$" $SDEROOT/bin/sde-* 2> /dev/null |
+	command="$( grep -l "^#Alias: $1$" `ls -1d $SDEROOT/bin/sde-* | grep -v 'bin/sde-.*-.*'` 2> /dev/null |
 		head -n 1 | sed -e 's,.*/sde-,,' )"
 	shift
 else
