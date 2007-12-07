@@ -124,7 +124,7 @@ while read filename ; do
 					mode=sh
 					tag="# "
 				else
-					echo "Unknown type of $filename"
+					echo "Unknown type of $filename" >&2
 					continue
 				fi
 				;;
@@ -139,12 +139,12 @@ while read filename ; do
 			c)	pretag='/*' posttag=' */'
                 		tag=' * '
 				;;
-			*)	echo "Unknown mode '$mode' of $filename"
+			*)	echo "Unknown mode '$mode' of $filename" >&2
 				continue
 				;;
 		esac
 	else
-		echo "Unknown tag '$tag' on $filename"
+		echo "Unknown tag '$tag' on $filename" >&2
 		continue
 	fi
 
