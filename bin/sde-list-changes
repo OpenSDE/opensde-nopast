@@ -85,6 +85,33 @@ if [ -d '.git' ]; then
 
 	# wait for git-diff-index
 	wait
+elif [ -d '.svn' ]; then
+	# svn
+	#
+
+	svn st --ignore-externals -- "$@" | while read l; do
+		s1="${l:0:1}"	# ' ' A C D I M R X ? ! ~
+		s2="${l:1:1}"	# ' ' C M
+		f="${l:7}"
+
+		# be sure to not include sub-projects
+		if [ -d "$f/.git" -o -d "$f/.svn" ]; then
+			# skip sub-projects
+			continue
+		elif [ -n "$show_status" ]; then
+			# the status is wanted
+			if [ "$s2" != ' ' ]; then
+				# changes on the properties go first
+				echo "$s2 $f"
+			elif [ "$s1" != ' ' ]; then
+				# and changes on the item, next
+				echo "$s1 $f"
+			fi # other changes, ignored
+		elif [ "$s1$s2" != '  ' ]; then
+			# only the filename is wanted, but when the change is interesting
+			echo "$f"
+		fi
+	done	
 else
 	print_error "$root: Invalid Version Control System."
 fi
