@@ -81,7 +81,10 @@ print_file_root() {
 
 for x; do
 	y=
-	if [ "${x:0:1}" == "/" -a -e "$x" ]; then
+	if [ "$x" == "." ]; then
+		# $PWD, explicitly
+		y="$PWD"
+	elif [ "${x:0:1}" == "/" -a -e "$x" ]; then
 		# absolute
 		y="$x"
 	elif [ -e "$SDEROOT/package"/*/"$x" ]; then
