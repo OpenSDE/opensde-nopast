@@ -111,6 +111,21 @@ $SDEROOT/bin/sde-list-changes -C "$SDEROOT/$root" --status $locations | ( while 
 				echo_warning "$file: has an unknown status ($status)"
 				;;
 		esac
+	elif [ -d ".svn" ]; then
+		# svn status
+		case "$status" in
+			?)	# new file, add copyright note and `svn add`
+				$SDEROOT/bin/sde-patch-copyright -- "$file"
+				svn add -q -- "$file"
+				;;
+			A|M)	# modified or already added, update copyright note
+				$SDEROOT/bin/sde-patch-copyright -- "$file"
+				;;
+			*)	# unknown
+				echo_warning "$file: has an unknown status ($status)"
+				;;
+		esac
+		
 	fi
 done )
  
