@@ -182,8 +182,15 @@ if [ -s $tmpfile.diff -o -s $tmpfile.status ]; then
 		read opt
 
 		case "$opt" in
-		  c*)	if [ -n "$commit" ]; then
+		  c*)	if [ -z "$commit" ]; then
+				# don't commit yet
+				continue
+			elif [ -d ".git" ]; then
+				# git commit
 				git commit --file $logfile && rm "$logfile" ; quit=1
+			elif [ -d ".svn" ]; then
+				# svn commit
+				svn commit --file $logfile && rm "$logfile" ; quit=1
 			fi ;;
 		  d*)	${PAGER:-less -R} $tmpfile.diff ;;
 		  s*)	cat $tmpfile.status ;;
