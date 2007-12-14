@@ -190,7 +190,7 @@ if [ -s $tmpfile.diff -o -s $tmpfile.status ]; then
 				git commit --file $logfile && rm "$logfile" ; quit=1
 			elif [ -d ".svn" ]; then
 				# svn commit
-				svn commit --file $logfile && rm "$logfile" ; quit=1
+				svn commit --file $logfile -- $locations && rm "$logfile" ; quit=1
 			fi ;;
 		  d*)	${PAGER:-less -R} $tmpfile.diff ;;
 		  s*)	cat $tmpfile.status ;;
