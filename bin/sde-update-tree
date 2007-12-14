@@ -70,5 +70,10 @@ for x in . package $( ls -1d package/* target/* 2> /dev/null ); do
 		echo -n "$tree/$x: "
 		git fetch --quiet && git reset && git rebase origin
 		cd - > /dev/null
+	elif [ -d "$x/.svn" ]; then
+		cd "$x";
+		echo -n "$tree/$x: "
+		svn up
+		cd - > /dev/null
 	fi
 done
