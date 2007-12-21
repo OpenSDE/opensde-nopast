@@ -87,6 +87,8 @@ for x in ${initrddir}/{,usr/}{sbin,bin}/* ${initrddir}/init ${initrddir}/lib/ude
 				continue ;;
 		*symbolic*|*statically*|*shell*)
 				continue ;;
+		*dynamically\ linked*)
+				[ "$SDECFG_STATIC" == 1 ] || continue ;;
 	esac
 
 	echo_warning "evil signature ($signature) on '${x#$initrddir}'."
