@@ -19,53 +19,49 @@ initrddir="$build_toolchain/initrd"
 rm -rf "$initrddir"
 mkdir -p "$initrddir"
 
-INITRD_POSTFLIST_HOOK=
-
-INITRD_FLIST_PACKAGES=
-INITRD_FLIST_PATTERN="-e '/\.\(h\|o\|a\|a\..*\|la\|pc\)$/d;' -e '/ usr\/share\/\(doc\|info\|man\)\//d;'"
-INITRD_EMPTY_PATTERN="-e '/\.\/lib\/udev\/devices\//d;'"
-
-# weak function, should this package be extracted by flist or not?
-initrd_flist_install_filter() { true; }
-
-# source target specific code
+# Hooks
 #
+INITRAMFS_POSTINSTALL_HOOK=
+INITRAMFS_POSTOVERLAY_HOOK=
+
+# Lists
+#
+INITRAMFS_INSTALL_PACKAGES=
+INITRAMFS_INSTALL_PATTERN="-e '/\.\(h\|o\|a\|a\..*\|la\|pc\)$/d;' -e '/ usr\/share\/\(doc\|info\|man\)\//d;'"
+
+INITRAMFS_EMPTY_PATTERN="-e '/\.\/lib\/udev\/devices\//d;'"
+
+# source library, and the target specific overlay
+#
+. "target/share/initramfs.in"
 if [ -f target/$target/build-initramfs.in ]; then
 	. target/$target/build-initramfs.in
 fi
 
-# install what was flisted for stage 1 packages, use $INITRD_FLIST_PATTERN to skip files
+# install what was flisted for stage 1 packages, use $INITRAMFS_INSTALL_PATTERN to skip files
 #
-if [ -z "$INITRD_FLIST_PACKAGES" ]; then
-	INITRD_FLIST_PACKAGES=$( grep '^X .1' $base/config/$config/packages | cut -d' ' -f5 | tr '\n' ' ' )
-fi
+[ -n "$INITRAMFS_INSTALL_PACKAGES" ] || INITRAMFS_INSTALL_PACKAGES=$( initramfs_list_stage1 )
 
 echo_status "Populating ${initrddir#$base/} ..."
-for pkg_name in $INITRD_FLIST_PACKAGES; do
-	if initrd_flist_install_filter $pkg_name; then
+for pkg_name in $INITRAMFS_INSTALL_PACKAGES; do
+	if initramfs_install "$pkg_name" "build/$SDECFG_ID" "$initrddir"; then
 		echo_status "- $pkg_name"
-		flist="build/${SDECFG_ID}/var/adm/flists/$pkg_name"
 
-		eval "sed -e '/ var\/adm/ d;' $INITRD_FLIST_PATTERN '$flist'" | cut -f2- -d' ' |
-			tar -C "build/${SDECFG_ID}/" -cf- --no-recursion --files-from=- |
-			tar -C "$initrddir" -xf-
+		eval "initramfs_install_flist '$pkg_name' 'build/$SDECFG_ID' '$initrddir' $( initramfs_install_pattern "$pkg_name" "$INITRAMFS_INSTALL_PATTERN" )"
 	fi
 done
 
-# hook
+# hook $INITRAMFS_POSTINSTALL_HOOK
 #
-[ -z "$INITRD_POSTFLIST_HOOK" ] || eval "$INITRD_POSTFLIST_HOOK"
+[ -z "$INITRAMFS_POSTINSTALL_HOOK" ] || eval "$INITRD_POSTINSTALL_HOOK"
 
-if [ -r "target/$target/init.sh" ]; then
-	echo_status "Copying target's /init script."
-	cp "target/$target/init.sh" "${initrddir}/init"
-	chmod +x "${initrddir}/init"
-fi
+# Apply overlay
+[ ! -d "target/$target/initramfs" ] || initramfs_install_overlay "target/$target/initramfs" "$initrddir"
 
-# remove empty folder, use $INITRD_EMPTY_PATTERN to skip folders
+# remove empty folder, use $INITRAMFS_EMPTY_PATTERN to skip folders
 #
 echo_status "Removing empty folders ..."
-( cd "$initrddir"; find . -type d ) | tac | eval "sed -e '/\.\/\(dev\|sys\|proc\|mnt\|tmp\)\$/d;' $INITRD_EMPTY_PATTERN" | while read folder; do
+( cd "$initrddir"; find . -type d ) | tac | eval "sed -e '/\.\/\(dev\|sys\|proc\|mnt\|tmp\)\$/d;' $INITRAMFS_EMPTY_PATTERN" | while read folder; do
 	count=$( find "${initrddir}/$folder" | wc -l )
 
 	if [ $count -eq 1 ]; then
@@ -74,7 +70,8 @@ echo_status "Removing empty folders ..."
 	fi
 done
 
-# sanity check
+# sanity checks
+#
 [ -x "${initrddir}/init" ] || echo_warning "This image is missing an /init file, it wont run."
 for x in ${initrddir}/{,usr/}{sbin,bin}/* ${initrddir}/init ${initrddir}/lib/udev/*; do
 	[ -e "$x" ] || continue
