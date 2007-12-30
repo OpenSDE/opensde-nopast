@@ -14,10 +14,10 @@
 
 #Description: Initial ramfs image (cpio.gz) 
 
-initrddir="$build_toolchain/initrd"
+rootfs="$build_toolchain/initrd"
 
-rm -rf "$initrddir"
-mkdir -p "$initrddir"
+rm -rf "$rootfs"
+mkdir -p "$rootfs"
 
 # Hooks
 #
@@ -42,12 +42,12 @@ fi
 #
 [ -n "$INITRAMFS_INSTALL_PACKAGES" ] || INITRAMFS_INSTALL_PACKAGES=$( initramfs_list_stage1 )
 
-echo_status "Populating ${initrddir#$base/} ..."
+echo_status "Populating ${rootfs#$base/} ..."
 for pkg_name in $INITRAMFS_INSTALL_PACKAGES; do
-	if initramfs_install "$pkg_name" "build/$SDECFG_ID" "$initrddir"; then
+	if initramfs_install "$pkg_name" "build/$SDECFG_ID" "$rootfs"; then
 		echo_status "- $pkg_name"
 
-		eval "initramfs_install_flist '$pkg_name' 'build/$SDECFG_ID' '$initrddir' $( initramfs_install_pattern "$pkg_name" "$INITRAMFS_INSTALL_PATTERN" )"
+		eval "initramfs_install_flist '$pkg_name' 'build/$SDECFG_ID' '$rootfs' $( initramfs_install_pattern "$pkg_name" "$INITRAMFS_INSTALL_PATTERN" )"
 	fi
 done
 
@@ -56,24 +56,24 @@ done
 [ -z "$INITRAMFS_POSTINSTALL_HOOK" ] || eval "$INITRD_POSTINSTALL_HOOK"
 
 # Apply overlay
-[ ! -d "target/$target/initramfs" ] || initramfs_install_overlay "target/$target/initramfs" "$initrddir"
+[ ! -d "target/$target/initramfs" ] || initramfs_install_overlay "target/$target/initramfs" "$rootfs"
 
 # remove empty folder, use $INITRAMFS_EMPTY_PATTERN to skip folders
 #
 echo_status "Removing empty folders ..."
-( cd "$initrddir"; find . -type d ) | tac | eval "sed -e '/\.\/\(dev\|sys\|proc\|mnt\|tmp\)\$/d;' $INITRAMFS_EMPTY_PATTERN" | while read folder; do
-	count=$( find "${initrddir}/$folder" | wc -l )
+( cd "$rootfs"; find . -type d ) | tac | eval "sed -e '/\.\/\(dev\|sys\|proc\|mnt\|tmp\)\$/d;' $INITRAMFS_EMPTY_PATTERN" | while read folder; do
+	count=$( find "$rootfs/$folder" | wc -l )
 
 	if [ $count -eq 1 ]; then
-		rm -r "${initrddir}/$folder"
+		rm -r "$rootfs/$folder"
 	#	echo_status "- ${folder} deleted."
 	fi
 done
 
 # sanity checks
 #
-[ -x "${initrddir}/init" ] || echo_warning "This image is missing an /init file, it wont run."
-for x in ${initrddir}/{,usr/}{sbin,bin}/* ${initrddir}/init ${initrddir}/lib/udev/*; do
+[ -x "$rootfs/init" ] || echo_warning "This image is missing an /init file, it wont run."
+for x in $rootfs/{,usr/}{sbin,bin}/* $rootfs/init $rootfs/lib/udev/*; do
 	[ -e "$x" ] || continue
 
 	signature="$( file "$x" 2> /dev/null | cut -d' ' -f2- )"
@@ -88,13 +88,13 @@ for x in ${initrddir}/{,usr/}{sbin,bin}/* ${initrddir}/init ${initrddir}/lib/ude
 				[ "$SDECFG_STATIC" == 1 ] || continue ;;
 	esac
 
-	echo_warning "evil signature ($signature) on '${x#$initrddir}'."
+	echo_warning "evil signature ($signature) on '${x#$rootfs}'."
 done
 
-echo_status "Expanded size: $( du -sh "$initrddir" | cut -f1)."
+echo_status "Expanded size: $( du -sh "$rootfs" | cut -f1)."
 
-echo_status "Creating ${initrddir#$base/}.img ..."
-( cd "$initrddir"; find * | cpio -o -H newc ) |
-	gzip -c -9 > "$initrddir.img"
+echo_status "Creating ${rootfs#$base/}.img ..."
+( cd "$rootfs"; find * | cpio -o -H newc ) |
+	gzip -c -9 > "$rootfs.img"
 
-echo_status "Image size: $( du -sh "$initrddir.img" | cut -f1)."
+echo_status "Image size: $( du -sh "$rootfs.img" | cut -f1)."
