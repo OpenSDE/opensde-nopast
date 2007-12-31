@@ -26,7 +26,7 @@ initramfs_install_flist() {
 	local flist="$sandbox/var/adm/flists/$pkg_name"
 	shift 3
 
-	sed -e '/ var\/adm/ d;' "$@" "$flist" | cut -f2- -d' ' |
+	sed "$@" "$flist" | cut -f2- -d' ' |
 		tar -C "$sandbox/" -cf- --no-recursion --files-from=- |
 		tar -C "$rootfs" -xf-
 }

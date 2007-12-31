@@ -27,7 +27,7 @@ INITRAMFS_POSTOVERLAY_HOOK=
 # Lists
 #
 INITRAMFS_INSTALL_PACKAGES=
-INITRAMFS_INSTALL_PATTERN="-e '/\.\(h\|o\|a\|a\..*\|la\|pc\)$/d;' -e '/ usr\/share\/\(doc\|info\|man\)\//d;'"
+INITRAMFS_INSTALL_PATTERN="-e '/ var\/adm/ d;' -e '/\.\(h\|o\|a\|a\..*\|la\|pc\)$/d;' -e '/ usr\/share\/\(doc\|info\|man\)\//d;'"
 
 INITRAMFS_EMPTY_PATTERN="-e '/\.\/lib\/udev\/devices\//d;'"
 
