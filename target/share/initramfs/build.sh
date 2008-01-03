@@ -55,7 +55,7 @@ done
 
 # hook $INITRAMFS_POSTINSTALL_HOOK
 #
-[ -z "$INITRAMFS_POSTINSTALL_HOOK" ] || eval "$INITRD_POSTINSTALL_HOOK"
+[ -z "$INITRAMFS_POSTINSTALL_HOOK" ] || eval "$INITRAMFS_POSTINSTALL_HOOK"
 
 # Apply overlay
 [ ! -d "target/$target/initramfs" ] || initramfs_install_overlay "target/$target/initramfs" "$rootfs"
