@@ -49,7 +49,7 @@ netkit-base        netkit-ftp         netkit-telnet      netkit-tftp
 sysfiles           libpcap            iptables           tcp_wrappers
 stone              mkinitrd           rocknet
 kbd		   ntfsprogs
-libol              hotplug++          memtester
+libol              memtester
 serpnp             udev
 openssl            openssh            iproute2'
 
