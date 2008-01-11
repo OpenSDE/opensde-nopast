@@ -31,7 +31,7 @@ INITRAMFS_INSTALL_PATTERN="-e '/ var\/adm/ d;' \
 	-e '/\.\(h\|o\|a\|a\..*\|la\|pc\)$/d;' -e '/\/aclocal\//d;' \
 	-e '/ usr\/share\/\(doc\|info\|man\)\//d;' -e'/ opt\/[^\/]*\/\(doc\|info\|man\)\//d;' -e '/\/gtk-doc\//d;'"
 
-INITRAMFS_EMPTY_PATTERN="-e '/\.\/lib\/udev\/devices\//d;' -e '/\.\/dev\//d;'"
+INITRAMFS_EMPTY_PATTERN="-e '/\.\/lib\/udev\/devices\//d;'"
 
 # source library, and the target specific overlay
 #
@@ -63,12 +63,12 @@ done
 # remove empty folder, use $INITRAMFS_EMPTY_PATTERN to skip folders
 #
 echo_status "Removing empty folders ..."
-( cd "$rootfs"; find . -type d ) | tac | eval "sed -e '/\.\/\(dev\|sys\|proc\|mnt\|tmp\)\$/d;' $INITRAMFS_EMPTY_PATTERN" | while read folder; do
+( cd "$rootfs"; find . -type d ) | tac | eval "sed -e '/\.\/\(dev\|sys\|proc\|mnt\|srv\|tmp\|root\|var\)\(\|\/.*\)$/d;' $INITRAMFS_EMPTY_PATTERN" | while read folder; do
 	count=$( find "$rootfs/$folder" | wc -l )
 
 	if [ $count -eq 1 ]; then
 		rm -r "$rootfs/$folder"
-	#	echo_status "- ${folder} deleted."
+		# echo_status "- ${folder} deleted."
 	fi
 done
 
