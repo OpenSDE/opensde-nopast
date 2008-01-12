@@ -35,7 +35,7 @@ initramfs_install_flist() {
 initramfs_install_overlay() {
 	local overlaydir="$1" rootfs="$2"
 	local file= source= target= ext=
-	local type= mode= ref=
+	local type= mode= ref= targetdir=
 
 	for file in $overlaydir/*; do
 		source="${file##*/}"
@@ -48,6 +48,7 @@ initramfs_install_overlay() {
 					*)		type="$ext"; mode=0644	;;
 				esac
 				target="$( echo ${source%.$ext} | tr '_%' '/_' )"
+				targetdir="$rootfs/$target"; targetdir="${targetdir%/*}"
 				;;
 			*)	continue ;;
 		esac
@@ -55,11 +56,13 @@ initramfs_install_overlay() {
 		case "$type" in
 			exec|txt)
 				echo_status "injecting $target ($type)"
+				mkdir -p "$targetdir"
 				cp -f "$file" "$rootfs/$target"
 				chmod $mode "$rootfs/$target"
 				;;
 			ln)	ref=$( cat "$file" )
 				echo_status "injecting $target -> $ref"
+				mkdir -p "$targetdir"
 				ln -snf "$ref" "$rootfs/$target"
 				;;
 			patch)
