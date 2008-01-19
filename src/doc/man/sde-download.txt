@@ -31,9 +31,9 @@ discriminator can be determined, the *package* discriminator will be used.
 OPTIONS FOR ALL DISCRIMINATORS
 ------------------------------
 *-q, --quiet*::
-	Reduces feedback to an absolute minimum.
+	Reduces the verbosity level.
 *-v, --verbose*::
-	Gives additional feedback.
+	Increases the verbosity level.
 *-n, --dry-run*::
 	Process normally, but instead of downloading missing files a message
 	will be written to the terminal for every missing file.
@@ -54,7 +54,7 @@ OPTIONS FOR ALL DISCRIMINATORS
 	use *none* for disabling mirroring or *auto* to detect the best 
 	mirror for your location.
 *--alt-dir location*::
-	Defines an alternative download location. The OpenSDe downloader 
+	Defines an alternative download location. The OpenSDE downloader 
 	will first look for files in this location. When not present download
 	will continue as usual. Also have a look at option *--mode*.
 *-m, --mode hardlink|copy|move*::
@@ -66,9 +66,9 @@ OPTIONS FOR ALL DISCRIMINATORS
 OPTIONS FOR PACKAGE AND REPOSITORY DISCRIMINATORS
 -------------------------------------------------
 *-e, --extenders configname*::
-	Besided downloading files for specified packages, also downloads for
-	packages extending the given packages will be retrieved. However only
-	the extenders activated in the given config will be taken into account.
+	Besided downloading files for specified packages, also downloads from
+	packages extending the given packages will be retrieved. However, only
+	extenders activated in the given config will be taken into account.
 
 EXAMPLES
 --------
