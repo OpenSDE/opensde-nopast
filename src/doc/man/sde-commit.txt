@@ -35,15 +35,19 @@ discriminator in regard to the current working directory.
 
 OPTIONS
 -------
-*--dry-run, -d*::
+*-d, --dry-run*::
 	Gives feedback of what would be done, but does not really
 	commit.
-*--message, -m*::
+*-m, --message*::
 	Allows to specify the commit message on the command line. The
 	argument specifies the actual commit message.
-*--file, -f*::
-	Allows long commit message to be read frome file. The argument 
+*-f, --file*::
+	Allows long commit messages to be read from file. The argument 
 	specifies the file from which to read the message.
+*-q, --quiet*::
+	Reduces the verbosity level.
+*-v, --verbose*::
+	Increases the verbosity level.
 
 EXAMPLES
 --------
