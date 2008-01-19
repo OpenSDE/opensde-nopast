@@ -37,9 +37,9 @@ OPTIONS FOR CONFIG DISCRIMINATOR
 *--profile*::
 	Create a config.profile with profiling data
 *-q, --quiet*::
-	Reduces feedback to an absolute minimum.
--v, --verbose:
-	Gives additional feedback.
+	Reduces the verbosity level.
+*-v, --verbose*::
+	Increases the verbosity level.
 
 OPTIONS FOR SYSTEM DISCRIMINATOR
 --------------------------------
