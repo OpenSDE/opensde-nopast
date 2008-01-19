@@ -32,13 +32,17 @@ checking against a discriminator.
 
 OPTIONS FOR ALL DISCRIMINATORS
 ------------------------------
+*-f, --force*::
+	Makes it possible to overwrite existing items with imported 
+	information.
 *-n, --dry-run*::
 	Instead of really importing the file it is normally processed but
 	not imported. This can be used to see what would happen if the
 	file were imported.
-*-f, --force*::
-	Makes it possible to overwrite existing items with imported 
-	information.
+*-q, --quiet*::
+	Reduces the verbosity level.
+*-v, --verbose*::
+	Increases the verbosity level.
 
 AUTHOR
 ------
