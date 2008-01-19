@@ -38,8 +38,12 @@ DISCRIMINATORS
 OPTIONS FOR ALL DISCRIMINATORS
 ------------------------------
 *-f, --force*::
-	Makes it possible to overwrite existing files. Normally processing
-	abort when the given file already exists.
+	Makes it possible to overwrite existing files. Normal processing
+	will abort when the given file already exists.
+*-q, --quiet*::
+	Reduces the verbosity level.
+*-v, --verbose*::
+	Increases the verbosity level.
 
 OPTIONS FOR PACKAGE AND TARGET DISCRIMINATORS
 ---------------------------------------------
