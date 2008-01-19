@@ -36,9 +36,9 @@ OPTIONS FOR ALL DISCRIMINATORS
 	already exists. In case the new new already exists, it will be 
 	removed prior to the requested action.
 *-q, --quiet*::
-        Reduces feedback to an absolute minimum.
--v, --verbose:
-        Gives additional feedback.
+	Reduces the verbosity level.
+*-v, --verbose*::
+	Increases the verbosity level.
 
 AUTHOR
 ------
