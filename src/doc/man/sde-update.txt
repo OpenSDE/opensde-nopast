@@ -32,8 +32,10 @@ discriminator.
 
 OPTIONS
 -------
+*-q, --quiet*::
+	Reduces the verbosity level.
 *-v, --verbose*::
-	Give additional feedback on what is happening.
+	Increases the verbosity level.
 
 EXAMPLES
 --------
