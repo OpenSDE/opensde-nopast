@@ -12,18 +12,32 @@ SYNOPSIS
 
 DISCRIMINATORS
 --------------
+*architecture,arch*::
+	Gives a list of all supported architectures. No items expected.
+*command, cmd*::
+	Gives a list of all available sde commands. No items expected.
+*discriminator, discr*::
+	Gives a list of all available discriminators for the given sde
+	command (item).
 *package, pkg*::
 	packages
 *download*::
 	downloadable files of a list of packages, or all
 	if no package is given
 
-OPTIONS FOR PACKAGES
---------------------
+OPTIONS FOR ALL DISCRIMINATOR
+-----------------------------
+*-q, --quiet*::
+	Reduces the verbosity level.
+*-v, --verbose*::
+	Increases the verbosity level.
+
+OPTIONS FOR PACKAGE
+-------------------
 *-a, --arch*::
 	list the packages available for the specified architecture, ignoring
 	the given items and other options.
-*-c, --cfg*::
+*-c, --cfg, --config name*::
 	use an specified config to see the active packages, instead of all of them.
 *-r, --repositories*::
 	the given list is a list of repositories, not packages.
@@ -39,7 +53,7 @@ OPTIONS FOR DOWNLOAD
 *-e, --extenders*::
 	include the download files of the active extenders on the
 	specified config.
-*-p,--package*::
+*-p, --package*::
 	include the package name when listing
 *-k, --checksum*::
 	include the checksum value when listing.
