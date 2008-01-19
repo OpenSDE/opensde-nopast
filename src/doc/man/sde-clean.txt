@@ -28,7 +28,8 @@ DISCRIMINATORS
 	no architectures specified, ccache files for all architectrues
 	will be removed.
 *config, cfg*::
-	Removed specified configurations (items).
+	Removed specified configurations (items). If no items specified
+	'default' will be used.
 *download*::
 	Removes old downloads from your old local download mirror. Only 
 	downloads still specified in .desc files will not be removed.
@@ -47,15 +48,15 @@ DISCRIMINATORS
 
 OPTIONS FOR ALL DISCRIMINATORS
 ------------------------------
-*--dry-run*::
+*-d, --dry-run*::
 	Processes normally, but does not clean or modify anything.
 *-f, --force*::
-	Prevents user interaction. Cleaning will continue without explicit
-	acknowlegdement from the user.
+	Prevents user interaction. Cleaning will continue without being
+	explicitly acknowledged from the user.
 *-q, --quiet*::
-	Reduces feedback to an absolute minimum.
--v, --verbose:
-	Gives additional feedback.
+	Reduces the verbosity level.
+*-v, --verbose*::
+	Increases the verbosity level.
 
 The options 'verbose' and 'quiet' are mutually exclusive.
 
