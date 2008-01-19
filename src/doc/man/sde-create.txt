@@ -29,13 +29,13 @@ DISCRIMINATORS
 OPTIONS FOR ALL DISCRIMINATORS
 ------------------------------
 *-q, --quiet*::
-	Reduces feedback to an absolute minimum.
+	Reduces the verbosity level.
 *-v, --verbose*::
-	Gives additional feedback.
+	Increases the verbosity level.
 
 OPTIONS FOR PACKAGE DISCRIMINATOR
 ---------------------------------
-*--hive hive.index*::
+*--hive hive:index*::
 	Makes it Possible to create new packages from available package hives
 	like freshmeat or sourceforge. With this flag you need to specify 
 	which hive to use and what the ID of the package in that hive is.
