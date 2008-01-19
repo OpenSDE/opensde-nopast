@@ -28,6 +28,13 @@ DISCRIMINATORS
 	removing all packages in a repository to/from the build queue 
 	without actually starting the build
 
+OPTIONS FOR ALL DISCRIMINATOR
+-----------------------------
+*-q, --quiet*::
+	Reduces the verbosity level.
+*-v, --verbose*::
+	Increases the verbosity level.
+
 OPTIONS FOR CONFIG DISCRIMINATOR
 --------------------------------
 *--queued*::
