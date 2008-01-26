@@ -18,6 +18,22 @@ sde_wrapper_command_list() {
 	ls -1d "$SDEROOT/bin/sde-"* | grep -v 'bin/sde-.*-.*'
 }
 
+# returns the name of a command file
+sde_wrapper_command_name() {
+	echo "$1" | sed -e 's,.*/sde-,,'
+}
+
+# returns the description of a command file
+sde_wrapper_command_desc() {
+	sed -n -e 's,^#Description: \(.*\)$,\1,p' "$1" | head -n 1
+}
+
+# returns an space delimited list of aliases of this command file
+sde_wrapper_command_aliases() {
+	sed -n -e 's,^#Alias: \([^ ]*\)$,\1,p' "$command" | tr '\n' ' ' |
+		sed -e 's/^ *//' -e 's/ *$//'
+}
+
 sde_wrapper_command() {
 	local cmdbin=
 	if [ "$1" != "${1%-*}" ]; then
