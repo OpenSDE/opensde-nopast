@@ -60,7 +60,7 @@ if [ $# = 0 ]; then
     set lib/. architecture/. misc/. package/. scripts/. target/.
 else
     # check if file or package name was given
-    files=""
+    files=
     for i; do
 	if [ -f $i -o -d $i ]; then
 	    files="$files ${i#./}"

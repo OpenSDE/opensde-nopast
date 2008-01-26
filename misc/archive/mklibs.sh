@@ -96,9 +96,9 @@ version="$0 0.1, Copyright 1999 Marcus Brinkmann"
 PATH=/bin:/usr/bin
 
 default_src_path=/lib:/usr/lib
-dest=""
-exec=""
-action=""
+dest=
+exec=
+action=
 verbose="false"
 
 gcc=${GCC-gcc}

@@ -103,7 +103,7 @@ if [ ! -f build/$SDECFG_ID/TOOLCHAIN/$toolsdir/.lastupdate ] ; then
 
 	# CC, CXX, F77 and KCC Wrapper
 	#
-	wrappers="cmd_wrapper" ; wrappervars=""
+	wrappers="cmd_wrapper" ; wrappervars=
 	echo_status "Building $toolsdir/wrapper/cmd_wrapper."
 	$BUILDCC -Wall -O2 src/tools-source/cmd_wrapper.c \
 		  -DENVPREFIX='"CMD"' -DMYNAME='"cmd_wrapper"' \
@@ -131,32 +131,32 @@ if [ ! -f build/$SDECFG_ID/TOOLCHAIN/$toolsdir/.lastupdate ] ; then
 				echo "export CMD_WRAPPER_BYPASS=1"
 			done
 
-			z=""; echo -n 'export CMD_WRAPPER_APPEND_PO="'
+			z=; echo -n 'export CMD_WRAPPER_APPEND_PO="'
 			for y in $x; do
 				echo -n "${z}\$${y}_WRAPPER_APPEND_PO"; z=" "
 			done ; echo '"'
 
-			z=""; echo -n 'export CMD_WRAPPER_OTHERS="'
+			z=; echo -n 'export CMD_WRAPPER_OTHERS="'
 			for y in $x; do
 				echo -n "${z}\$${y}_WRAPPER_OTHERS"; z=":"
 			done ; echo '"'
 
-			z=""; echo -n 'export CMD_WRAPPER_INSERT="'
+			z=; echo -n 'export CMD_WRAPPER_INSERT="'
 			for y in $x; do
 				echo -n "${z}\$${y}_WRAPPER_INSERT"; z=" "
 			done ; echo '"'
 
-			z=""; echo -n 'export CMD_WRAPPER_REMOVE="'
+			z=; echo -n 'export CMD_WRAPPER_REMOVE="'
 			for y in $x; do
 				echo -n "${z}\$${y}_WRAPPER_REMOVE"; z=" "
 			done ; echo '"'
 
-			z=""; echo -n 'export CMD_WRAPPER_APPEND="'
+			z=; echo -n 'export CMD_WRAPPER_APPEND="'
 			for y in $x; do
 				echo -n "${z}\$${y}_WRAPPER_APPEND"; z=" "
 			done ; echo '"'
 
-			z=""; echo -n 'export CMD_WRAPPER_FILTER="'
+			z=; echo -n 'export CMD_WRAPPER_FILTER="'
 			for y in $x; do
 				echo -n "${z}\$${y}_WRAPPER_FILTER"; z="|"
 			done ; echo '"'
@@ -328,9 +328,9 @@ EOT
 	echo -e "${wrappervars// /\n}" | grep . | sort -u |
 	while read x ; do
 		echo "export ${x}_WRAPPER_DEBUG=0	${x}_WRAPPER_BYPASS=0"
-		echo "export ${x}_WRAPPER_OTHERS=''	${x}_WRAPPER_REMOVE=''"
-		echo "export ${x}_WRAPPER_INSERT=''	${x}_WRAPPER_APPEND=''"
-		echo "export ${x}_WRAPPER_FILTER=''	${x}_WRAPPER_APPEND_PO=''"
+		echo "export ${x}_WRAPPER_OTHERS=	${x}_WRAPPER_REMOVE="
+		echo "export ${x}_WRAPPER_INSERT=	${x}_WRAPPER_APPEND="
+		echo "export ${x}_WRAPPER_FILTER=	${x}_WRAPPER_APPEND_PO="
 	done > build/$SDECFG_ID/TOOLCHAIN/$toolsdir/lib/wrapper-config.$$
 	mv build/$SDECFG_ID/TOOLCHAIN/$toolsdir/lib/wrapper-config.$$ \
 	   build/$SDECFG_ID/TOOLCHAIN/$toolsdir/lib/wrapper-config
