@@ -1,0 +1,63 @@
+.\"     Title: sde-copy
+.\"    Author: 
+.\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
+.\"      Date: 01/26/2008
+.\"    Manual: 
+.\"    Source: 
+.\"
+.TH "SDE\-COPY" "1" "01/26/2008" "" ""
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.SH "NAME"
+sde\-rename \- renames part of the system
+.SH "SYNOPSIS"
+\fBsde rename\fR [\fIDISCRIMINATOR\fR] [\fIOPTIONS\fR] [\fIITEM\fR] [\fIITEMNEW\fR]
+.sp
+.SH "DESCRIPTION"
+Renames part of the system to a new name. The discriminator indicates in what section of the sde system the rename will take place. The item indicates what part will be renamed to the new item name.
+.sp
+.SH "DISCRIMINATORS"
+.PP
+\fBconfig, cfg\fR
+.RS 4
+Renames an existing config identified by item to a new name. When no item name is specified,
+\fIdefault\fR
+will be used.
+.RE
+.PP
+\fBpackage, pkg\fR
+.RS 4
+Renames an existing package (item) to a new name and/or location. For this discriminator fully qualified package names are required. Fully qualified package names are names in which the actual package name is preceded by the repository name separated by a dot (.).
+.RE
+.PP
+\fBtarget, tgt\fR
+.RS 4
+Renames an existing target identified by item to a new name.
+.RE
+.SH "OPTIONS FOR ALL DISCRIMINATORS"
+.PP
+\fB\-f, \-\-force\fR
+.RS 4
+Allows to overwrite existing items in case the specified new item already exists. In case the new new already exists, it will be removed prior to the requested action.
+.RE
+.PP
+\fB\-q, \-\-quiet\fR
+.RS 4
+Reduces the verbosity level.
+.RE
+.PP
+\fB\-v, \-\-verbose\fR
+.RS 4
+Increases the verbosity level.
+.RE
+.SH "AUTHOR"
+Written by Minto van der Sluis (misl).
+.sp
+.SH "REPORTING BUGS"
+Report bugs to <list@opensde.org>.
+.sp
+.SH "COPYRIGHT"
+Copyright \(co 2007 The OpenSDE project. This is free software; see the source for copying conditions. There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+.sp

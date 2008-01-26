@@ -1,11 +1,11 @@
 .\"     Title: sde-clean
 .\"    Author: 
 .\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 11/26/2007
+.\"      Date: 01/26/2008
 .\"    Manual: 
 .\"    Source: 
 .\"
-.TH "SDE\-CLEAN" "1" "11/26/2007" "" ""
+.TH "SDE\-CLEAN" "1" "01/26/2008" "" ""
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
@@ -32,7 +32,9 @@ Removes ccache files for the specified architectures (items). If no architecture
 .PP
 \fBconfig, cfg\fR
 .RS 4
-Removed specified configurations (items).
+Removed specified configurations (items). If no items specified
+\fIdefault\fR
+will be used.
 .RE
 .PP
 \fBdownload\fR
@@ -63,19 +65,24 @@ Brings all specified targets (items) back to their original state. All uncommitt
 .RE
 .SH "OPTIONS FOR ALL DISCRIMINATORS"
 .PP
-\fB\-\-dry\-run\fR
+\fB\-d, \-\-dry\-run\fR
 .RS 4
 Processes normally, but does not clean or modify anything.
 .RE
 .PP
 \fB\-f, \-\-force\fR
 .RS 4
-Prevents user interaction. Cleaning will continue without explicit acknowlegdement from the user.
+Prevents user interaction. Cleaning will continue without being explicitly acknowledged from the user.
 .RE
 .PP
 \fB\-q, \-\-quiet\fR
 .RS 4
-Reduces feedback to an absolute minimum. \-v, \-\-verbose: Gives additional feedback.
+Reduces the verbosity level.
+.RE
+.PP
+\fB\-v, \-\-verbose\fR
+.RS 4
+Increases the verbosity level.
 .RE
 The options \fIverbose\fR and \fIquiet\fR are mutually exclusive.
 .sp

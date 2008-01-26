@@ -1,11 +1,11 @@
 .\"     Title: sde-commit
 .\"    Author: 
 .\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 11/26/2007
+.\"      Date: 01/26/2008
 .\"    Manual: 
 .\"    Source: 
 .\"
-.TH "SDE\-COMMIT" "1" "11/26/2007" "" ""
+.TH "SDE\-COMMIT" "1" "01/26/2008" "" ""
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
@@ -43,19 +43,29 @@ When no discriminator is specified, this command will default to the closest dis
 .sp
 .SH "OPTIONS"
 .PP
-\fB\-\-dry\-run, \-d\fR
+\fB\-d, \-\-dry\-run\fR
 .RS 4
 Gives feedback of what would be done, but does not really commit.
 .RE
 .PP
-\fB\-\-message, \-m\fR
+\fB\-m, \-\-message\fR
 .RS 4
 Allows to specify the commit message on the command line. The argument specifies the actual commit message.
 .RE
 .PP
-\fB\-\-file, \-f\fR
+\fB\-f, \-\-file\fR
 .RS 4
-Allows long commit message to be read frome file. The argument specifies the file from which to read the message.
+Allows long commit messages to be read from file. The argument specifies the file from which to read the message.
+.RE
+.PP
+\fB\-q, \-\-quiet\fR
+.RS 4
+Reduces the verbosity level.
+.RE
+.PP
+\fB\-v, \-\-verbose\fR
+.RS 4
+Increases the verbosity level.
 .RE
 .SH "EXAMPLES"
 .sp

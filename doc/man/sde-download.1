@@ -1,11 +1,11 @@
 .\"     Title: sde-download
 .\"    Author: 
 .\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 11/26/2007
+.\"      Date: 01/26/2008
 .\"    Manual: 
 .\"    Source: 
 .\"
-.TH "SDE\-DOWNLOAD" "1" "11/26/2007" "" ""
+.TH "SDE\-DOWNLOAD" "1" "01/26/2008" "" ""
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
@@ -40,12 +40,12 @@ When no discriminitor is given on the command line the current working directory
 .PP
 \fB\-q, \-\-quiet\fR
 .RS 4
-Reduces feedback to an absolute minimum.
+Reduces the verbosity level.
 .RE
 .PP
 \fB\-v, \-\-verbose\fR
 .RS 4
-Gives additional feedback.
+Increases the verbosity level.
 .RE
 .PP
 \fB\-n, \-\-dry\-run\fR
@@ -87,7 +87,7 @@ to detect the best mirror for your location.
 .PP
 \fB\-\-alt\-dir location\fR
 .RS 4
-Defines an alternative download location. The OpenSDe downloader will first look for files in this location. When not present download will continue as usual. Also have a look at option
+Defines an alternative download location. The OpenSDE downloader will first look for files in this location. When not present download will continue as usual. Also have a look at option
 \fB\-\-mode\fR.
 .RE
 .PP
@@ -105,7 +105,7 @@ to copy/move the file over to the local download repository.
 .PP
 \fB\-e, \-\-extenders configname\fR
 .RS 4
-Besided downloading files for specified packages, also downloads for packages extending the given packages will be retrieved. However only the extenders activated in the given config will be taken into account.
+Besided downloading files for specified packages, also downloads from packages extending the given packages will be retrieved. However, only extenders activated in the given config will be taken into account.
 .RE
 .SH "EXAMPLES"
 .sp

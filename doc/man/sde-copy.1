@@ -1,11 +1,11 @@
 .\"     Title: sde-copy
 .\"    Author: 
 .\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 11/26/2007
+.\"      Date: 01/26/2008
 .\"    Manual: 
 .\"    Source: 
 .\"
-.TH "SDE\-COPY" "1" "11/26/2007" "" ""
+.TH "SDE\-COPY" "1" "01/26/2008" "" ""
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
@@ -13,33 +13,33 @@
 .SH "NAME"
 sde\-copy \- copies part of the system
 .SH "SYNOPSIS"
-\fBsde copy\fR [\fIDISCRIMINATOR\fR] [\fIOPTIONS\fR] [\fIITEM\fR] [\fIITEMNEW\fR]
+\fBsde copy\fR [\fIDISCRIMINATOR\fR] [\fIOPTIONS\fR] [\fIsource\fR] [\fIdestination\fR]
 .sp
 .SH "DESCRIPTION"
-Copies part of the system to a new name. The discriminator indicates in what section of the sde system the copy will take place. The item indicates what part will be copied to the new item name.
+Copies part of the system to a new name. The discriminator indicates in what section of the sde system the copy will take place. The \fIsource\fR indicates what part will be copied to the new \fIdestination\fR name.
 .sp
 .SH "DISCRIMINATORS"
 .PP
 \fBbuild\fR
 .RS 4
-Copies an existing build to a new one. The item specifies the config name that was used for the build. The new item name specifies the new config name. With this discriminator both the build and the accompanying config will be copied.
+Copies an existing build to a new one. Source specifies the config name that was used for the build. Destination specifies the new config name. With this discriminator both the build and the accompanying config will be copied.
 .RE
 .PP
 \fBconfig, cfg\fR
 .RS 4
-Copies an existing config identified by item to a new one. When no item name is specified,
+Copies an existing config identified by source to a new one. When no source name is specified,
 \fIdefault\fR
 will be used.
 .RE
 .PP
 \fBpackage, pkg\fR
 .RS 4
-Copies an existing package (item) to a new one. For this discriminator full qualified package names are required. Fully qualified package names are names in which the actual package name is preceded by the repository name separated by a dot (.).
+Copies an existing package (source) to a new one. For this discriminator fully qualified package names are required. Fully qualified package names are names in which the actual package name is preceded by the repository name separated by a dot (.).
 .RE
 .PP
 \fBtarget, tgt\fR
 .RS 4
-Copies an existing target identified by item to a new one.
+Copies an existing target identified by source to a new one.
 .RE
 .SH "OPTIONS FOR ALL DISCRIMINATORS"
 .PP
@@ -50,7 +50,12 @@ Allows to overwrite existing items in case the specified new item already exists
 .PP
 \fB\-q, \-\-quiet\fR
 .RS 4
-Reduces feedback to an absolute minimum. \-v, \-\-verbose: Gives additional feedback.
+Reduces the verbosity level.
+.RE
+.PP
+\fB\-v, \-\-verbose\fR
+.RS 4
+Increases the verbosity level.
 .RE
 .SH "AUTHOR"
 Written by Minto van der Sluis (misl).

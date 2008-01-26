@@ -1,11 +1,11 @@
 .\"     Title: sde-list
 .\"    Author: 
 .\" Generator: DocBook XSL Stylesheets v1.72.0 <http://docbook.sf.net/>
-.\"      Date: 11/26/2007
+.\"      Date: 01/26/2008
 .\"    Manual: 
 .\"    Source: 
 .\"
-.TH "SDE\-LIST" "1" "11/26/2007" "" ""
+.TH "SDE\-LIST" "1" "01/26/2008" "" ""
 .\" disable hyphenation
 .nh
 .\" disable justification (adjust text to left margin only)
@@ -17,6 +17,21 @@ sde\-list \- produce lists needed by other commands
 .sp
 .SH "DISCRIMINATORS"
 .PP
+\fBarchitecture,arch\fR
+.RS 4
+Gives a list of all supported architectures. No items expected.
+.RE
+.PP
+\fBcommand, cmd\fR
+.RS 4
+Gives a list of all available sde commands. No items expected.
+.RE
+.PP
+\fBdiscriminator, discr\fR
+.RS 4
+Gives a list of all available discriminators for the given sde command (item).
+.RE
+.PP
 \fBpackage, pkg\fR
 .RS 4
 packages
@@ -26,14 +41,25 @@ packages
 .RS 4
 downloadable files of a list of packages, or all if no package is given
 .RE
-.SH "OPTIONS FOR PACKAGES"
+.SH "OPTIONS FOR ALL DISCRIMINATOR"
+.PP
+\fB\-q, \-\-quiet\fR
+.RS 4
+Reduces the verbosity level.
+.RE
+.PP
+\fB\-v, \-\-verbose\fR
+.RS 4
+Increases the verbosity level.
+.RE
+.SH "OPTIONS FOR PACKAGE"
 .PP
 \fB\-a, \-\-arch\fR
 .RS 4
 list the packages available for the specified architecture, ignoring the given items and other options.
 .RE
 .PP
-\fB\-c, \-\-cfg\fR
+\fB\-c, \-\-cfg, \-\-config name\fR
 .RS 4
 use an specified config to see the active packages, instead of all of them.
 .RE
@@ -64,7 +90,7 @@ the given list is a list of repositories, not packages.
 include the download files of the active extenders on the specified config.
 .RE
 .PP
-\fB\-p,\-\-package\fR
+\fB\-p, \-\-package\fR
 .RS 4
 include the package name when listing
 .RE
