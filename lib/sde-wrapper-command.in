@@ -58,6 +58,6 @@ sde_wrapper_command() {
 	else
 		# given token may be an alias of a valid command
 		cmdbin=$( grep -l "^#Alias: $1$" `sde_wrapper_command_list` | head -n 1 )
-		echo "$cmdbin" | sed -e 's,.*/sde-,,'
+		echo $( sde_wrapper_name "$cmdbin" )
 	fi
 }
