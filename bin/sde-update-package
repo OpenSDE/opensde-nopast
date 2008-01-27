@@ -134,34 +134,33 @@ package_update_md5() {
 	done
 }
 
-
-	if [ -n "$md5file" ]; then
-		package_update_md5 "$md5file" ${nolocation:+--no-location}
-		return $?
-	elif [ $# -eq 2 ]; then
-		# package and version
-		pkg="$( echo "$1" | tr A-Z a-z)"
-		ver="$2"
-	elif [ $# -eq 1 ]; then
-		# package or version?
-		pkg="$( echo "$1" | tr A-Z a-z)"
-		if [ ! -d "$( echo "$SDEROOT/package/"*"/$pkg/" )" ]; then
-			pkg="$( package_autodetect )"
-			ver="$1"
-		fi
-	elif [ $# -eq 0 ]; then
-		# can i refresh an autodetected package?
-		pkg=$( package_autodetect )
-	else
-		echo_error "Invalid Syntax."
-		update_usage
-		exit 1
+if [ -n "$md5file" ]; then
+	package_update_md5 "$md5file" ${nolocation:+--no-location}
+	return $?
+elif [ $# -eq 2 ]; then
+	# package and version
+	pkg="$( echo "$1" | tr A-Z a-z)"
+	ver="$2"
+elif [ $# -eq 1 ]; then
+	# package or version?
+	pkg="$( echo "$1" | tr A-Z a-z)"
+	if [ ! -d "$( echo "$SDEROOT/package/"*"/$pkg/" )" ]; then
+		pkg="$( package_autodetect )"
+		ver="$1"
 	fi
+elif [ $# -eq 0 ]; then
+	# can i refresh an autodetected package?
+	pkg=$( package_autodetect )
+else
+	echo_error "Invalid Syntax."
+	update_usage
+	exit 1
+fi
 
-	if [ -n "$pkg" ]; then
-		package_do_update "$pkg" "$ver" "${location}"
-	else
-		echo_error "I could't guess which package you want to update."
-		update_usage
-		exit 2
-	fi
+if [ -n "$pkg" ]; then
+	package_do_update "$pkg" "$ver" "${location}"
+else
+	echo_error "I could't guess which package you want to update."
+	update_usage
+	exit 2
+fi
