@@ -14,7 +14,6 @@
 # --- SDE-COPYRIGHT-NOTE-END ---
 
 #Description: Help about the usage of `sde` and the modules
-#Alias: --help
 #Alias: man
 
 set -e
