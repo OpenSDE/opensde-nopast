@@ -53,6 +53,6 @@ sde_wrapper_discriminator() {
 	else
 		# given token may be an alias of a valid discriminator for this command
 		combin=$( grep -l "^#Alias: $1$" `sde_wrapper_discriminator_list $command` | head -n 1 )
-		echo "$discbin" | sed -e 's,.*/sde-,,'
+		echo $( sde_wrapper_name "$combin" )
 	fi
 }
