@@ -76,7 +76,7 @@ while [ $# -gt 0 ]; do
 	shift
 done
 
-package_patch_update() {
+update_patch_package() {
 	local descfile="$1" ver="$2" location="$3"
 	local oldver= sedopt=
 	local tmpfile=$( mktemp )
@@ -93,7 +93,7 @@ package_patch_update() {
 	rm -f $tmpfile
 }
 
-package_do_update() {
+update_package() {
 	local pkg="$1" ver="$2" location="$3"
 	local confdir=$( ls -1d "$SDEROOT/package/"*"/$pkg" 2> /dev/null )
 	local descfile="${confdir}/${pkg}.desc"
@@ -105,14 +105,14 @@ package_do_update() {
 	elif [ -z "$ver" ]; then
 		echo_info "Updating checksum for $pkg."
 	else
-		package_patch_update "$descfile" "$ver" "$location"
+		update_patch_package "$descfile" "$ver" "$location"
 	fi
 
 	cd "$SDEROOT"
 	./bin/sde-download -q "$pkg" && ./lib/sde-package/patch-cksum.sh "$pkg" | patch -p0
 }
 
-package_update_md5() {
+update_package_md5() {
 	local md5="$1" baseurl=
 	local nolocation= location=
 	shift
@@ -127,15 +127,15 @@ package_update_md5() {
 	$SDEROOT/bin/sde-parse-md5 "$md5" | while read pkg ver file; do
 		if [ -z "$nolocation" ]; then
 			location="$baseurl/$file";
-			package_do_update "$pkg" "$ver" "${location%/*}/"
+			update_package "$pkg" "$ver" "${location%/*}/"
 		else
-			package_do_update "$pkg" "$ver"
+			update_package "$pkg" "$ver"
 		fi
 	done
 }
 
 if [ -n "$md5file" ]; then
-	package_update_md5 "$md5file" ${nolocation:+--no-location}
+	update_package_md5 "$md5file" ${nolocation:+--no-location}
 	return $?
 elif [ $# -eq 2 ]; then
 	# package and version
@@ -158,7 +158,7 @@ else
 fi
 
 if [ -n "$pkg" ]; then
-	package_do_update "$pkg" "$ver" "${location}"
+	update_package "$pkg" "$ver" "${location}"
 else
 	echo_error "I could't guess which package you want to update."
 	update_usage
