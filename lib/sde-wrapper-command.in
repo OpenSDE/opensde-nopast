@@ -30,10 +30,7 @@ sde_wrapper_command_help_list() {
 		desc=$( sde_wrapper_desc "$command" )
 		aliases=$( sde_wrapper_aliases "$command" )
 
-		echo -e "\t* $name${aliases:+\t(${aliases})}"
-		if [ -n "$desc" ]; then
-			echo -e "\t\t$desc"
-		fi
+		printf "%15s%s%s\n" "$name" "${desc:+	$desc}" "${aliases:+ (Alias: ${aliases// /,})}"
 	done
 }
 

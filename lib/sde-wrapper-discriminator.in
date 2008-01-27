@@ -33,7 +33,8 @@ sde_wrapper_discriminator_help() {
 		name=$( sde_wrapper_name "$toy" )
 		desc=$( sde_wrapper_desc "$toy" )
 		aliases=$( sde_wrapper_aliases "$toy" )
-		echo "	$name${desc:+	$desc}${aliases:+ (Alias: ${aliases// /,})}"
+
+		printf "%15s%s%s\n" "$name" "${desc:+	$desc}" "${aliases:+ (Alias: ${aliases// /,})}"
 	done
 	cat <<-EOT
 
