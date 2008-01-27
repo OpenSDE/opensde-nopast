@@ -95,7 +95,7 @@ update_patch_package() {
 
 update_package() {
 	local pkg="$1" ver="$2" location="$3"
-	local confdir=$( ls -1d "$SDEROOT/package/"*"/$pkg" 2> /dev/null )
+	local confdir=$( package_confdir "$pkg" )
 	local descfile="${confdir}/${pkg}.desc"
 	local oldver=
 
@@ -144,7 +144,7 @@ elif [ $# -eq 2 ]; then
 elif [ $# -eq 1 ]; then
 	# package or version?
 	pkg="$( echo "$1" | tr A-Z a-z)"
-	if [ ! -d "$( echo "$SDEROOT/package/"*"/$pkg/" )" ]; then
+	if [ ! -d "$( package_confdir "$pkg" )" ]; then
 		pkg="$( package_autodetect )"
 		ver="$1"
 	fi
