@@ -31,7 +31,7 @@ elif [ "$1" == "--help" ]; then
 	sde_wrapper_discriminator_help "$command"
 	exit 1
 else
-	discriminiator=$( sde_wrapper_discriminator "$command" "$1" )
+	discriminator=$( sde_wrapper_discriminator "$command" "$1" )
 	if [ -z "$discriminator" ]; then
 		# assuming default
 		discriminator='tree'
