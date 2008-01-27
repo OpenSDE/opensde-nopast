@@ -163,7 +163,7 @@ function check_package() {
 }
 
 BEGIN {
-	not_present=;
+	not_present="";
 	stage0_not_present=0;
 	stage01_not_present=0;
 	stage9_no_deps=9;
