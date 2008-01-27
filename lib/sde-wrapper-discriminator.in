@@ -39,7 +39,6 @@ sde_wrapper_discriminator_help() {
 
 	For more information try: sde $1 <discriminator> --help
 	EOT
-	exit 1
 }
 
 sde_wrapper_discriminator() {
