@@ -200,7 +200,7 @@ EOT
 		fi
 	done
 	#
-	if [ "$toolsdir" == "tools.chroot" ]; then
+	if [ "$toolsdir" = "tools.chroot" ]; then
 		echo_status "Building $toolsdir/wrapper/{uname,arch}."
 
 		sed -e "s,@@ARCH_MACHINE@@,$arch_machine,g" \

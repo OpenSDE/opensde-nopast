@@ -305,7 +305,7 @@ rm -f $root/var/adm/logs/$stagelevel-$xpkg.log
 rm -f $root/var/adm/logs/$stagelevel-$xpkg.err
 
 if [ $this_is_the_2nd_run = 0 ] ; then
-	if [ "$toolsdir" == "tools.chroot" ]; then
+	if [ "$toolsdir" = "tools.chroot" ]; then
 		. /etc/profile
 	fi
 
@@ -405,7 +405,7 @@ targetdir="$base/target/$target"
 
 detect_patchfiles
 
-if [ "$toolsdir" == "tools.cross" ]; then
+if [ "$toolsdir" = "tools.cross" ]; then
 	if atstage toolchain; then
 		var_append patchfiles ' ' "`ls $confdir/*.patch.toolchain{,.$arch} \
 	        	                    2>/dev/null | tr '\n' ' '`"
@@ -441,7 +441,7 @@ fi
 for x in $( get_expanded $base/target/%/pkg_$pkg.conf $targetchain ) \
 	$confdir/$pkg.conf ; do
 	if [ -f $x ]; then
-#		if [[ $x == */$pkg.conf ]]; then
+#		if [[ $x = */$pkg.conf ]]; then
 #			echo_status "Reading package configuration from package directory."
 #		else
 #			echo_status "Reading package configuration from target directory."
@@ -661,7 +661,7 @@ abort() {
 		
 	if [ "$SDECFG_FLIST" = "flwrapper" -o \
 	     "$SDECFG_FLIST" = "strace" ] ; then
-		if [ "$toolsdir" == "tools.cross" ]; then
+		if [ "$toolsdir" = "tools.cross" ]; then
 			xbase="$( cd $xroot/ 2> /dev/null ; pwd -P )"
 			flistvalid="$xbase|$flistvalid"
 			
