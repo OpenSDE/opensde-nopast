@@ -18,14 +18,14 @@
 -- 
 -- this file looks quite complicated already, but a comparsion to grep might help:
 --
--- time lua misc/lua/parse-desc.lua package/base/*/*.desc > /dev/null
+-- time lua lib/lua/parse-desc.lua package/base/*/*.desc > /dev/null
 -- time grep "^[[]" package/base/*/*.desc > /dev/null
 --
 
-require "misc/lua/sde/desc"
+require "lib/lua/sde/desc"
 
 if #arg < 1 then
-   print("Usage: lua misc/lua/parse-desc.lua [path-to-desc-file]")
+   print("Usage: lua lib/lua/parse-desc.lua [path-to-desc-file]")
    os.exit(1)
 end
 
