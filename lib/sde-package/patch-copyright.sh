@@ -211,13 +211,13 @@ ${posttag:+$posttag\\
 		     "$filename" != "${filename%/*.patch}" -o \
 		     "$filename" != "${filename%/*.patch.*}" -o \
 		     "$filename" != "${filename%/*.patch-*}" ] ; then
-			sed -e "s,@@FILENAME@@,$mangled_filename,; \
-				s,@@COPYRIGHT@@,${copyright//
-/\n},;"  $copynotepatch
+			sed -e "s|@@FILENAME@@|$mangled_filename|; \
+				s|@@COPYRIGHT@@|${copyright//
+/\n}|;"  $copynotepatch
 		else
-			sed -e "s,@@FILENAME@@,$mangled_filename,; \
-				s,@@COPYRIGHT@@,${copyright//
-/\n},;"  $copynote
+			sed -e "s|@@FILENAME@@|$mangled_filename|; \
+				s|@@COPYRIGHT@@|${copyright//
+/\n}|;"  $copynote
 		fi
 		# we need a separated sed call because $rockcopyright adds a new line
 		} | sed -e "s,^,$tag,"
