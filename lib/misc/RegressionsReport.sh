@@ -17,7 +17,7 @@ config=default
 TARGET=regressions
 revision=`svn info | sed -n 's,^Revision: \(.*\),\1,p'` 
 
-if [ "$1" == "-cfg" ]; then
+if [ "$1" = "-cfg" ]; then
 	config="$2"; shift 2
 fi
 

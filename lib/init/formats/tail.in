@@ -22,7 +22,7 @@ tail_read() {
 	local verbose=1 file= output= query=
 	local query= count=2
 
-	if [ "$1" == "-q" ]; then
+	if [ "$1" = "-q" ]; then
 		verbose=
 		shift
 	fi

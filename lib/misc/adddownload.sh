@@ -27,7 +27,7 @@ fi
 confdir=$( echo package/*/$1 )
 package=$1; shift
 rep="$( echo $confdir | cut -d'/' -f 2 )"
-if [ "$rep" == "*" ]; then
+if [ "$rep" = "*" ]; then
 	echo "failed"
 	echo -e "\tpackage $package doesn't exist!\n"
 	exit

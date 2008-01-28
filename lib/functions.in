@@ -272,7 +272,7 @@ function eval_config_command() {
 	config_command="$configprefix $configscript"
 	sub_scripts="$( find $( dirname $configscript ) -name configure )"
 
-	if [ "$cleanconfopt" == "0" ]; then
+	if [ "$cleanconfopt" = "0" ]; then
 		config_command="$config_command $@"
 	else
 	# remove unsupported config script options
@@ -536,7 +536,7 @@ pkginstalled() {
 
 	if [ $# -eq 0 ]; then
 		return 1	# nothing
-	elif [ "$1" == "-f" ]; then
+	elif [ "$1" = "-f" ]; then
 		effective=1; shift
 	elif atstage rebuild; then
 		effective=1
@@ -809,7 +809,7 @@ autoextract_zip() {
 # Main program for building a package
 #
 build_this_package() {
-	if [ ".$desc_SRC" == "." ] ; then
+	if [ ".$desc_SRC" = "." ] ; then
 		# Autodetect source tar and extract it
 		#
 		if [ "$srctar" = auto ] ; then
@@ -911,7 +911,7 @@ build_this_package() {
 		
 		if [ -z "$custmain" ]; then
 			while [ ${buildloop:-1} -le ${buildloops:-1} ]; do
-			[ "${buildloops:-1}" == "1" ] || echo "loop ${buildloop:-1} of ${buildloops:-1} for $xsrctar."
+			[ "${buildloops:-1}" = "1" ] || echo "loop ${buildloop:-1} of ${buildloops:-1} for $xsrctar."
 
 			hook_eval preconf
 
@@ -1048,7 +1048,7 @@ source_file() {
 	local pre= file="$2" url="$3" mirror="mirror"
 
 	# '-' as $url prefix means, nomirrorable
-	[ "${url:0:1}" == "-" ] && mirror="local"
+	[ "${url:0:1}" = "-" ] && mirror="local"
 	
 	# inside Build-Pkg $archdir is set
 	if [ -n "$archdir" ]; then
@@ -1068,7 +1068,7 @@ match_source_file() {
 	local x= file= url= mirror=
 	local found=1
 
-	if [ "$1" == "-p" ]; then
+	if [ "$1" = "-p" ]; then
 		showpath=1; shift
 	fi
 	pattern="$1"; shift
@@ -1081,7 +1081,7 @@ match_source_file() {
 			if [ $showpath -eq 0 ]; then
 				echo $file
 			else
-				[ "${url:0:1}" == "-" ] && mirror="local" || mirror="mirror"
+				[ "${url:0:1}" = "-" ] && mirror="local" || mirror="mirror"
 				echo $base/download/${mirror}/${file:0:1}/$file
 			fi
 		done < <( grep -e "^\[D\].*$pattern" $base/package/*/$package/$package.desc )

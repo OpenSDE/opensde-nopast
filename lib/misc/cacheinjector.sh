@@ -15,7 +15,7 @@
 # --- SDE-COPYRIGHT-NOTE-END ---
 
 config=default
-if [ "$1" == "-cfg" ]; then
+if [ "$1" = "-cfg" ]; then
 	config="$2"
 	shift; shift
 fi

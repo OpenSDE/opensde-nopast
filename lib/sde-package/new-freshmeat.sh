@@ -151,7 +151,7 @@ read_fm_config() {
     fi
 }
 
-if [ "$1" == "-main" ] ; then
+if [ "$1" = "-main" ] ; then
 	create_main=1
 	shift
 fi
@@ -265,7 +265,7 @@ fi
 echo "ok"
 echo -n "Creating $package.conf ... "
 
-if [ "$create_main" == "1" ] ; then
+if [ "$create_main" = "1" ] ; then
 	cat >>$package.conf <<-EOF
 ${package}_main() { 
     : TODO

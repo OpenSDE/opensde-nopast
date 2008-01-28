@@ -25,7 +25,7 @@ cppkg() {
 		if [ -f $to/var/adm/flists/$pkg ]; then
 			echo "$pkg: already present at target ($to)"
 			cut -d' ' -f2- $to/var/adm/flists/$pkg | while read -r f; do
-				if [ "$f" == var/adm/flists/$pkg ]; then
+				if [ "$f" = "var/adm/flists/$pkg" ]; then
 					true
 				elif [ ! -d "$to/$f" ]; then
 					rm -vf "$to/$f"
