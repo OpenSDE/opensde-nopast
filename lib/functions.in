@@ -440,7 +440,7 @@ rock_substitute() {
 # packages to cross-build correctly in stages 0 and 1.
 #
 create_config_cache() {
-	cat $base/scripts/config.cache
+	cat $base/lib/sde-build/config.cache
 
 	if [ $createarchcache -eq 1 ]; then
 		cat  <<-EOT
