@@ -27,7 +27,7 @@ command='update'
 if [ $# -eq 0 ]; then
 	# assuming default
 	discriminator='tree'
-elif [ "$1" == "--help" ]; then
+elif [ "$1" = "--help" ]; then
 	sde_wrapper_discriminator_help "$command"
 	exit 1
 else

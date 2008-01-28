@@ -207,7 +207,7 @@ detect_mirror() {
 
 	if [ -z "$mirror" ]; then
 		echo_error "Mirror detection loop hit a bug!"
-	elif [ "$mirror" == "broken" ]; then
+	elif [ "$mirror" = "broken" ]; then
 		echo_warning "No Mirror Found!"
 	else
 		echo_info "Using mirror <$mirror>."
@@ -230,7 +230,7 @@ download_file() {
 	# Tarball file name:
 	bzfile="`bz2filename "$gzfile"`"
 	# Remove optional '-' prefix from $location
-	[ "${location:0:1}" == '-' ] && location="${location:1}"
+	[ "${location:0:1}" = '-' ] && location="${location:1}"
 	# Lock file name:
 	lkfile="tmp/down.lockfile.`echo $bzfile | tr / -`"
 
@@ -537,13 +537,13 @@ download_file_now() {
 				touch $HOME/.cvspass
 				;;
 			svn|svn\+http)
-				if [ "$protocol" == "svn+http" ]; then
+				if [ "$protocol" = "svn+http" ]; then
 					url="http://$url"
 				else
 					url="svn://$url"
 				fi
 				
-				if [ "${options:0:1}" == "-" ]; then
+				if [ "${options:0:1}" = "-" ]; then
 					# the module is the last dir of $url
 					module="${url##*/}"
 				else

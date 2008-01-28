@@ -118,7 +118,7 @@ update_package_md5() {
 	shift
 
 	echo_info "Loading MD5 file from '$md5'"
-	if [ "$1" == "--no-location" ]; then
+	if [ "$1" = "--no-location" ]; then
 		nolocation=yes; shift
 		echo_info "(Using individual download locations)"
 	fi
