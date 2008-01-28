@@ -20,7 +20,6 @@
 #
 # 	- architecture/*/preconfig.in
 #
-#	- misc/*/preconfig.in
 #	- lib/*/preconfig.in
 #	- target/*/preconfig.in
 #	- package/*/*/preconfig.in
@@ -40,7 +39,6 @@
 #	* Various common build options
 #
 #	- package/*/*/postconfig.in
-# 	- misc/*/postconfig.in
 # 	- lib/*/postconfig.in
 #	- architecture/$SDECFG_ARCH/postconfig.in
 #	- target/$SDECFG_TARGET/postconfig.in

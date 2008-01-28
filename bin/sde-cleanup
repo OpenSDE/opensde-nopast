@@ -139,7 +139,7 @@ to also flush the cache."
 
 echo -e "\nSearching for lingering temp/backup files (this may take some time) ..."
 
-sderootdirs="scripts/. bin/. etc/. lib/. misc/. doc/. src/. package/. architecture/. target/."
+sderootdirs="scripts/. bin/. etc/. lib/. doc/. src/. package/. architecture/. target/."
 
 # Remove temp/backup files
 #

@@ -57,7 +57,7 @@ version.
 EOT
 
 if [ $# = 0 ]; then
-    set lib/. architecture/. misc/. package/. scripts/. target/.
+    set lib/. architecture/. package/. scripts/. bin/. target/.
 else
     # check if file or package name was given
     files=
