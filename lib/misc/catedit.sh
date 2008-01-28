@@ -17,8 +17,8 @@
 # WARNING: Create backup copies of your files before you use this tool
 # for editing the categories of your packages !!!
 #
-# Usage: sh misc/archive/catedit.sh package/base/*/*.desc
-#    or: sh misc/archive/catedit.sh -a
+# Usage: sh lib/misc/catedit.sh package/base/*/*.desc
+#    or: sh lib/misc/catedit.sh -a
 #
 
 set -e

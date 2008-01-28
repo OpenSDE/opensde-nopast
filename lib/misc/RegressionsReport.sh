@@ -31,7 +31,7 @@ fi
 mkdir -p $TARGET
 
 echo "[$( date +%T )] Auditing '$config' to '$TARGET/' ..."
-sh misc/archive/AuditBuild.sh -w $TARGET -cfg $config --no-enabled-too -repository package/* \
+sh lib/misc/AuditBuild.sh -w $TARGET -cfg $config --no-enabled-too -repository package/* \
 	| grep '\(CHANGED\|UPDATED\|ADDED\|FAILED\|PENDING\|DISABLED\)' > $TARGET/regressions.$config.$$
 echo "[$( date +%T )] Auditing completed."
 
