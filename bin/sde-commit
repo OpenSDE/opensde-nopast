@@ -33,7 +33,7 @@ commit_abort() {
 	echo_error "Got SIGINT (Crtl-C)."
 	rm -f $tmpfile.status $tmpfile.diff
 
-	[ $logfile != $tmpfile.log ] || rm -f $logfile
+	[ -n "$logfile" -a "$logfile" != "$tmpfile.log" ] || rm -f "$logfile"
 	exit 1
 }
 
