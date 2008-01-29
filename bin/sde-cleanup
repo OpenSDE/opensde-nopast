@@ -135,47 +135,4 @@ done
 	echo -e "\nUse '$0 -build' to remove builds and '$0 -cache'
 to also flush the cache."
 
-[ "$nocheck" = 1 ] && exit 0
-
-echo -e "\nSearching for lingering temp/backup files (this may take some time) ..."
-
-sderootdirs="scripts/. bin/. etc/. lib/. doc/. src/. package/. architecture/. target/."
-
-# Remove temp/backup files
-#
-$SDEROOT/bin/find $sderootdirs -type f \( -name '*~' -o \
-	-name 'a.out' -o -name 'core.*' -o -name 'core' \) | xargs rm -vf
-
-# Print warnings for 'lingering' files
-# (we have to distinguish between the targets and the rest)
-#
-sderootdirs=${sderootdirs% target/.}
-$SDEROOT/bin/find ${sderootdirs} \(					\
-	\( -name 'DEADJOE' -o -name '*-[xX]' -o -name '.[^.]*'		\
-           -o -name '*.orig' -o -name '*.rej' -o -name '*#*'		\
-           -o -name '*.mine' -o -name '*.r[1-9][0-9]*'			\
-           -o -name TRANS.TBL -o -name '*.cksum-err' -o -name x		\
-	   -o -name '*[.-]old' -o -name a.out -o -name '*~'		\
-	   -o -name '*.incomplete' -o -name '*.ckext-err' \)		\
-	-printf 'WARNING: Found %p\n'					\
-  \) -o \(								\
-	\( ! -type d ! -type f \)					\
-	-printf 'WARNING: Neither a dir nor a regular file: %p\n'	\
-  \)
-
-# for targets we tolerate .files
-$SDEROOT/bin/find target/.						\
-  \(                                                                    \
-        \( -name 'DEADJOE' -o -name '*-[xX]' 				\
-           -o -name '*.orig' -o -name '*.rej' -o -name '*#*'            \
-           -o -name '*.mine' -o -name '*.r[1-9][0-9]*'                  \
-           -o -name TRANS.TBL -o -name '*.cksum-err' -o -name x         \
-           -o -name '*[.-]old' -o -name a.out -o -name '*~'             \
-           -o -name '*.incomplete' -o -name '*.ckext-err' \)            \
-        -printf 'WARNING: Found %p\n'                                   \
-  \) -o \(                                                              \
-        \( ! -type d ! -type f \)                                       \
-        -printf 'WARNING: Neither a dir nor a regular file: %p\n'       \
-  \)
-
-exit 0
+[ "$nocheck" = 1 ] || exec $SDEROOT/bin/sde-clean-linger
