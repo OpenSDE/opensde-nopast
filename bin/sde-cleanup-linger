@@ -30,26 +30,26 @@ fi
 
 cd "$SDEROOT"
 
-echo "Searching for lingering temp/backup files (this may take some time) ..."
+echo_info "Searching for lingering temp/backup files (this may take some time) ..."
 
-sderootdirs="scripts/. bin/. etc/. lib/. doc/. src/. package/. architecture/. target/."
+sderootdirs="scripts/. bin/. etc/. lib/. doc/. src/. package/. architecture/." # target/.
+
+files_remove="-name *~ -o -name a.out -o -name core.* -o -name core"
+files_warn="-name DEADJOE -o -name *-[xX]			\
+	-o -name *.orig -o -name *.rej -o -name *#*		\
+	-o -name *.mine -o -name *.r[1-9][0-9]*			\
+	-o -name TRANS.TBL -o -name *.cksum-err -o -name x	\
+	-o -name *[.-]old -o -name a.out -o -name *~		\
+	-o -name *.incomplete -o -name *.ckext-err"
 
 # Remove temp/backup files
 #
-bin/find $sderootdirs -type f \( -name '*~' -o \
-	-name 'a.out' -o -name 'core.*' -o -name 'core' \) | xargs rm -vf
+bin/find $sderootdirs target/. -type f \( $files_remove \) | xargs rm -vf
 
 # Print warnings for 'lingering' files
-# (we have to distinguish between the targets and the rest)
 #
-sderootdirs=${sderootdirs% target/.}
-bin/find ${sderootdirs} \(					\
-	\( -name 'DEADJOE' -o -name '*-[xX]' -o -name '.[^.]*'		\
-           -o -name '*.orig' -o -name '*.rej' -o -name '*#*'		\
-           -o -name '*.mine' -o -name '*.r[1-9][0-9]*'			\
-           -o -name TRANS.TBL -o -name '*.cksum-err' -o -name x		\
-	   -o -name '*[.-]old' -o -name a.out -o -name '*~'		\
-	   -o -name '*.incomplete' -o -name '*.ckext-err' \)		\
+bin/find ${sderootdirs} \(						\
+	\( $files_warn -o -name '.[^.]*' \)				\
 	-printf 'WARNING: Found %p\n'					\
   \) -o \(								\
 	\( ! -type d ! -type f \)					\
@@ -57,14 +57,8 @@ bin/find ${sderootdirs} \(					\
   \)
 
 # for targets we tolerate .files
-bin/find target/.						\
-  \(                                                                    \
-        \( -name 'DEADJOE' -o -name '*-[xX]' 				\
-           -o -name '*.orig' -o -name '*.rej' -o -name '*#*'            \
-           -o -name '*.mine' -o -name '*.r[1-9][0-9]*'                  \
-           -o -name TRANS.TBL -o -name '*.cksum-err' -o -name x         \
-           -o -name '*[.-]old' -o -name a.out -o -name '*~'             \
-           -o -name '*.incomplete' -o -name '*.ckext-err' \)            \
+bin/find target/. \( 							\
+        \( $files_warn \)						\
         -printf 'WARNING: Found %p\n'                                   \
   \) -o \(                                                              \
         \( ! -type d ! -type f \)                                       \
