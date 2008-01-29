@@ -16,6 +16,7 @@
 # --- SDE-COPYRIGHT-NOTE-END ---
 
 #Description: Cleanup the build environment 
+#Alias: clean
 
 [ -n "$SDEROOT" ] ||
 	export SDEROOT=$( cd "${0%/*}/.."; pwd -P )
