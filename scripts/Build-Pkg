@@ -19,7 +19,7 @@ exec 2>&1
 
 buildstart="`date "+%m/%d/%Y from %T"`"
 
-sderootdirs="scripts bin etc lib misc doc src package architecture target"
+sderootdirs="scripts bin etc lib doc src package architecture target"
 
 options=
 config=default
