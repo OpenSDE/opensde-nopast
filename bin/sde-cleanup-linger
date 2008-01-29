@@ -44,25 +44,26 @@ files_warn="-name DEADJOE -o -name *-[xX]			\
 
 # Remove temp/backup files
 #
-bin/find $sderootdirs target/. -type f \( $files_remove \) | xargs rm -vf
+( bin/find $sderootdirs target/. -type f \( $files_remove \) | xargs rm -vf ) &
 
 # Print warnings for 'lingering' files
 #
-bin/find ${sderootdirs} \(						\
+( bin/find ${sderootdirs} \(						\
 	\( $files_warn -o -name '.[^.]*' \)				\
 	-printf 'WARNING: Found %p\n'					\
   \) -o \(								\
 	\( ! -type d ! -type f \)					\
 	-printf 'WARNING: Neither a dir nor a regular file: %p\n'	\
-  \)
+  \) ) &
 
 # for targets we tolerate .files
-bin/find target/. \( 							\
+( bin/find target/. \( 							\
         \( $files_warn \)						\
         -printf 'WARNING: Found %p\n'                                   \
   \) -o \(                                                              \
         \( ! -type d ! -type f \)                                       \
         -printf 'WARNING: Neither a dir nor a regular file: %p\n'       \
-  \)
+  \) ) &
 
+wait
 exit 0
