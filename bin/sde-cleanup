@@ -136,4 +136,4 @@ done
 	echo -e "\nUse '$0 -build' to remove builds and '$0 -cache'
 to also flush the cache."
 
-[ "$nocheck" = 1 ] || exec $SDEROOT/bin/sde-clean-linger
+[ "$nocheck" = 1 ] || exec $SDEROOT/bin/sde-cleanup-linger
