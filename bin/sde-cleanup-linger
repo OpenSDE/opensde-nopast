@@ -28,20 +28,22 @@ if [ $# -ne 0 ]; then
 	exit 1
 fi
 
+cd "$SDEROOT"
+
 echo "Searching for lingering temp/backup files (this may take some time) ..."
 
 sderootdirs="scripts/. bin/. etc/. lib/. doc/. src/. package/. architecture/. target/."
 
 # Remove temp/backup files
 #
-$SDEROOT/bin/find $sderootdirs -type f \( -name '*~' -o \
+bin/find $sderootdirs -type f \( -name '*~' -o \
 	-name 'a.out' -o -name 'core.*' -o -name 'core' \) | xargs rm -vf
 
 # Print warnings for 'lingering' files
 # (we have to distinguish between the targets and the rest)
 #
 sderootdirs=${sderootdirs% target/.}
-$SDEROOT/bin/find ${sderootdirs} \(					\
+bin/find ${sderootdirs} \(					\
 	\( -name 'DEADJOE' -o -name '*-[xX]' -o -name '.[^.]*'		\
            -o -name '*.orig' -o -name '*.rej' -o -name '*#*'		\
            -o -name '*.mine' -o -name '*.r[1-9][0-9]*'			\
@@ -55,7 +57,7 @@ $SDEROOT/bin/find ${sderootdirs} \(					\
   \)
 
 # for targets we tolerate .files
-$SDEROOT/bin/find target/.						\
+bin/find target/.						\
   \(                                                                    \
         \( -name 'DEADJOE' -o -name '*-[xX]' 				\
            -o -name '*.orig' -o -name '*.rej' -o -name '*#*'            \
