@@ -374,7 +374,7 @@ download_file() {
 	fi
 
 	# unsign .gpg file
-	if [[ $gzfile = *.gpg ]]; then
+	if expr "$gzfile" : "*.gpg" > /dev/null; then
 		gzfile=${gzfile%.gpg}
 		if [ -f $gzfile.gpg ]; then
 			echo "unsigning GnuPG file: $gzfile.gpg"
