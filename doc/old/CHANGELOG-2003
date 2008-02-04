@@ -116,7 +116,7 @@
  - Alejandro Mery: updated mono, mono-doc, mono-debugger, mono-xsp,
                    mod_mono, gtk-sharp
                    added links package
-                   updated cron and fix bind       
+                   updated cron and fix bind
  - updated subversion (0.34.0)
  - added default bdb selection to the apache config.in (defaults to 42)
  - added ifplugd (and so libdaemon)
@@ -528,7 +528,7 @@
  - fixed xjdic23 to build correclty and for random return value e.g. PowerPC
  - Andreas V. Meier: added avm/aalib
  - Sebastian Jaenicke: updated courier-imap and maildrop
- - Dimitar Zhekov: fixed xfree86-cyrillic-fonts 
+ - Dimitar Zhekov: fixed xfree86-cyrillic-fonts
  - reverted (hopefully all) lib/*.{a.la} - > usr/lib/ changes and replaced
    the code with a post-flist solution which works more package independet
    and allows the adaption of the .la files
@@ -863,7 +863,7 @@
  - Sebastian Jaenicke: updated bsd-games and ircii
  - Dimitar Zhekov: updated jimmy repository and added xfce4 repository
  - Alejandro Mery: boehm-gc - complete integration
- 
+
 *) 2003-09-01 (2.0.0-rc1 - 2.0.0-rc2) [RENE]
 
  - updated wv2 and koffice
@@ -926,7 +926,7 @@
  - Juergen Sawinski: isdn4k-utils, ifhp, aspell, units and raidtools for
                      e.g. gcc33
  - Daniel Pischl: updated icewm
- - Juergen Sawinski: multiple package additions/updates for the jsaw repository 
+ - Juergen Sawinski: multiple package additions/updates for the jsaw repository
  - added the TeX -> HTML generator TeX4ht now used for the rock-handbook
  - Sebastian Jaenicke: slrn
 
@@ -1078,12 +1078,12 @@
 
 *) 2003-08-09 (2.0.0-camp - 2.0.0-rc1) [RENE]
 
- - fixed mkinitrd.sh (s/rdir/rmdir/) 
+ - fixed mkinitrd.sh (s/rdir/rmdir/)
 
 *) 2003-08-07 (2.0.0-camp - 2.0.0-rc1) [RENE]
 
  - added QTDIR and KDEDIR$ver exports to the qt and kdelibs packages (and
-   fixed the kdelibs package to really create the profile.d file ...) 
+   fixed the kdelibs package to really create the profile.d file ...)
  - added x86/help2 to the bootdisk
 
 *) 2003-08-06 (2.0.0-beta7 - 2.0.0-rc1) [RENE]
@@ -1128,7 +1128,7 @@
  - powerpc and shared kernel config tweaks
  - yaboot documentaion copy and special rs6k file preparations
  - linux24.conf special ppc handling (for rs6k)
- 
+
 *) 2003-08-02 (2.0.0-beta7 - 2.0.0-rc1) [RENE]
 
  - fixed zlib to only install into $root/... and refactored the code
@@ -1179,7 +1179,7 @@
 *) 2003-07-28 (2.0.0-beta7 - 2.0.0-rc1) [RENE]
 
  - Dimitar Zhekov: all pending patches (except linux-full-config), bash,
-                   bootdisk, xfree, shared files, nullmailer, terminus, ... 
+                   bootdisk, xfree, shared files, nullmailer, terminus, ...
  - Alejandro Mery: updated patchutils, man-pages, ethereal and fixed
                    keepalived and shadow
  - Stefan Paletta: fixed lvm prefix, lynx path encoding, ipv6 libcap, lesstif
@@ -1189,7 +1189,7 @@
  - Sebastian Jaenicke: fixed sendmail (rmail)
  - Alan J. Wylie: improved 00-update to process the info pages correctly
  - added ARM architecture definitions
- 
+
 *) 2003-07-28 (2.0.0-beta7 - 2.0.0-rc1) [CLIFFORD]
 
  - Fixed gawk-3.1.3 for dietlibc (e.g. needed in install disks and router)
@@ -1203,7 +1203,7 @@
  - x86_64 (AMD 64) restructuring and fixing
  - Alejandro Mery: mnemoc repository update
  - Chris Sirkull: fixed dansguardian
- - fake: added rsynth 
+ - fake: added rsynth
  - Miguel A. Bolanos: renamed some 2.5 kernel strings to 2.6
  - Piotr Esden-Tempski: esden repository update
                         Create-SrcTar create the download/INDEX if needed
@@ -1223,7 +1223,7 @@
  - Juergen Sawinski: updates and fixes for libgda, libgnomedb and mergeant
  - Daniel Pischl: updated gaim
  - Piotr Esden-Tempski: updated and so fixed nfs-utils
- 
+
 *) 2003-07-23 (2.0.0-beta7 - 2.0.0-rc1) [RENE]
 
  - fixed linux* cross compilation for all architectures
@@ -1233,7 +1233,7 @@
  - Dimitar Zhekov: fixed eject to not install i18n files when NLS is disabled
  - Stefan Paletta: added bluetooth definitions to default modules.conf
                    improved the bluez packages
- 
+
 *) 2003-07-22 (2.0.0-beta7 - 2.0.0-rc1) [RENE]
 
  - fixed the linux packages do not run dep or dep-files for 25 and newer
@@ -1304,7 +1304,7 @@
  - Stefan Paletta: really fixed openh323 to not install CVS dirs
  - Chris Sirkull: fixed mysql init script
  - Sandra Dismar: added zsh and openbox
- 
+
 *) 2003-07-17 (2.0.0-beta7 - 2.0.0-rc1) [RENE]
 
  - Dimitar Zhekov: updated terminus-font and zgv
@@ -1319,8 +1319,8 @@
 
 *) 2003-07-16 (2.0.0-beta6 - 2.0.0-beta7) [RENE]
 
- - Chris Sirkull: sirkull repository update 
- - Juergen Sawinski: added gcombust, sword, gnomesword and bibletime 
+ - Chris Sirkull: sirkull repository update
+ - Juergen Sawinski: added gcombust, sword, gnomesword and bibletime
 
 *) 2003-07-15 (2.0.0-beta6 - 2.0.0-beta7) [RENE]
 
@@ -1384,7 +1384,7 @@
  - fill some Documentation gaps
  - Alejandro Mery: some fixed for rsbac
  - Dimitar Zhekov: gtk+1 font hack
- 
+
 *) 2003-07-08 (2.0.0-beta6 - 2.0.0-beta7) [RENE]
 
  - Alejandro Mery: various mnemoc updates
@@ -1397,7 +1397,7 @@
  - updated xfree86
  - fixed linux25 config creation and powerpc kernel configs
  - Alejandro Mery: enabled imap in mutt, updated /etc/services and
-                   fixed openssh 
+                   fixed openssh
  - Miguel A. Bolanos: updated several alessandro packages
                       updated and added several gnome2 packages
                       updated lilo and several x11 packages
@@ -1454,7 +1454,7 @@
                   an non-ROCK init script
  - Alan J. Wylie: updated libgsf for gnumeic
  - fixed system.int to register /sbin/rockplug as hotplug agent
- 
+
 *) 2003-06-30 (2.0.0-beta6 - 2.0.0-beta7) [RENE]
 
  - updated tex-ttf
@@ -1472,7 +1472,7 @@
 
 *) 2003-06-27 (2.0.0-beta6 - 2.0.0-beta7) [RENE]
 
- - Dimitar Zhekov: add i18n fix to ne and removed flist_add from svgalib 
+ - Dimitar Zhekov: add i18n fix to ne and removed flist_add from svgalib
  - Daniel Jahre: fixed ypbind
  - Miguel A. Bolanos: updated groff
  - Stefan Paletta and Dimitar Zhekov: man, groff, less and mc various fixes
@@ -1550,10 +1550,10 @@
  - updated linux25*
  - Alejandro Mery: sysv_nice cleanup
  - Chris Sirkull: updated clamav
- 
+
 *) 2003-06-21 (2.0.0-beta5 - 2.0.0-beta6) [RENE]
 
- - Terry Mackintosh: fixed sysfiles /etc/services creation 
+ - Terry Mackintosh: fixed sysfiles /etc/services creation
  - updated mol to a rsync snapshot that works (plus first set of of DevFS
    and useability patches)
  - fixed linux24benh kernel to export yet-another-symbol MOL needs
@@ -1590,7 +1590,7 @@
 
  - version bump
  - Alessandro Ferrari: updated ifenslave
- - Chris Sirkull: updated dansguard 
+ - Chris Sirkull: updated dansguard
  - fixed kdebase31 to install all files I added weeks ago
  - updaded subversion (0.24 was left out intentionally - since it was
                        official declared buggy ...)
@@ -1677,7 +1677,7 @@
  - bootdisk target work for conditional packages per architecture, a logo
    for the ppc greeting and a dynamic fdisk-style app detection for the
    mod_install (STONE module)
- - Mathieu: updated mldonkey 
+ - Mathieu: updated mldonkey
 
 *) 2003-06-09 (2.0.0-beta3 - 2.0.0-beta4) [CLIFFORD]
 
@@ -1691,13 +1691,13 @@
  - Stefan Paletta: legal crap package/{x11,rene}
  - Benjamin Schieder: nethack cleanup, fix qt typo and add subconfig-*.hlp
                       added libraw1394, libavc1394, dvgrab and kino
- 
+
 *) 2003-06-07 (2.0.0-beta3 - 2.0.0-beta4) [RENE]
 
  - fixed / improved samba .init scripts
  - Miguel A. Bolanos: added rockplug to bootdisk
  - Alejandro Mery: added gcc33 and imporved the gcc scripts
- - added new KERNEL package flag and tagged the kernel binary packages 
+ - added new KERNEL package flag and tagged the kernel binary packages
  - merged support for mulitple kernel from my iBook
  - since now multiple kernels are supported made linux25 build by default
  - updated linux25* (2.5.70) and rediffed the patches that did not apply
@@ -1744,7 +1744,7 @@
 *) 2003-06-01 (2.0.0-beta3 - 2.0.0-beta4) [RENE]
 
  - Kai Schwenzfeier: fixed libsdl_perl and kapitalist
- - Alejandro Mery: updated php, postfix and pcre 
+ - Alejandro Mery: updated php, postfix and pcre
  - Daniel Pischl: updated xchat
  - cleanup of devfsd.conf and added v4l devfsd.d conf
  - added a useful default for the "Times" font.
@@ -1755,7 +1755,7 @@
 *) 2003-05-30 (2.0.0-beta3 - 2.0.0-beta4) [RENE]
 
  - Miguel A. Bolanos: fixed bacterium and uucp
-                      updated uucp 
+                      updated uucp
  - Mathieu: updating mldonkey to 2.5, adding duplicity (and librsync
             as a dependency)
  - Stefan Gutschireiter: fixed curl
@@ -1776,7 +1776,7 @@
  - Benjamin Schieder: blindcoder rep, freedroid
  - Kai: improved freedroid_rpg
  - spent too much time improving the catedit ...
- - Juergen Sawinski: updated the enalbed IDE driver list  
+ - Juergen Sawinski: updated the enalbed IDE driver list
  - Daniel Pischl: updated apache
 
 *) 2003-05-26 (2.0.0-beta2 - 2.0.0-beta3) [RENE]
@@ -1786,12 +1786,12 @@
  - Clifford Wolf: [Patch] 200305261154
 
 *) 2003-05-25 (2.0.0-beta3 - 2.0.0-beta4) [CLIFFORD]
-                                                                                
+
  - Added new *.cache files from latest reference build
  - Moved 'missing or wrong file detection' from target/generic to Built-Target
  - Multiple importand fixes to 'missing or wrong file detection'
  - Fixed mine.conf for real cross-building between architectures
-                                                                                
+
 *) 2003-05-25 (2.0.0-beta2 - 2.0.0-beta3) [RENE]
 
  - stoned mac_hid configuration and init script
@@ -1829,13 +1829,13 @@
  - updated xemacs-packages (for the rolling issue textual example ;-)
 
 *) 2003-05-22 (2.0.0-beta2 - 2.0.0-beta3) [CLIFFORD]
-                                                                                
+
  - Alessandro Ferrari: Cleanups in perl5.conf
  - Fixed many shared-files conflicts in base, x11, rene, tsa and gnome2 rep.
  - Added package/base/perl5/perllocal_hack.sh for imagemagick and gtk-perl
  - Added linux-drm package and disabled drm drivers in standard kernel
  - Fixed cross-building mine (in stages 0 and 1)
-                                                                                
+
 *) 2003-05-21 (2.0.0-beta2 - 2.0.0-beta3) [RENE]
 
  - Alejandro Mery: psmics fix for gcc33
@@ -1877,7 +1877,7 @@
  - fixed mozilla
  - updated alsaplayer kde*
  - corrected gcc3's parse-config so it doe set CC correctly
- 
+
 *) 2003-05-18 (2.0.0-beta2 - 2.0.0-beta3) [CLIFFORD]
 
  - Did run ./Create-CopyPatch and applied the patch (>1 MB)
@@ -1914,7 +1914,7 @@
 *) 2003-05-15 (2.0.0-beta2 - 2.0.0-beta3) [RENE]
 
  - Alejandro Mery: fixed linux24 for gcc33
- - Nikolaus Filus: register_wm instrumentation, cleanup of: gv, 
+ - Nikolaus Filus: register_wm instrumentation, cleanup of: gv,
    nikolaus and kasc repository, fixed evolution by readding gal01 and
    gtkhtml, fixed bzflag
  - Sebastian Jaenicke: updated ethereal and nessus
@@ -2620,7 +2620,7 @@
  - Rene Rebe: Updated GNOME to 2.2 and removed some outdated packages
  - Rene Rebe: Fixed some gnome and kde packages
  - Rene Rebe: Added gcc-snapshot for regression tests
- - Moved package/(.*?)-(.*?)/ to package/$1$2/ 
+ - Moved package/(.*?)-(.*?)/ to package/$1$2/
  - Various bootdisk target cleanups
 
 *) 2003-03-09 (1.5.12 - 1.7.0) [RENE]
@@ -2693,13 +2693,13 @@
  - simplified cyrus-sasl config
  - updated qt (3.1.2) and fixed xfree to not install the deprecated XftConfig
  - fixed the desktop target to include architecture specific packages
- - updated sendmail 
- - Merged various patches from the ML: 
+ - updated sendmail
+ - Merged various patches from the ML:
    - Sebastian Jaenicke: updated nessus
    - Alejandro Mery: added rsbac
    - Kai Schwenzfeier: added directfb, libsdl_perl, dfbsee, frozen-bubble
    - Kai Schwenzfeier: added gnuchess, xboard, gnubg, xarchon, xskat
-   - Juergen  Sawinski: fixed errno for jfsutils, tcp_wrappers and portmap 
+   - Juergen  Sawinski: fixed errno for jfsutils, tcp_wrappers and portmap
    - Benjamin Schieder: updated categories in his repository
  - fixed kdelibs-31/config.in to check for the correct package
  - updated sodipodi
@@ -2730,14 +2730,14 @@
 *) 2003-03-05 (1.5.12 - 1.7.0) [RENE]
 
  - fixed the desktop target to include architecture specific packages
- - updated sendmail 
- - Merged various patches from the ML: 
+ - updated sendmail
+ - Merged various patches from the ML:
    - Sebastian Jaenicke: updated nessus
    - Alejandro Mery: added rsbac
    - niteblade: added directfb, libsdl_perl, dfbsee, frozen-bubble,
-                xarchon, xskat 
+                xarchon, xskat
    - niteblade: added gnuchess, xboard, gnubg
-   - Juergen  Sawinski: fixed errno for jfsutils, tcp_wrappers and portmap 
+   - Juergen  Sawinski: fixed errno for jfsutils, tcp_wrappers and portmap
    - Benjamin Schieder: updated categories in his repository
 
 *) 2003-03-04 (1.5.12 - 1.7.0) [RENE]
@@ -2834,7 +2834,7 @@
  - various rene repository changed incl. renaming the microsoft fonts package,
    adding the new bitstream-vera-fonts, ...
  - fixed xfree86 to create the TrueType font-dir
- - more desktop target kernel work 
+ - more desktop target kernel work
  - Merged various patches from the ML:
    - Sebastian Jaenicke: updated galeon and various tsa repository updates
    - Alejandro Mery: updated ccache-2.2, procps-3.1.6 and pkgconfig-0.15e
@@ -2878,7 +2878,7 @@
  - various rene repository changed incl. renaming the microsoft fonts package,
    adding the new bitstream-vera-fonts, ...
  - fixed xfree86 to create the TrueType font-dir
- - more desktop target kernel work 
+ - more desktop target kernel work
  - Merged various patches from the ML:
    - Sebastian Jaenicke: updated galeon and various tsa repository updates
    - Alejandro Mery: updated ccache-2.2, procps-3.1.6 and pkgconfig-0.15e

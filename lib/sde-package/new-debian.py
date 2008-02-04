@@ -10,26 +10,26 @@ class cParseHTML(HTMLParser):
     def parse(self,string):
         self.val=string
         self.feed(self.val)
-	return self.val 
+	return self.val
 cParse=cParseHTML()
-parse=cParse.parse	
+parse=cParse.parse
 repo=None
 pkg=None
 bdescd=False
 parser = optparse.OptionParser(usage)
 parser.add_option("-b", "--base", dest="base",
-						help="""Change base i.e from 
+						help="""Change base i.e from
 						http://packages.debian.org to http://packages.ubuntu.com""")
 parser.add_option("-d", "--distro",dest="distro",
-						help="""chose distro i.e stable (default) testing,unstable	
+						help="""chose distro i.e stable (default) testing,unstable
 						oldstable experimental etc. """)
 parser.add_option("-f", "--force",
 						action="store_true", dest="force",
-						help="""Toggle force values on/off. Default can be set in 
+						help="""Toggle force values on/off. Default can be set in
 						lib/sde-download/info.py.""")
 parser.add_option("-g", "--guess",
 						action="store_true", dest="guess",
-						help="""Toggle guess values on/off. Default can be set in 
+						help="""Toggle guess values on/off. Default can be set in
 						lib/sde-download/info.py.""")
 parser.add_option("-o", "--outpkg",dest="outpkg",
 						help="""Write desc to package.""")
@@ -67,11 +67,11 @@ elif len(opts)==2:
 else:
 	parse.error("Invalid options.")
 if not repo:parser.error("Package doesn't exist.")
-if not pkg:parse.error("Invalid options.")	
+if not pkg:parse.error("Invalid options.")
 url=base + "/" + distro + "/" + repo + "/" + pkg
 try:
 	page=urllib2.urlopen(url).read()
-except: 
+except:
 	print "Error: package '%s' does not exist." % sys.argv[nargs]
 	sys.exit()
 soup = BeautifulSoup(page)
@@ -91,7 +91,7 @@ except: pass
 try:
 	desci="[I] " + parse("".join(soup("h2")[0])).capitalize()+"."
 except: pass
-try:	
+try:
 	desct=parse(str(soup("p")[1]))
 except: pass
 lcat=soup("span")
@@ -114,7 +114,7 @@ if guess:
 	try:
 		license=licenses[lcat]
 		descl="[L] " + license
-	except:pass	
+	except:pass
 sdesct=""
 cnt=0
 cnt2=0
@@ -150,14 +150,14 @@ formatteddesc="""%(copy)s
 %(d)s
 """%{ "copy": copy,"i": desci,"t":sdesct,"u":descu,"a":desca,
 "m":descm,"c":descc,"l":descl,"s":descs,"v":descv,"p":descp,
-"d":descd} 
+"d":descd}
 
 if options.outpkg:
 	output=options.outpkg.split("/")
 	optcnt=len(output) - output.count("")
 	out=""
 	if  optcnt == 1:
-		os.system("echo -e \"\033[33;1m=>\033[0m assuming reqested repository as 'wip.'\"") 
+		os.system("echo -e \"\033[33;1m=>\033[0m assuming reqested repository as 'wip.'\"")
 		out="package/wip/" +output[0]+"/"+output[0]+".desc"
 		dir="package/wip/" +output[0]
 		if os.path.isdir(dir):
@@ -178,18 +178,18 @@ if options.outpkg:
 			if os.path.isfile(out):
 				print "failed\n	package %(p)s belongs to %(c)s!" %{"p":output[1],
 					"c":output[0]}
-				sys.exit(1)		
+				sys.exit(1)
 		else:
 			os.mkdir(dir)
 	else:parser.error("Inavlid Option for --outpkg (-o)")
 	try:
                 os.system("echo -n 'Writing desc to file...'")
 		outf=open(out,"w")
-		outf.write(formatteddesc)	
+		outf.write(formatteddesc)
 		outf.close()
 		os.system("echo 'ok'")
 	except:
-		print"Error writing to file " + out		
+		print"Error writing to file " + out
 	if bdescd:
             os.system("echo -n 'Patching cksum...'")
             if os.popen("sde pkg up " + output[len(output)-1]+"&>/dev/null"):

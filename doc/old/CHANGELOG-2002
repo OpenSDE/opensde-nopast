@@ -578,7 +578,7 @@
 
 *) 2002-08-18 (1.5.12 - 1.7.0)
 
- - Rene Rebe: updated ogg-vorbis-1.0, alsa-0.9.0rc3 and kde-3.0.3 
+ - Rene Rebe: updated ogg-vorbis-1.0, alsa-0.9.0rc3 and kde-3.0.3
  - Thomas Jakobi: fixed scripts/Download to not use -I for tar
 
 *) 2002-08-18 (1.5.12 - 1.7.0)
@@ -590,7 +590,7 @@
 *) 2002-08-17 (1.5.12 - 1.7.0)
 
  - Rene Rebe: fixed termcap, added usr/tmp to the flistdel, corrected flist
-              warning to exlucde all /tmp/ directories 
+              warning to exlucde all /tmp/ directories
               updated qt-3.0.5 and reenabled i18n for koffice
               fixed four packages to be non-optional
 
@@ -689,8 +689,8 @@
 
  - Updated: alsa-0.9.0rc2, bash-2.05b, binutils-2.12.90.0.15,
             cpio-2.5, curl-7.9.8, dump-0.4b29, file-3.39, gdb-5.2.1,
-            gettext-0.11.3, ghostscript-7.21, groff-1.18, gsl-1.2, 
-            ifhp-3.5.10, libsafe-2.0-16, LPRng-3.8.13, lvm_1.0.5,  
+            gettext-0.11.3, ghostscript-7.21, groff-1.18, gsl-1.2,
+            ifhp-3.5.10, libsafe-2.0-16, LPRng-3.8.13, lvm_1.0.5,
             man-pages-1.52, man-1.5k, modutils-2.4.18, netpbm-10.5,
             nfs-utils-1.0.1, pcmcia-cs-3.1.34, quota-3.06, readline-4.3,
             sendmail-8.12.5, tcsh-6.12.00, units-1.80
@@ -1275,7 +1275,7 @@
 
 *) 2002-03-07 (1.5.12 - 1.7.0)
 
- - Sebastian Jaenicke: Fixed scripts/Update-Src 
+ - Sebastian Jaenicke: Fixed scripts/Update-Src
  - Created package tree 'extra2' (maintained by clifford)
  - Improved the automatic creation of the kernel config
  - Added midimountain and spiralsynthmodular in extra2

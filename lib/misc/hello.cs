@@ -3,9 +3,9 @@
 // Run with the Mono Interpreter  'mint hello.exe' or
 //     with the Mono JIT Compiler 'mono hello.exe'.
 
-class Hello 
+class Hello
 {
-   static void Main() 
+   static void Main()
    {
       System.Console.WriteLine("Hello World! (A simple C# program.)");
    }

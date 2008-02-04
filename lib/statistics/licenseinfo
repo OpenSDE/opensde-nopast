@@ -6,7 +6,7 @@ echo Total number of packages: $pkgs
 echo ""
 
 for lic in $licenses; do
-	# Determine the number of packages containing 
+	# Determine the number of packages containing
 	# the current license.
 	licOwners=$(grep -e "^\[L.*$lic" package/*/*/*.desc | wc -l)
 

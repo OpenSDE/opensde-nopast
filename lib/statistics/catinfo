@@ -6,7 +6,7 @@ echo Total number of packages: $pkgs
 echo ""
 
 for category in $categories; do
-	# Determine the number of packages containing 
+	# Determine the number of packages containing
 	# the current categories.
 	categoryOwners=$(grep -e "^\[C[^O].*$category" package/*/*/*.desc | wc -l)
 

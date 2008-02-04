@@ -344,7 +344,7 @@ get-top-of-queue () {
 # Note: If you want to add QENTRY to the *end* of QUEUE, you would do
 # something like the following:
 # sed -e s/^$QUEUE_SEPERATOR$/$head"'\
-# '"$QUEUE_SEPERATOR/" 
+# '"$QUEUE_SEPERATOR/"
 # which is necessary to pass the newline to sed. I think we can take the
 # easy way out.
 
@@ -358,7 +358,7 @@ add-to-queue-if-not-there () {
     if ! grep -q "^$qentry\$" "$qfile" ; then
       echo "$qentry" > "$fl_dir/add-to-queue-if-not-there"
       cat "$qfile" >> "$fl_dir/add-to-queue-if-not-there"
-      cat "$fl_dir/add-to-queue-if-not-there" > "$qfile" 
+      cat "$fl_dir/add-to-queue-if-not-there" > "$qfile"
     fi
   done
   return 0
@@ -557,7 +557,7 @@ get-extra-flags () {
     exit 1
   fi
   if [ "x$1" = "xlibc-2.0.7.so" ] ; then
-    echo `find-file $src_path ld-2.0.7.so` -lgcc 
+    echo `find-file $src_path ld-2.0.7.so` -lgcc
     return 0
   fi
   if [ "x$1" = "xlibc-2.1.2.so" ] ; then
@@ -827,7 +827,7 @@ do
   if [ -L "$lib" ] ; then
     $verbose -n 2>&1 L
     lib=`basename \`readlink $lib\``
-    add-to-queue-if-not-there $fl_dir/library-depends "$lib" 
+    add-to-queue-if-not-there $fl_dir/library-depends "$lib"
     add-arrow $fl_dir/dependency-graph "$cur_lib" "$lib"
   else
     get-library-depends "$lib" > $fl_dir/backup
@@ -882,5 +882,5 @@ install-libs `cat $fl_dir/backup`
 ## Note that some of these symbols are weak and not having them is probably
 ## not an error.
 
-exit 0	
+exit 0
 

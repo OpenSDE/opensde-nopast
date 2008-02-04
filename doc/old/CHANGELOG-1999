@@ -709,7 +709,7 @@
 *) 1999-07-29 (1.0b13 - 1.0b14)
 
  - Added: nasm-0.98 (opt), syslinux-1.45 (opt)
- - Updated: PerlFS-0.07, ggi-devel-990729, isdn4k-utils-9907271100 
+ - Updated: PerlFS-0.07, ggi-devel-990729, isdn4k-utils-9907271100
  - Wrote the first dump-config code (look at misc/dump-config/*)
  - No login program for the Install/Rescue Disk - just open a root shell
  - Changed /etc/inittab: On default only open a agetty on /dev/console

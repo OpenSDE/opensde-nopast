@@ -19,13 +19,13 @@ build engine which should result in a more efficient and flexible
 framework and lower the entry level for users as well as
 developers. OpenSDE, then two months later, after personal and many
 technical differences, was detached into its own project by
-Alejandro Mery, supported by T2 as well as former ROCK-Linux 
+Alejandro Mery, supported by T2 as well as former ROCK-Linux
 developers.
 
 The SDE concept is intended as an open framework to build an operating
 system (not necessarily restricted to GNU/Linux) enabling the creation
 of systems for diverse architectures with various boot options and a
-tailored software selection. 
+tailored software selection.
 
 OpenSDE has now turned into an ambitious purely team-lead project
 where decisions are made based on their technical merit uninfluenced

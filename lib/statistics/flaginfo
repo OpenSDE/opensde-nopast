@@ -6,7 +6,7 @@ echo Total number of packages: $pkgs
 echo ""
 
 for flag in $flags; do
-	# Determine the number of packages containing 
+	# Determine the number of packages containing
 	# the current flag.
 	flagOwners=$(grep -e "^\[F.*$flag" package/*/*/*.desc | wc -l)
 

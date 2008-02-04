@@ -5,7 +5,7 @@
 # Grab package files
 #
 sde download <options>	-all		# Download every file from the tree
-			[-cfg $config] $pkg [$pkg [...]]	
+			[-cfg $config] $pkg [$pkg [...]]
 		       			# Downloads specific packages and their active extenders
 			-cfg $config	# Download all the files required by a given config
 			-help		# Shows some help

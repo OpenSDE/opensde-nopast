@@ -635,7 +635,7 @@
 *) 2001-03-01 (1.3.11 - 1.5.12)
 
  - DagB: Fixed util-linux (./clock dir is now named ./hwclock)
- - From stable tree: fixed perl (hostname = localhost), 
+ - From stable tree: fixed perl (hostname = localhost),
         ggv (update to 1.0-beta1 and a small patch),
 	fixed netpbm (fixed path of perl in 'configure')
  - DagB: updated misc/linux/00-hotfixes.patch
