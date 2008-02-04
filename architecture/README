@@ -8,7 +8,7 @@ Such a directory can contain this files:
   preconfig.in           For registering the arch in the SDE config system
   config.in              Architecture dependent configuration
   config.hlp             Arhcitecture dependent configuration help
-  
+
   archtest.out           Output of the archtest.c program
   archtest.sh            Dynamic archtest values
 
