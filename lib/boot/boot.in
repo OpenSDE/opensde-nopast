@@ -23,6 +23,7 @@ bootloader=
 # load stuff from the architecture, if anything to load.
 [ ! -s "architecture/$arch/boot.in" ] || . "architecture/$arch/boot.in"
 # and allow targets to overload these functions and variables
+# FIXME: this should honor the target_chain, in reverse order, peeking the first one.
 [ ! -s "target/$target/boot.in" ] || . "target/$target/boot.in"
 
 
