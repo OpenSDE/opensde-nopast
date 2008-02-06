@@ -37,7 +37,7 @@ chmod +x initramfs/init
 
 # For each available kernel:
 #
-arch_boot_cd_pre $isofsdir
+boot_cd_pre $isofsdir
 for x in `egrep 'X .* KERNEL .*' $base/config/$config/packages |
           cut -d ' ' -f 5` ; do
 
@@ -59,9 +59,9 @@ for x in `egrep 'X .* KERNEL .*' $base/config/$config/packages |
   cp $build_root/boot/$initrd $isofsdir/boot/
   extend_initrd $isofsdir/boot/$initrd $build_toolchain/initramfs
 
-  arch_boot_cd_add $isofsdir $kernelver "$boot_title" \
+  boot_cd_add $isofsdir $kernelver "$boot_title" \
                    /boot/$kernelimg /boot/$initrd
 done
 
-arch_boot_cd_post $isofsdir
+boot_cd_post $isofsdir
 
