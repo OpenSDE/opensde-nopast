@@ -46,5 +46,11 @@ else
 	echo_status "boot: using $bootloader."
 fi
 
+# stub boot_cd_*() functions
+#
+boot_cd_pre() { echo_status "No specific boot_cd_pre() available."; }
+boot_cd_add() { echo_status "No specific boot_cd_add() available."; }
+boot_cd_post() { echo_status "No specific boot_cd_post() available."; }
+
 . "package/$bootloader/boot/boot.in"
 
