@@ -31,6 +31,7 @@ KCC		A C compiler for building the kernel (SDECFG_DEFAULT_KCC)
 KERNEL		A OS kernel package
 INIT		An INIT system package
 LIBC		A C Library implementation package
+BOOT		The package implements a boot loader
 
 MTA		Package is an MTAs and is using install_setmailer()
 PRINTER		Printing System and is using install_setprinter()
