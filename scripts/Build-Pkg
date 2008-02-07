@@ -405,14 +405,14 @@ targetdir="$base/target/$target"
 
 detect_patchfiles
 
-if [ "$toolsdir" = "tools.cross" ]; then
-	if atstage toolchain; then
-		var_append patchfiles ' ' "`ls $confdir/*.patch.toolchain{,.$arch} \
-	        	                    2>/dev/null | tr '\n' ' '`"
-	fi
+if atstage toolchain; then
+	var_append patchfiles ' ' "`ls $confdir/*.patch.toolchain{,.$arch} \
+				    2>/dev/null | tr '\n' ' '`"
+fi
 
+if atstage cross; then
 	var_append patchfiles ' ' "`ls $confdir/*.patch.cross{,.$arch} \
-	                            2>/dev/null | tr '\n' ' '`"
+				    2>/dev/null | tr '\n' ' '`"
 fi
 
 set_confopt
