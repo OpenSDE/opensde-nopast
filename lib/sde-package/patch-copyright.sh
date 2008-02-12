@@ -113,6 +113,7 @@ while read filename ; do
 			*.desc) mode=asci ;;
 			*scripts/[A-Z][a-z-]*|*/parse-config*) mode=sh ;;
 			*.patch|*.diff|*.patch.*|*.patch-*) mode=sh ;;
+			*.txt) mode=sh ;;
 			*m4) mode=m4 ;;
 			*.awk) mode=sh ;;
 		esac
