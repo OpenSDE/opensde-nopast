@@ -44,15 +44,17 @@ sde_wrapper_discriminator_help() {
 
 sde_wrapper_discriminator() {
 	local combin= command="$1"; shift
+	local discriminators=$( sde_wrapper_discriminator_list $command )
+
 	if [ "$1" != "${1%-*}" ]; then
 		# trying to cheat, no dashes alowed
 		return
 	elif [ -x "$SDEROOT/bin/sde-$command-$1" ]; then
 		# discriminator given explicitly
 		echo "$1"
-	else
+	elif [ -n "$discriminators" ]; then
 		# given token may be an alias of a valid discriminator for this command
-		combin=$( grep -l "^#Alias: $1$" `sde_wrapper_discriminator_list $command` | head -n 1 )
+		combin=$( grep -l "^#Alias: $1$" $discriminators | head -n 1 )
 		echo $( sde_wrapper_name "$combin" )
 	fi
 }
