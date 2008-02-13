@@ -164,7 +164,7 @@ fi
 # [S]
 [ -z "$status" ] || echo "[S] $status"
 # [V]
-[ -z "$version" ] || echo "[S] $version"
+[ -z "$version" ] || echo "[V] $version"
 # [D]
 [ -z "$location" ] || echo "[D] $location"
 
