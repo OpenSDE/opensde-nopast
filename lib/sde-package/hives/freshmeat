@@ -24,12 +24,9 @@ extract_xml_name() {
 }
 
 get_download() {
-    local location
     for arg; do
 	if curl -s -I -f "$arg" -o "header.log"; then
 	    location="`sed -n 's/\r// ; s/Location: *//p' header.log`"
-	    download_file="`basename $location`"
-	    download_url="`dirname $location`/"
 	    rm -f header.log
 	    return
 	fi
@@ -169,5 +166,5 @@ fi
 # [V]
 [ -z "$version" ] || echo "[S] $version"
 # [D]
-[ -z "$download_file" ] || echo "[D] 0 $download_file $download_url"
+[ -z "$location" ] || echo "[D] $location"
 

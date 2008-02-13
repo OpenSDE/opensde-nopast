@@ -216,7 +216,7 @@ $( echo "$desc" | sed -e 's,^,[T] ,' )
 
 EOT
 echo "$download" | while read l; do
-	echo "[D] $l"
+	"$SDEROOT/lib/sde-package/url2d.sh" "$l"
 done
 ) | tee "$SDEROOT/package/$repo/$pkg/$pkg.desc"
 
