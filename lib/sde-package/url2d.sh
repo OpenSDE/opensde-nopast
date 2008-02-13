@@ -16,5 +16,5 @@
 for dl; do
 	file="${dl##*/}"
 	server="${dl%$file}"
-	echo "[D] 0 ${file:-none} $server"
+	echo "[D] 0 ${file:-unknown} $server"
 done
