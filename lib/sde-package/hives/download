@@ -15,6 +15,11 @@
 
 pkg="$1"; shift
 
+# make the U from the first url
+if [ "$#" -gt 0 ]; then
+	echo "[U] ${1%/*}"
+fi
+
 for dl; do
 	echo "[D] $dl"
 done
