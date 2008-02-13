@@ -138,7 +138,7 @@ output_has_tag()
 # what do we know for the $1 tag?
 output_tag()
 {
-	echo "$output" | grep "^\[$1\]" | sed -e 's,^\[\([A-Z-]\+\)\][ \t]*,,' -e 's,[ \t]*\$,,'
+	echo "$output" | grep "^\[$1\]" | sed -e 's,^\[[^]]\+\][ \t]*,,' -e 's,[ \t]*\$,,'
 }
 
 # checks if output has $1, and return $2 if not
