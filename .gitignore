@@ -1,8 +1,8 @@
-build
-config
-download
-iso
-regressions
-package
-tmp
-src.*
+/build
+/config
+/download
+/iso
+/regressions
+/package
+/tmp
+/src.*
