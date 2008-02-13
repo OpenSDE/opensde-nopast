@@ -15,6 +15,10 @@
 # returns the list of available hives
 package_hives_list()
 {
-	ls -1d "$SDEROOT/lib/sde-package/hives"/*.in 2> /dev/null |
-				sed -e 's,^.*/,,' -e 's,\.in$,,'
+	local hive=
+	for hive in "$SDEROOT/lib/sde-package/hives"/*; do
+		if [ -x "$hive" ]; then
+			echo "$hive"
+		fi
+	done | sed -e 's,^.*/,,'
 }
