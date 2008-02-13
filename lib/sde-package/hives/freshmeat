@@ -112,11 +112,9 @@ read_fm_config() {
 	rm -f subst $fmname.html dev_mail
 
 	if [ -z "$dev_name" ]; then
-		dev_name="TODO:"
-		dev_mail="Author"
+		dev_mail=
 	elif [ -z "$dev_mail" ]; then
-		dev_name="TODO: $dev_name"
-		dev_mail="Mail Address"
+		dev_mail="TODO: Mail Address"
 	else
 		dev_mail="<$dev_mail>"
 	fi
