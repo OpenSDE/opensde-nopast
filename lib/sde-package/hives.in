@@ -22,3 +22,20 @@ package_hives_list()
 		fi
 	done | sed -e 's,^.*/,,'
 }
+
+# translates an alias into the hive name
+package_hive_alias()
+{
+	local hive=
+	if [ -x "$SDEROOT/lib/sde-package/hives/$1" ]; then
+		# the original name was given
+		echo "$1"
+	else
+		for hive in $( package_hives_list ); do
+			if grep -q "^#Alias: $1$" "$SDEROOT/lib/sde-package/hives/$hive"; then
+				echo "$hive"
+				return
+			fi
+		done
+	fi
+}
