@@ -26,7 +26,7 @@
 create_usage() {
 	local progname=${0##*/}
 	cat <<EOT
-Usage:	${progname//-/ } [--hive <hive>[:<index>]] [<repository>/][<package>]
+Usage:	${progname//-/ } [--hive <hive>[:<index>]] [<repository>/][<package>] [hive arguments]
 
 Available Hives (--hivelist):
        download Create from a list of download locations (default)
@@ -100,5 +100,29 @@ else
 	hive='download'
 fi
 
-echo_info "hive:$hive ${hiveindex:+index:$hiveindex}"
+# $repo/$pkg
+#
+pkg="$1"; shift
+if [ -z "$pkg" ]; then
+	echo_error "no package name given."
+	create_usage
+	exit 1
+elif expr "$pkg" : ".*/.*" > /dev/null; then
+	# repository given
+	repo="${pkg%/*}"
+	pkg="${pkg##*/}"
+else
+	# detect repo based on $PWD
+	repo=$( package_autodetect_repo )
+	# base use wip/ if the detection failed
+	repo="${repo:-wip}"
+fi
 
+# validate $pkg
+#
+confdir=$( package_confdir "$pkg" )
+[ -z "$confdir" ] || echo_abort 2 "$pkg: package already exists (${confdir#$SDEROOT/})."
+
+echo_info "Creating package/$repo/$pkg from $hive:${hiveindex:-$pkg}"
+
+"$SDEROOT/lib/sde-package/hives/$hive" "${hiveindex:-$pkg}" "$@"
