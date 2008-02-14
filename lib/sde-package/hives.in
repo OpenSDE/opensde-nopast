@@ -39,3 +39,14 @@ package_hive_alias()
 		done
 	fi
 }
+
+package_hive_desc()
+{
+	sed -n -e 's,^#Description: \(.*\)$,\1,p' "$SDEROOT/lib/sde-package/hives/$1" | head -n 1
+}
+
+package_hive_aliases()
+{
+	sed -n -e 's,^#Alias: \([^ ]*\)$,\1,p' "$SDEROOT/lib/sde-package/hives/$1" | tr '\n' ' ' |
+		sed -e 's/^ *//' -e 's/ *$//'
+}
