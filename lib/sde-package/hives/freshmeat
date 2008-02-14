@@ -15,6 +15,7 @@
 # GNU General Public License can be found in the file COPYING.
 # --- SDE-COPYRIGHT-NOTE-END ---
 
+#Description: Create based on freshmeat.net information
 #Alias: fm
 
 extract_xml_name() {
