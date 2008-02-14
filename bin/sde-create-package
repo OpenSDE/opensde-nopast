@@ -24,16 +24,23 @@
 . "$SDEROOT/lib/sde-package/hives.in"
 
 create_usage() {
-	local progname=${0##*/}
+	local progname=${0##*/} hive=
 	cat <<EOT
 Usage:	${progname//-/ } [--hive <hive>[:<index>]] [<repository>/][<package>] [hive arguments]
 
 Available Hives (--hivelist):
-       download Create from a list of download locations (default)
-      freshmeat Create based on freshmeat.net information (Alias: fm)
-         debian	Create based on packages.debian.org information
-
 EOT
+	for hive in $( package_hives_list ); do
+		desc=$( package_hive_desc "$hive" )
+		aliases=$( package_hive_aliases "$hive" )
+		if [ "$hive" = 'download' ]; then
+			default=yes
+		else
+			default=
+		fi
+
+		printf "%15s %s%s\n" "$hive" "${desc:-...}" "${aliases:+ (Alias: ${aliases// /,})}${default:+ (default)}"
+	done
 }
 
 shortopts=''
