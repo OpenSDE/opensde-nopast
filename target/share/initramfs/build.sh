@@ -60,6 +60,10 @@ done
 # Apply overlay
 [ ! -d "target/$target/initramfs" ] || initramfs_install_overlay "target/$target/initramfs" "$rootfs"
 
+# hook $INITRAMFS_POSTOVERLAY_HOOK
+#
+[ -z "$INITRAMFS_POSTOVERLAY_HOOK" ] || eval "$INITRAMFS_POSTOVERLAY_HOOK"
+
 # remove empty folder, use $INITRAMFS_EMPTY_PATTERN to skip folders
 #
 echo_status "Removing empty folders ..."
