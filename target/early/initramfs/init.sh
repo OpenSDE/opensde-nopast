@@ -75,7 +75,7 @@ status
 sleep 2
 
 if [ -z "$root" ]; then
-	echo "No root device defined, mount it on /rootfs and exit to continue."
+	echo "No root device defined."
 elif [ ! -e "$root" ]; then
 	start-raid
 	start-lvm
