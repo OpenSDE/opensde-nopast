@@ -49,7 +49,7 @@ initramfs_install() {
 
 early_adjust_initrd() {
 	echo_status "Tweaking initrd ..."
-	for x in var/state/pkgtool var/spool/{locks,mail} \
+	for x in var/spool/{locks,mail} \
 		usr/{doc,info,man,opt,spool} etc/{rc.d/,}init.d usr
 		do
 			rm ${rootfs}/$x
