@@ -65,3 +65,23 @@ early_adjust_initrd() {
 	# HACK: so we use our own wrapper on top of bb's
 	rm ${rootfs}/sbin/modprobe
 }
+
+initramfs_install_pattern() {
+	local pkg_name="$1"; shift
+
+	case "$pkg_name" in
+	udev)
+		echo -n "-n -e '/etc\/udev\//p;' -e '/lib\/udev\/devices\//p;' -e '/lib\/udev\/.*_id$/p;' "
+		echo "-e '/sbin\/\(udevd\|udevsettle\|udevtrigger\|udevadm\)$/P'"
+		;;
+	lvm2)
+		echo "$@ -e '/sbin\/lvmdump$/d;'"
+		;;
+	fhs)
+		echo "-e '/\/local\(\|\/.*\)$/d;' $@"
+		;;
+	*)
+		echo "$@"
+		;;
+	esac
+}
