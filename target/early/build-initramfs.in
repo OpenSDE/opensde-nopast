@@ -18,7 +18,7 @@ INITRAMFS_POSTINSTALL_HOOK='early_adjust_initrd'
 ln -s . ${rootfs}/usr
 
 # don't break /tmp when flattening
-INITRAMFS_INSTALL_PATTERN="$INITRD_FLIST_PATTERN -e '/ usr\/tmp/d;'"
+INITRAMFS_INSTALL_PATTERN="$INITRAMFS_INSTALL_PATTERN -e '/ usr\/tmp/d;'"
 
 INITRAMFS_EMPTY_PATTERN="-e '/\.\/rootfs/d;'"
 
