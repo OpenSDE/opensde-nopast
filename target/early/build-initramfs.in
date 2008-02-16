@@ -42,6 +42,9 @@ initramfs_install() {
 				touch "$initrddir/$x"
 			done
 			;;
+		dietlibc)
+			# skip
+			;;
 		*)	return 0 ;;
 	esac
 	return 1
