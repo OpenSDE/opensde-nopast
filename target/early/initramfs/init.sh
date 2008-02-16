@@ -80,6 +80,7 @@ if [ ! -e "$root" -a -s /etc/mdadm.conf ]; then
 	# try activating software raids
 	title "Activating RAID devices"
 	check modprobe md-mod
+	check udevsettle
 	check mdadm -As --auto=yes
 	status
 fi
@@ -87,6 +88,7 @@ fi
 if [ ! -e "$root" -a -d /etc/lvm/archive ]; then
 	title "Activating LVM devices"
 	check modprobe dm_mod
+	check udevsettle
 	check lvm vgchange -ay
 	status
 fi
