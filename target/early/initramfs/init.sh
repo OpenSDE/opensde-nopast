@@ -74,19 +74,33 @@ status
 
 sleep 2
 
-if [ -z "$root" ]; then
-	echo "No root device defined."
-elif [ ! -e "$root" ]; then
-	start-raid
-	start-lvm
+[ -n "$root" ] || echo "No root device defined."
+
+if [ ! -e "$root" -a -s /etc/mdadm.conf ]; then
+	# try activating software raids
+	title "Activating RAID devices"
+	check modprobe md-mod
+	check mdadm -As --auto=yes
+	status
+fi
+
+if [ ! -e "$root" -a -d /etc/lvm/archive ]; then
+	title "Activating LVM devices"
+	check modprobe dm_mod
+	check lvm vgchange -ay
+	status
 fi
 
 if [ -n "$root" ]; then
 	udevsettle
 
 	if [ -e "$root" ]; then
-		title "Mounting $root"
-		check mount ${mode:+-o $mode} "$root" /rootfs
+		/lib/udev/vol_id "$root" > /tmp/$$.vol_id
+		. /tmp/$$.vol_id
+		rm /tmp/$$.vol_id
+
+		title "Mounting $root (${ID_FS_TYPE:-unknown}) "
+		check mount ${ID_FS_TYPE:+-t $ID_FS_TYPE} ${mode:+-o $mode} "$root" /rootfs
 		status
 	else
 		echo "root device ($root) not found on time."
