@@ -15,19 +15,63 @@
 # GNU General Public License can be found in the file COPYING.
 # --- SDE-COPYRIGHT-NOTE-END ---
 
+#Description: Builds tools, wrappers and caches needed for a build
+
+[ -n "$SDEROOT" ] ||
+	export SDEROOT=$( cd "${0%/*}/.."; pwd -P )
+
+. "$SDEROOT/lib/libsde.in"
+
+create_usage() {
+	local progname=${0##*/}
+
+	cat <<EOT
+Usage:	${progname//-/ } [--config <config>] [-<stagelevel>] [--cleanup]
+EOT
+}
+
+shortopts='0123456789c:'
+longopts='help,config:,cfg:,cleanup'
+options=$( getopt -o "$shortopts" -l "$longopts" -- "$@" )
+if [ $? -ne 0 ]; then
+	create_usage
+	exit -1
+fi
+
+# load new arguments list
+eval set -- "$options"
+
 config=default
 stagelevel=9
 cleanup=0
 
-while [ "$1" ] ; do
-    case "$1" in
-	-cleanup)  cleanup=1 ; shift ;;
-	-cfg)      config=$2 ; shift ; shift ;;
-	-[0-9])    options="$options $1" ; stagelevel=${1#-} ; shift ;;
-	*)         echo "Usage: $0 [ -cfg config ] [ -0 | -9 ] \\"
-	           echo "       ${0//?/ } [ -cleanup ]" ; exit 1 ;;
-    esac
+while [ $# -gt 0 ]; do
+	case "$1" in
+	--help)
+		create_usage
+		exit 0
+		;;
+	--cleanup)
+		cleanup=1
+		;;
+	-c|--cfg|--config)
+		config="$2"
+		shift
+		;;
+	-[0-9])
+		stagelevel=${1#-}
+		;;
+	--)
+		shift
+		break
+		;;
+	*)
+		echo_abort 1 "Unknown argument '$1', aborting."
+	esac
+	shift
 done
+
+cd "$SDEROOT"
 
 . lib/functions.in
 . lib/parse-config

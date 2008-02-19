@@ -249,7 +249,7 @@ if [ "$chroot" = 1 ] ; then
 	exit $returncode
 fi
 
-./bin/sde-build-tools -$stagelevel -cfg $config || exit 1
+./bin/sde-build-tools -$stagelevel -c $config || exit 1
 
 if [ "$SDECFG_FLIST" = "flwrapper" -a -z "$FLWRAPPER" ] ; then
 	export FLWRAPPER_WLOG="$builddir/fl_wrapper.wlog"
