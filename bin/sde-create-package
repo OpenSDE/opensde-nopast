@@ -43,7 +43,7 @@ EOT
 	done
 }
 
-shortopts=''
+shortopts=
 longopts='help,hive:,hivelist'
 options=$( getopt -o "$shortopts" -l "$longopts" -- "$@" )
 if [ $? -ne 0 ]; then

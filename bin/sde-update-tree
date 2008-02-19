@@ -27,7 +27,7 @@ update_usage() {
 	EOT
 }
 
-shortopts=''
+shortopts=
 longopts='help'
 options=$( getopt -o "$shortopts" -l "$longopts" -- "$@" )
 if [ $? -ne 0 ]; then

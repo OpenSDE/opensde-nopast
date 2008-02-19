@@ -39,7 +39,7 @@ Usage:	${progname//-/ } [--location <url>] [<package>] [<version>]
 EOT
 }
 
-shortopts=''
+shortopts=
 longopts='help,location:,no-location,md5:'
 options=$( getopt -o "$shortopts" -l "$longopts" -- "$@" )
 if [ $? -ne 0 ]; then
