@@ -84,6 +84,9 @@ for x; do
 	if [ "$x" = "." ]; then
 		# $PWD, explicitly
 		y="$PWD"
+	elif [ -e "$PWD/$x" ]; then
+		# $PWD relative
+		y="$PWD/$x"
 	elif [ "${x:0:1}" = "/" -a -e "$x" ]; then
 		# absolute
 		y="$x"
@@ -96,9 +99,6 @@ for x; do
 	elif [ -e "$SDEROOT/$x" ]; then
 		# $SDEROOT relative
 		y="$SDEROOT/$x"
-	else [ -e "$x" ]
-		# $PWD relative
-		y="$PWD/$x"
 	fi
 
 	# canonicalize
