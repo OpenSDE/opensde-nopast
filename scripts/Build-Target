@@ -45,9 +45,7 @@ while [ $# -gt 0 ] ; do
 	shift
 done
 
-# NOTE: ROCKCFG -> SDECFG automatized convertion
-grep -q 'ROCKCFG' ./config/$config/config &&
-	sed -i -e 's,ROCKCFG,SDECFG,g' ./config/$config/config
+./lib/sde-config/migrate.sh "$config" || exit 1
 
 if [ "$daemon_mode" = 1 ] ; then
 	. config/$config/config

@@ -93,7 +93,7 @@ if [ $do_config_cycle = 0 ] ; then
 	# don't accept Ctrl-C because it destroy the configurations
 	trap '' INT
 
-	if [ -d config/$config ]; then
+	if ./lib/sde-config/migrate.sh "$config"; then
 		mkdir -p $cfgtmpdir/config/
 		cp -a config/$config/* $cfgtmpdir/config/
 		if [ $? -ne 0 ]; then
@@ -161,9 +161,6 @@ configtitle="$(printf ' %-50s %6s active packages ]' \
 	"[ $(echo `grep '^X' $cfgtmpdir/config/packages | wc -l`)" )"
 
 bprof main stop
-# NOTE: ROCKCFG -> SDECFG automatized convertion
-grep -q 'ROCKCFG' $cfgtmpdir/config/config &&
-	sed -i -e 's,ROCKCFG,SDECFG,g' $cfgtmpdir/config/config
 
 . $cfgtmpdir/config/config
 bprof main start

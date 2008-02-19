@@ -659,7 +659,7 @@ repository() {
 required() {
     # Choosen config must exist
     #
-    if [ ! -f config/$config/packages ]; then
+    if ! ./lib/sde-config/migrate.sh "$config"; then
         echo "ERROR: Config $config doesn't exist."
         echo "ERROR: try ./scripts/Config -cfg $config first."
         exit 1
@@ -673,10 +673,6 @@ required() {
 	    done < tmp/down.$$.lst ; rm -f tmp/down.$$.lst
 	fi
     done < config/$config/packages
-
-    # NOTE: ROCKCFG -> SDECFG automatized convertion
-    grep -q 'ROCKCFG' ./config/$config/config &&
-	sed -i -e 's,ROCKCFG,SDECFG,g' ./config/$config/config
 
     target=`grep '^export SDECFG_TARGET=' config/$config/config | \
 						cut -f2 -d= | tr -d "'"`
