@@ -24,7 +24,7 @@ if [ -z "${lines:=$LINES}" -o -z "${columns:=$COLUMNS}" ] ; then
 	[ -z "$columns" -o "$columns" -le 0 ] 2> /dev/null && columns=80
 fi
 
-eval "$(egrep '^sdever=' lib/parse-config)"
+eval "$( egrep '^sdever=' lib/libsde.in )"
 
 config=default
 do_config_cycle=0
