@@ -440,11 +440,12 @@ rock_substitute() {
 # packages to cross-build correctly in stages 0 and 1.
 #
 create_config_cache() {
-	cat $base/lib/sde-build/config.cache
+	cat $base/architecture/share/config.cache
 
 	if [ $createarchcache -eq 1 ]; then
 		cat  <<-EOT
-		# Architecture specific stuff\n"
+		# Architecture specific stuff
+		#
 		arch_sizeof_char=1
 		ac_cv_sizeof_short=$arch_sizeof_short
 		ac_cv_sizeof_int=$arch_sizeof_int
@@ -453,6 +454,7 @@ create_config_cache() {
 		ac_cv_sizeof_char_p=$arch_sizeof_char_p
 		ac_cv_sizeof_void_p=$arch_sizeof_char_p
 		ac_cv_c_bigendian=$arch_bigendian
+
 		EOT
 	fi
 }
