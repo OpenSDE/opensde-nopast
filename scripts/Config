@@ -93,12 +93,14 @@ if [ $do_config_cycle = 0 ] ; then
 	# don't accept Ctrl-C because it destroy the configurations
 	trap '' INT
 
-	if ./lib/sde-config/migrate.sh "$config"; then
-		mkdir -p $cfgtmpdir/config/
-		cp -a config/$config/* $cfgtmpdir/config/
-		if [ $? -ne 0 ]; then
-			echo "Copy of config failed, aborting."
-			exit 1
+	if [ -d "config/$config" ]; then
+		if ./lib/sde-config/migrate.sh "$config"; then
+			mkdir -p $cfgtmpdir/config/
+			cp -a config/$config/* $cfgtmpdir/config/
+			if [ $? -ne 0 ]; then
+				echo "Copy of config failed, aborting."
+				exit 1
+			fi
 		fi
 	fi
 
