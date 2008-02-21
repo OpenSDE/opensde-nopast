@@ -118,12 +118,33 @@ elif expr "$pkg" : ".*/.*" > /dev/null; then
 	# repository given
 	repo="${pkg%/*}"
 	pkg="${pkg##*/}"
+
+	# sanitize $repo if needed
+	if [ "$repo" = "." ]; then
+		# detect repo based on $PWD
+		repo=$( package_autodetect_repo )
+	elif expr "$repo" : ".*/.*" > /dev/null; then
+		# longer path
+		if [ -d "$repo" ]; then
+			# exists, go there and find out
+			repo=$( cd "$repo"; package_autodetect_repo )
+		else
+			# doesn't exist
+			repo="$PWD/$repo"
+			if [ -d "${repo%/*}" ]; then
+				repo=$( cd "$repo"; package_autodetect_repo )
+			else
+				echo_error "${repo#$PWD/}: Invalid repository"
+				repo=
+			fi
+		fi
+	fi	
 else
 	# detect repo based on $PWD
 	repo=$( package_autodetect_repo )
-	# base use wip/ if the detection failed
-	repo="${repo:-wip}"
 fi
+# base use wip/ if the detection failed
+repo="${repo:-wip}"
 
 # validate $pkg
 #
