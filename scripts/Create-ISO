@@ -48,7 +48,7 @@ usage()
 }
 
 # default disk-size
-dsize=$(( 650 * 1024 ))
+dsize=$(( 700 * 1024 ))
 file_overhead=1
 src=0; mkdebug=0; implantisomd5=1
 
