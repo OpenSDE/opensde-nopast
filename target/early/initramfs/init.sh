@@ -18,7 +18,7 @@ export PATH=/usr/bin:/usr/sbin:/bin:/sbin
 modules=
 root=
 mode=
-initrd=/sbin/init
+init=/sbin/init
 
 NOCOLOR=
 initargs="$*"
@@ -96,6 +96,9 @@ fi
 if [ -n "$root" ]; then
 	udevsettle
 
+	# give it a second chance to appear (delay 2s)
+	[ -e "$root" ] || sleep 2;
+
 	if [ -e "$root" ]; then
 		/lib/udev/vol_id "$root" > /tmp/$$.vol_id
 		. /tmp/$$.vol_id
@@ -110,7 +113,7 @@ if [ -n "$root" ]; then
 fi
 
 # wait for /sbin/init
-while [ ! -x "/rootfs$initrd" ]; do
+while [ ! -x "/rootfs$init" ]; do
 	echo "Please mount root device on /rootfs and exit to continue"
 	setsid /bin/sh < /dev/console > /dev/console 2> /dev/console
 done
@@ -122,4 +125,4 @@ check mount -t none -o move /sys /rootfs/sys
 check mount -t none -o move /proc /rootfs/proc
 status
 	
-exec switch_root /rootfs "$initrd" "$initargs"
+exec switch_root /rootfs "$init" "$initargs"
