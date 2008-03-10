@@ -12,28 +12,51 @@
 # GNU General Public License can be found in the file COPYING.
 # --- SDE-COPYRIGHT-NOTE-END ---
 
+# returns the type of overlay based on the extension of the overlay file
+#
+overlay_get_type()
+{
+	local ext="${1##*.}"
+
+	case "$ext" in
+		sh|exec)	echo "exec"	;;
+		txt|patch|ln)	echo "$ext"	;;
+		*)	# and skip anything else
+			;;
+	esac
+}
+
+# returns the name of a target file based on the name overlay file
+#
+overlay_get_filename()
+{
+	local filename="${1##*/}"; filename="${filename%.*}"
+
+	echo "${filename}" | tr '_%' '/_' | rock_substitute
+}
+
 # apply an overlay dir
 overlay_apply() {
 	local overlaydir="$1" rootfs="${2:-$root}"
 	local file= source= target= ext=
 	local type= mode= ref= targetdir=
 
-	for file in $overlaydir/*; do
-		source="${file##*/}"
-		ext="${file##*.}"
+	for file in "$overlaydir"/*; do
+		# only consider known overlay types
+		type=$( overlay_get_type "$file" )
+		[ -n "$type" ] || continue
 
-		case "$ext" in
-			sh|exec|txt|patch|ln)
-				case "$ext" in
-					sh|exec)	type='exec'; mode=0755	;;
-					*)		type="$ext"; mode=0644	;;
-				esac
-				target="$( echo ${source%.$ext} | tr '_%' '/_' )"
-				targetdir="$rootfs/$target"; targetdir="${targetdir%/*}"
-				;;
-			*)	continue ;;
+		# full filename of the target file, and it's directory
+		target=$( overlay_get_filename "$file" )
+		targetdir="$rootfs/$target"; targetdir="${targetdir%/*}"
+
+		# final adjustments based on the type
+		case "$type" in
+			exec)	mode=0755 ;;
+			*)	mode=0644 ;;
 		esac
 
+		# and finally inject the file
 		case "$type" in
 			exec|txt)
 				echo_status "injecting $target ($type)"
