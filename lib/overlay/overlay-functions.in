@@ -62,11 +62,11 @@ overlay_apply() {
 			exec|txt)
 				echo_status "injecting $target ($type)"
 				mkdir -p "$targetdir"
-				[ ! -e "$rootfs/$target" ] || rm -f "$rootfs/$target"
-				cp -f "$file" "$rootfs/$target"
+				[ ! -L "$rootfs/$target" ] || rm -f "$rootfs/$target"
+				cat "$file" | rock_substitute > "$rootfs/$target"
 				chmod $mode "$rootfs/$target"
 				;;
-			ln)	ref=$( cat "$file" )
+			ln)	ref=$( cat "$file" | rock_substitute )
 				echo_status "injecting $target -> $ref"
 				mkdir -p "$targetdir"
 				ln -snf "$ref" "$rootfs/$target"
