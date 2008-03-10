@@ -32,7 +32,8 @@ overlay_get_filename()
 {
 	local filename="${1##*/}"; filename="${filename%.*}"
 
-	echo "${filename}" | tr '_%' '/_' | rock_substitute
+	# rock_substitute will add a leading / for most translations
+	echo "${filename}" | tr '_%' '/_' | rock_substitute | sed -e 's,^/,,'
 }
 
 # apply an overlay dir
