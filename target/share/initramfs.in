@@ -12,6 +12,10 @@
 # GNU General Public License can be found in the file COPYING.
 # --- SDE-COPYRIGHT-NOTE-END ---
 
+# source overlay functions, to wrap overlay_apply behind initramfs_install_overlay
+#
+. "$base/lib/overlay/overlay-functions.in"
+
 # functions
 #
 
@@ -31,50 +35,9 @@ initramfs_install_flist() {
 		tar -C "$rootfs" -xf-
 }
 
-# apply an overlay
-initramfs_install_overlay() {
-	local overlaydir="$1" rootfs="$2"
-	local file= source= target= ext=
-	local type= mode= ref= targetdir=
-
-	for file in $overlaydir/*; do
-		source="${file##*/}"
-		ext="${file##*.}"
-
-		case "$ext" in
-			sh|exec|txt|patch|ln)
-				case "$ext" in
-					sh|exec)	type='exec'; mode=0755	;;
-					*)		type="$ext"; mode=0644	;;
-				esac
-				target="$( echo ${source%.$ext} | tr '_%' '/_' )"
-				targetdir="$rootfs/$target"; targetdir="${targetdir%/*}"
-				;;
-			*)	continue ;;
-		esac
-
-		case "$type" in
-			exec|txt)
-				echo_status "injecting $target ($type)"
-				mkdir -p "$targetdir"
-				[ ! -e "$rootfs/$target" ] || rm -f "$rootfs/$target"
-				cp -f "$file" "$rootfs/$target"
-				chmod $mode "$rootfs/$target"
-				;;
-			ln)	ref=$( cat "$file" )
-				echo_status "injecting $target -> $ref"
-				mkdir -p "$targetdir"
-				ln -snf "$ref" "$rootfs/$target"
-				;;
-			patch)
-				echo_status "$(patch -p1 -d "${rootfs}" 2>&1 < $file )"
-				;;
-		esac
-	done
-}
-
 # weak functions
 #
+initramfs_install_overlay() { overlay_apply "$@"; }
 
 # should this package be extracted by flist or not?
 # initramfs_install <pkg_name> <sandbox> <rootfs>
