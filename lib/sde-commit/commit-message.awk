@@ -16,7 +16,7 @@
 BEGIN { FS="[ /]" }
 
 /^\+\+\+ / { pkg = $4 }
-{ if (sub(/^\+\[I\]/," -") ) { info = $0 } }
+{ if (sub(/^\+\[I\] /,"") ) { title = $0 } }
 
 /^\-\[V\] / { oldver=$2 }
 /^\+\[V\] / {
@@ -24,7 +24,7 @@ BEGIN { FS="[ /]" }
 	if ( oldver )
 		print "[" pkg "] Updated (" oldver " -> " newver ")"
 	else {
-		print "[" pkg "] Added " pkg " " newver " - " info
+		print "[" pkg "] Added " pkg " " newver " - " title
 	}
 	oldver="" ; newver="" ; info=""
 }
