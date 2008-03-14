@@ -16,7 +16,7 @@
 
 #Description: x86 (AMD, Intel, VIA and compatible)
 
-choice SDECFG_X86_OPT i486   \
+choice SDECFG_X86_OPT pentiumpro   \
 	generic		"No special optimisation"		\
 	i386		"Optimised for Intel 386"		\
 	i486		"Optimised for Intel 486"		\
