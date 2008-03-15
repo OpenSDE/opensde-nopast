@@ -16,7 +16,7 @@
 [ -n "$SDEROOT" ] ||
 	export SDEROOT=$( cd "${0%/*}/.."; pwd -P )
 
-. $SDEROOT/lib/libsde.in
+. "$SDEROOT/lib/libsde.in"
 
 download_usage() {
 	local progname=${0##*/}
