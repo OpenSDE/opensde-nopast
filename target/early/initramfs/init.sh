@@ -23,6 +23,9 @@ init=/sbin/init
 NOCOLOR=
 initargs="$*"
 
+want_mdadm=
+want_lvm=
+
 # read kernel arguments
 [ -e /proc/cmdline ] || mount -n -t proc  none /proc
 set -- $( cat /proc/cmdline )
@@ -34,6 +37,15 @@ for x; do
 		rw|ro)		mode="$x"	;;
 		modules=*)	modules=$( echo "$v" | tr ',' ' ' )	;;
 		nocolor)	export NOCOLOR=yes	;;
+		initrdopt=*)	for y in $( echo "$v" | tr ',' ' ' ); do
+				case "$y" in
+					mdadm)		want_mdadm=yes ;;
+					mdadm=*)	want_mdadm="${y#mdadm=}" ;;
+					lvm)		want_lvm=yes ;;
+					lvm=*)		want_lvm="${y#lvm=}" ;;
+				esac
+				done
+				;;
 	esac
 done
 
@@ -76,21 +88,37 @@ sleep 2
 
 [ -n "$root" ] || echo "No root device defined."
 
-if [ ! -e "$root" -a -s /etc/mdadm.conf ]; then
-	# try activating software raids
-	title "Activating RAID devices"
-	check modprobe md-mod
-	check udevsettle
-	check mdadm -As --auto=yes
-	status
+if [ ! -e "$root" ]; then
+	if [ "$want_mdadm" = yes ]; then
+		title "Detecting possible RAID devices"
+		check mdadm -E --scan > /etc/mdadm.conf
+		status
+	fi
+
+	if [ -s /etc/mdadm.conf ]; then
+		# try activating software raids
+		title "Activating RAID devices"
+		check modprobe md-mod
+		check udevsettle
+		check mdadm -As --auto=yes
+		status
+	fi
 fi
 
-if [ ! -e "$root" -a -d /etc/lvm/archive ]; then
-	title "Activating LVM devices"
-	check modprobe dm_mod
-	check udevsettle
-	check lvm vgchange -ay
-	status
+if [ ! -e "$root" ]; then
+	if [ "$want_lvm" = yes ]; then
+		title "Detecting possible LVM devices"
+		check lvm vgscan
+		status
+	fi
+
+	if [ -d /etc/lvm/archive ]; then
+		title "Activating LVM devices"
+		check modprobe dm_mod
+		check udevsettle
+		check lvm vgchange -ay
+		status
+	fi
 fi
 
 if [ -n "$root" ]; then
