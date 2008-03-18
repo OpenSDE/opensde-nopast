@@ -13,10 +13,12 @@
 # GNU General Public License can be found in the file COPYING.
 # --- SDE-COPYRIGHT-NOTE-END ---
 
-if [ $# -eq 0 ]; then
+vc=${1:-/dev/console}; shift
+
+if [ ! -c "$vc" ]; then
+	echo "$vc: Invalid terminal" >&2
 	echo "Usage: \${0##*/} <vc> [<command> <arguments>]"
 	exit 1
 else
-	vc=${1:-console}; shift
-	exec setsid "${@:-/bin/sh}" < /dev/$vc > /dev/$vc 2> /dev/$vc
+	exec setsid "${@:-/bin/sh}" < $vc > $vc 2> $vc
 fi
