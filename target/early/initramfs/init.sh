@@ -146,13 +146,13 @@ fi
 # wait for /sbin/init
 while [ ! -x "/rootfs$init" ]; do
 	want_shell=no
-	echo "Please mount root device on /rootfs and exit to continue"
-	setsid /bin/sh < /dev/console > /dev/console 2> /dev/console
+	echo -e "\nPlease mount root device on /rootfs and exit to continue."
+	/sbin/getsh
 done
 
 if [ "$want_shell" = yes ]; then
-	echo "A last-minute shell was requested, please exit to continue"
-	setsid /bin/sh < /dev/console > /dev/console 2> /dev/console
+	echo -e "\nA last-minute shell was requested, please exit to continue."
+	/sbin/getsh
 fi
 
 title "Cleaning up"
