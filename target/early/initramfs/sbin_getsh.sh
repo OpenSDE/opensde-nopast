@@ -17,8 +17,6 @@ if [ $# -eq 0 ]; then
 	echo "Usage: \${0##*/} <vc> [<command> <arguments>]"
 	exit 1
 else
-	vc=$1; shift
-	set -e
-	( setsid "${@:-/bin/sh}" < /dev/$vc > /dev/$vc 2> /dev/$vc & ) &
-	echo $!
+	vc=${1:-console}; shift
+	exec setsid "${@:-/bin/sh}" < /dev/$vc > /dev/$vc 2> /dev/$vc
 fi
