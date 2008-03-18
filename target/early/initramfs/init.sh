@@ -95,7 +95,7 @@ if [ ! -e "$root" ]; then
 		status
 	fi
 
-	if [ -s /etc/mdadm.conf ]; then
+	if [ "$want_mdadm" != no -a -s /etc/mdadm.conf ]; then
 		# try activating software raids
 		title "Activating RAID devices"
 		check modprobe md-mod
@@ -112,7 +112,7 @@ if [ ! -e "$root" ]; then
 		status
 	fi
 
-	if [ -d /etc/lvm/archive ]; then
+	if [ "$want_lvm" != no -a -d /etc/lvm/archive ]; then
 		title "Activating LVM devices"
 		check modprobe dm_mod
 		check udevsettle
