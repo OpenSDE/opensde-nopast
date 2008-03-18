@@ -25,6 +25,7 @@ initargs="$*"
 
 want_mdadm=
 want_lvm=
+want_shell=
 
 # read kernel arguments
 [ -e /proc/cmdline ] || mount -n -t proc  none /proc
@@ -43,6 +44,8 @@ for x; do
 					mdadm=*)	want_mdadm="${y#mdadm=}" ;;
 					lvm)		want_lvm=yes ;;
 					lvm=*)		want_lvm="${y#lvm=}" ;;
+					shell)		want_shell=yes ;;
+					shell=*)	want_shell="${y#shell=}" ;;
 				esac
 				done
 				;;
@@ -142,9 +145,15 @@ fi
 
 # wait for /sbin/init
 while [ ! -x "/rootfs$init" ]; do
+	want_shell=no
 	echo "Please mount root device on /rootfs and exit to continue"
 	setsid /bin/sh < /dev/console > /dev/console 2> /dev/console
 done
+
+if [ "$want_shell" = yes ]; then
+	echo "A last-minute shell was requested, please exit to continue"
+	setsid /bin/sh < /dev/console > /dev/console 2> /dev/console
+fi
 
 title "Cleaning up"
 check killall udevd
@@ -153,4 +162,4 @@ check mount -t none -o move /sys /rootfs/sys
 check mount -t none -o move /proc /rootfs/proc
 status
 	
-exec switch_root /rootfs "$init" "$initargs"
+exec switch_root /rootfs "$init" $initargs
