@@ -101,8 +101,8 @@ if [ ! -e "$root" ]; then
 	if [ "$want_mdadm" != no -a -s /etc/mdadm.conf ]; then
 		# try activating software raids
 		title "Activating RAID devices"
-		check modprobe md-mod
-		check udevsettle
+		modprobe -q md-mod
+		udevsettle
 		check mdadm -As --auto=yes
 		status
 	fi
@@ -117,8 +117,8 @@ if [ ! -e "$root" ]; then
 
 	if [ "$want_lvm" != no -a -d /etc/lvm/archive ]; then
 		title "Activating LVM devices"
-		check modprobe dm_mod
-		check udevsettle
+		modprobe -q dm_mod
+		udevsettle
 		check lvm vgchange -ay
 		status
 	fi
@@ -145,6 +145,7 @@ fi
 
 # wait for /sbin/init
 while [ ! -x "/rootfs$init" ]; do
+	# one shell is enough
 	want_shell=no
 	echo -e "\nPlease mount root device on /rootfs and exit to continue."
 	/sbin/getsh
@@ -163,3 +164,4 @@ check mount -t none -o move /proc /rootfs/proc
 status
 	
 exec switch_root /rootfs "$init" $initargs
+#FIXME: what if it fails?
