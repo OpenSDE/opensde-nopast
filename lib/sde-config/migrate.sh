@@ -30,3 +30,10 @@ if grep -q 'ROCKCFG' "$config_file"; then
 	echo_warning "config/$1: config migrated from ROCKLinux style."
 	sed -i -e 's,ROCKCFG,SDECFG,g' "$config_file"
 fi
+
+# SDECFG_ABORT_ON_ERROR_AFTER -> SDECFG_CONTINUE_ON_ERROR_AFTER
+#
+if grep -q 'SDECFG_ABORT_ON_ERROR_AFTER' "$config_file"; then
+	echo_warning "config/$1: updating config file to new namings."
+	sed -i -e 's,SDECFG_ABORT_ON_ERROR_AFTER,SDECFG_CONTINUE_ON_ERROR_AFTER,' "$config_file"
+fi
