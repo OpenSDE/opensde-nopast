@@ -190,7 +190,7 @@ fi
 comment ' '
 comment_id '- Build System Configuration' COMMENT_BUILD_SYS_CONF
 block_begin 3
-		choice SDECFG_ABORT_ON_ERROR_AFTER 4 \
+		choice SDECFG_CONTINUE_ON_ERROR_AFTER 4 \
 			0	'Continue if package-build fails after toolchain (native)'	\
 			1	'Continue if package-build fails after toolchain (cross)'	\
 			2	'Continue if package-build fails after stage 2'	\
