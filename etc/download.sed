@@ -28,7 +28,7 @@ s,^http://.*dl.\(sourceforge\|sf\).net/,http://prdownloads.sourceforge.net/,
 s,^ftp://ftp.postgresql.org/pub/source/,ftp://ftp4.us.postgresql.org/pub/postgresql/source/,
 
 # ftp connection blocks once in a while
-s,^ftp://ftp.gnupg.org,http://ftp.gnupg.org,
+#s,^ftp://ftp.gnupg.org,http://ftp.gnupg.org,
 s,^ftp://ftp.kernel.org,http://ftp.kernel.org,
 
 # clip's ftp is a pain
