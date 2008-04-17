@@ -84,7 +84,7 @@ update_patch_package() {
 	oldver=$( sed -n -e 's,^\[V\][ \t]\+\([^ \t]\+\)[ \t]*,\1,p' "$descfile" | head -n 1 )
 	echo_info "$pkg ($oldver -> $ver)"
 
-	awk -f $SDEROOT/lib/sde-package/package-update.awk -v "ver=$ver" -v "location=$location" "$descfile" > $tmpfile
+	gawk -f $SDEROOT/lib/sde-package/package-update.awk -v "ver=$ver" -v "location=$location" "$descfile" > $tmpfile
 	if diff -u $descfile $tmpfile; then
 		echo_warning "No change detected."
 	else
