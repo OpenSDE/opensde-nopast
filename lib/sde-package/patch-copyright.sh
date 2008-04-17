@@ -207,20 +207,23 @@ ${posttag:+$posttag\\
 	    # implant our copy note
 	    {
 		grep -B 100000 -- "--- $NOTEMARKER-BEGIN ---" $oldfile
+
 		{
-		if [ "$filename" != "${filename%/*.diff}" -o \
-		     "$filename" != "${filename%/*.patch}" -o \
-		     "$filename" != "${filename%/*.patch.*}" -o \
-		     "$filename" != "${filename%/*.patch-*}" ] ; then
-			sed -e "s|@@FILENAME@@|$mangled_filename|; \
-				s|@@COPYRIGHT@@|${copyright//
-/\n}|;"  $copynotepatch
-		else
-			sed -e "s|@@FILENAME@@|$mangled_filename|; \
-				s|@@COPYRIGHT@@|${copyright//
-/\n}|;"  $copynote
-		fi
-		# we need a separated sed call because $rockcopyright adds a new line
+		# what template to use
+		case "$filename" in
+			*.diff|*.patch|*.patch.*|*.patch-*)
+				copyright_template="$copynotepatch"
+				;;
+			*)
+				copyright_template="$copynote"
+				;;
+		esac
+
+		copyright_n="$( echo "$copyright" | tr '\n' '|' | sed -e 's/|$//' | sed -e 's/|/\\n/g' )"
+
+		sed -e "s|@@FILENAME@@|$mangled_filename|" \
+		    -e "s|@@COPYRIGHT@@|$copyright_n|" \
+			"$copyright_template"
 		} | sed -e "s,^,$tag," -e 's,[ \t]\+$,,'
 
 		grep -A 100000 -- "--- $NOTEMARKER-END ---" $oldfile
