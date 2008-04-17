@@ -141,7 +141,7 @@ if [ -d ".git" ]; then
 	if [ -z "$logfile" ]; then
 		logfile=$tmpfile.log
 		git-diff-index -M --cached -p HEAD | sed -e "s,^\(---\|\+\+\+\) [ab]/,\1 $root/," |
-			awk -f $SDEROOT/lib/sde-commit/commit-message.awk > $logfile
+			gawk -f $SDEROOT/lib/sde-commit/commit-message.awk > $logfile
 	fi
 elif [ -d ".svn" ]; then
 	# svn status
@@ -151,7 +151,7 @@ elif [ -d ".svn" ]; then
 	if [ -z "$logfile" ]; then
 		logfile=$tmpfile.log
 		cat $tmpfile.diff | sed -e "s,^\(---\|\+\+\+\) [ab]/,\1 $root/," |
-			awk -f $SDEROOT/lib/sde-commit/commit-message.awk > $logfile
+			gawk -f $SDEROOT/lib/sde-commit/commit-message.awk > $logfile
 	fi
 else
 	echo_abort 3 "$root: unknown version control system."
