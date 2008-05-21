@@ -512,15 +512,22 @@ dump_env() {
 #
 pkgdesc() {
 	local pattern=
-	local descfile=$( ls -1d $base/package/*/$2/$2.desc 2> /dev/null )
+	local descfile=$( cd "$base"; ls -1d package/*/$2/$2.desc 2> /dev/null )
 
 	case "$1" in
 		ver)	pattern="V"	;;
 		*)	pattern="$1"	;;
 	esac
 
-	if [ -s "$descfile" ]; then
-		sed -n "s,^\[$pattern\][ \t]\+\(.\+\)[ \t]*$,\1,p" "$descfile"
+	if [ -s "$base/$descfile" ]; then
+		case "$1" in
+		confdir)
+			echo "$base/${descfile%/*}"
+			;;
+		*)
+			sed -n "s,^\[$pattern\][ \t]\+\(.\+\)[ \t]*$,\1,p" "$descfile"
+			;;
+		esac
 	else
 		echo_error "pkgdesc: Package $2 not found."
 	fi
