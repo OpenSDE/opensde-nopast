@@ -76,6 +76,23 @@ echo_status "Removing empty folders ..."
 	fi
 done
 
+echo_status "Checking for broken symlinks ..."
+( cd "$rootfs"; find . -type l ) | while read link; do
+	target=$( readlink "$rootfs/$link" )
+	case "$target" in
+		/proc/*)	continue ;;
+		/*)	# absolute
+			;;
+		*)	target="/${link%/*}/${target}"	# relative
+			;;
+	esac
+
+	if [ ! -e "$rootfs$target" ]; then
+		echo_warning "- $link is broken, deleting."
+		rm -f "$rootfs/$link"
+	fi
+done
+
 # sanity checks
 #
 [ -x "$rootfs/init" ] || echo_warning "This image is missing an /init file, it wont run."
