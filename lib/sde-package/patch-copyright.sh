@@ -116,6 +116,7 @@ while read filename ; do
 			*.txt) mode=sh ;;
 			*m4) mode=m4 ;;
 			*.awk) mode=sh ;;
+			*.all|*.ask|*.choice) mode=sh ;;
 		esac
 
 		#echo "Mode type: $mode"
