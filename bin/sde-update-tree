@@ -108,6 +108,19 @@ update_git()
 	( git reset && git pull --rebase ) 2>&1 | indent_output
 }
 
+update_svn_nested()
+{
+	trap ':' INT
+	# find svn:externals, and filter out sub-externals
+	svn st | grep '^X' | cut -c8- | tee /tmp/$$.nested |
+	while read f; do
+		sed -i -e "s|^$f/.*||;" -e '/^$/d;' /tmp/$$.nested
+	done
+	cat /tmp/$$.nested
+	rm -f /tmp/$$.nested
+	trap '-' INT
+}
+
 update_svn()
 {
 	local prefix="$1" x=
@@ -116,7 +129,7 @@ update_svn()
 	svn up --ignore-externals 2>&1 | indent_output
 
 	# nested svn
-	for x in $( svn st | grep '^X' | cut -c8- ); do
+	for x in $( update_svn_nested ); do
 		( cd "$x"; update_svn "$prefix/$x" )
 	done
 }
