@@ -93,6 +93,13 @@ echo_status "Checking for broken symlinks ..."
 	fi
 done
 
+# ldconfig
+#
+if [ -s "$rootfs/etc/ld.so.conf" ]; then
+	echo_status "Running ldconfig ..."
+	ldconfig -r "$rootfs"
+fi
+
 # sanity checks
 #
 [ -x "$rootfs/init" ] || echo_warning "This image is missing an /init file, it wont run."
