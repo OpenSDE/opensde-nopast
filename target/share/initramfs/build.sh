@@ -77,19 +77,29 @@ echo_status "Removing empty folders ..."
 done
 
 echo_status "Checking for broken symlinks ..."
-( cd "$rootfs"; find . -type l ) | while read link; do
-	target=$( readlink "$rootfs/$link" )
-	case "$target" in
-		/proc/*)	continue ;;
-		/*)	# absolute
-			;;
-		*)	target="/${link%/*}/${target}"	# relative
-			;;
-	esac
+( cd "$rootfs"; find . -type l | cut -c2- ) | while read link; do
+	x="$link"
+	while true; do
+		target=$( readlink "$rootfs$x" )
+		case "$target" in
+			/proc/*)
+				continue 2
+				;;
+			/*)
+				;;
+			*)
+				# relatives turned into absolute
+				target="${x%/*}/${target}"
+		esac
+
+		[ -L "$rootfs$target" ] || break 1
+
+		x="$target"
+	done
 
 	if [ ! -e "$rootfs$target" ]; then
-		echo_warning "- $link is broken, deleting."
-		rm -f "$rootfs/$link"
+		echo_warning "- $link is broken ($target), deleting."
+		rm -f "$rootfs$link"
 	fi
 done
 
