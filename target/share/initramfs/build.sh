@@ -79,6 +79,9 @@ done
 echo_status "Checking for broken symlinks ..."
 ( cd "$rootfs"; find . -type l | cut -c2- ) | while read link; do
 	x="$link"
+	case "$link" in
+		/dev/*) continue ;;
+	esac
 	while true; do
 		target=$( readlink "$rootfs$x" )
 		case "$target" in
