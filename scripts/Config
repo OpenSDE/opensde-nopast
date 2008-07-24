@@ -231,13 +231,24 @@ case "$returncode" in
 	1|255)
 		mkdir -p config/$config
 		# sync
+		# TODO: make this nicer, but still sudo-friendly
 		for x in config/$config/*; do
-			if [ ! -e "$cfgtmpdir/config/${x##*/}" ]; then
+			y="$cfgtmpdir/config/${x##*/}"
+			if [ ! -e "$y" ]; then
 				rm -f "$x"
+			else
+				# to not change the permissions (sudo-friendliness)
+				cat "$y" > "$x"
+				rm -f "$y"
 			fi
 		done
-		cp -a $cfgtmpdir/config/* config/$config/
-		rm -rf $cfgtmpdir
+		for y in "$cfgtmpdir/config"/* ; do 2> /dev/null
+			if [ -e "$y" ]; then
+				cp -a "$y" config/$config/
+				rm -f "$y"
+			fi
+		done
+		rmdir $cfgtmpdir/config && rm -rf $cfgtmpdir/
 		echo "New config written to config/$config/*."
 		echo "Cleaning up. Configuration finished."
 		bprof main stop
