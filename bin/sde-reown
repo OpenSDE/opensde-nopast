@@ -21,9 +21,13 @@
 cd "$SDEROOT"
 
 UG=$( stat -c %U:%G . )
+UGD=$( stat -c %U:%G download/ )
 
 export LANG=C
 
-exec chown -Rv $UG $( ls -1d * .git 2> /dev/null |
-		grep -v -e '^src.' -e '^build$' -e '^download$' ) |
-		grep -v "' retained "
+(
+# accept luser downloads but staying hard-link friendly
+chown -v $UGD $( find download/ -type d 2> /dev/null )
+chown -Rv $UG $( ls -1d * .git 2> /dev/null |
+		grep -v -e '^src.' -e '^build$' -e '^download$' )
+) | grep -v "' retained "
