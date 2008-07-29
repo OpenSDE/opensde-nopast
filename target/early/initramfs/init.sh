@@ -101,7 +101,7 @@ if [ ! -e "$root" ]; then
 	if [ "$want_mdadm" != no -a -s /etc/mdadm.conf ]; then
 		# try activating software raids
 		title "Activating RAID devices"
-		modprobe -q md-mod
+		modprobe -q md-mod 2> /dev/null
 		udevsettle
 		check mdadm -As --auto=yes
 		status
@@ -117,7 +117,7 @@ if [ ! -e "$root" ]; then
 
 	if [ "$want_lvm" != no -a -d /etc/lvm/archive ]; then
 		title "Activating LVM devices"
-		modprobe -q dm_mod
+		modprobe -q dm_mod 2> /dev/null
 		udevsettle
 		check lvm vgchange -ay
 		status
@@ -136,6 +136,7 @@ if [ -n "$root" ]; then
 		rm /tmp/$$.vol_id
 
 		title "Mounting $root (${ID_FS_TYPE:-unknown}) "
+		[ -z "$ID_FS_TYPE" ] || modprobe -q "$ID_FS_TYPE" 2> /dev/null
 		check mount ${ID_FS_TYPE:+-t $ID_FS_TYPE} ${mode:+-o $mode} "$root" /rootfs
 		status
 	else
