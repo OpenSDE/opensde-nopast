@@ -558,7 +558,7 @@ pkginstalled() {
 		if [ $# -eq 1 ]; then
 			pattern="$1"
 		else
-			pattern="($@)"
+			pattern="($*)"
 		fi
 
 		pattern="${pattern//+/\\+}"
