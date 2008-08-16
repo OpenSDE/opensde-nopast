@@ -16,3 +16,8 @@ config_list()
 {
 	ls -1d "$SDEROOT/config"/* 2> /dev/null | sed -e 's,.*/,,'
 }
+
+config_exists()
+{
+	[ -s "$SDEROOT/config/$1/packages" ]
+}
