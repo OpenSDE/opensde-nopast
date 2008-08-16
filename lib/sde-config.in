@@ -21,3 +21,9 @@ config_exists()
 {
 	[ -s "$SDEROOT/config/$1/packages" ]
 }
+
+config_id()
+{
+	grep ' SDECFG_ID=' "$SDEROOT/config/$1/config" 2> /dev/null |
+			cut -d"'" -f2
+}
