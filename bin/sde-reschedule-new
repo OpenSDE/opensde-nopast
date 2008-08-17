@@ -90,53 +90,51 @@ reschedule_new()
 {
 	local pkg="$1" cksum1="$2" cksum2= config="$3" sandbox="$4"
 	local pkgfile="$SDEROOT/$sandbox/var/adm/packages/$pkg"
-	local dependers= x=
 
 	if [ -s "$pkgfile" ]; then
 		cksum2=$( grep -R '^\(ROCK Linux\|T2\|OpenSDE\) Package Source Checksum: ' \
 				"$pkgfile" | cut -d: -f2 )
 
 		if [ " $cksum1" != "$cksum2" ]; then
-			if [ "$reschedule_dependers" = "yes" ]; then
-				# TODO: Implement dependers detection
-
-				dependers=
-			fi
-
-			for x in $pkg $dependers; do
-				echo "$config: $x"
-
-				if [ "$reschedule_dry" != "yes" ]; then
-					if [ "$reschedule_soft" != "yes" ]; then
-						mine -rf -R "$SDEROOT/$sandbox/" "$x"
-					fi
-					rm -f "$SDEROOT/$sandbox/var/adm"/*/?-$x.* 2> /dev/null
-				fi
-			done
+			"$SDEROOT/bin/sde-reschedule-package" \
+				${reschedule_dry:+--dry-run} \
+				${reschedule_soft:+--soft} \
+				${reschedule_dependers:+--deps} \
+				-c "$config" "$pkg"
 		fi
 	fi
 }
 
 # which configs?
 #
-if [ -n "$reschedule_any" ]; then
+if [ "$reschedule_any" = "yes" ]; then
 	reschedule_configs=$( config_list )
 
 	[ -n "$reschedule_configs" ] || echo_abort 1 "No config found."
 elif [ $# -eq 0 ]; then
 	# try default
-	set -- 'default'
-fi
 
-if [ -z "$reschedule_configs" ]; then
+	y="$( config_id default )"
+
+	if [ -z "$y" ]; then
+		echo_abort 1 "No config found."
+	elif [ -d "$SDEROOT/build/$y/" ]; then
+		reschedule_configs=default
+	else
+		exit 0
+	fi
+else
 	for x; do
-		if config_exists "$x"; then
-			reschedule_configs="$reschedule_configs $x"
-		else
+		y=$( config_id "$x" )
+		if [ -z "$y" ]; then
 			echo_warning "$x: Invalid config."
+		elif [ -d "$SDEROOT/build/$y/" ]; then
+			reschedule_configs="$reschedule_configs $x"
 		fi
 	done
 fi
+
+[ -n "$reschedule_configs" ] || exit 0
 
 tuples=
 sandboxes=
@@ -151,11 +149,11 @@ for x in $reschedule_configs; do
 done
 
 for pkg in $( reschedule_packages_list $sandboxes ); do
-	cksum1=$( sh $SDEROOT/lib/sde-package/pkgchksum.sh \
+	cksum=$( sh "$SDEROOT/lib/sde-package/pkgchksum.sh" \
 			`package_confdir $pkg` )
 
 	for x in $tuples; do
-		( reschedule_new $pkg $cksum1 ${x/:/ } ) &
+		( reschedule_new $pkg $cksum ${x/:/ } ) &
 	done
 	wait
 done
