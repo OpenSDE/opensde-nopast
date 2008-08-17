@@ -20,10 +20,6 @@ repstat=0
 showerr=0
 showtree=0
 showdepc=0
-delete=0
-remove=0
-fulldelete=0
-newdelete=0
 onlyupdated=0
 
 repository=
@@ -80,31 +76,16 @@ while [ "$1" ] ; do
 	    -movedir)
 		movedir=$2    ; shift ; shift ;;
 
-	    -delete)
-		delete=1      ; shift ;;
-
-	    -remove)
-		remove=1      ; shift ;;
-
-	    -fulldelete)
-		fulldelete=1  ; shift ;;
-
-	    -newdelete)
-		newdelete=1  ; shift ;;
-
 	    -updated)
 		onlyupdated=1 ; shift ;;
-
-	    -dry-run)
-	        dryrun=1 ; shift ;;
 
 	    -*)
 x="${0//?/ }" ; x="${x#         }"
 echo "Usage: $0 [ -cfg config ] [ -repository repository ] \\"
 echo "  $x [ -copydir copydir | -movedir movedir ] [ -repstat ] \\"
-echo "  $x [ -stage stage ] [ -logdir logdir ] [ -[full|new]delete ] \\"
+echo "  $x [ -stage stage ] [ -logdir logdir ] \\"
 echo "  $x [ -updated ] [ -showerr ] [ -showtree ] [ -showdepc ] \\"
-echo "  $x [ -dry-run ] [-remove] [ <package> ]"
+echo "  $x [ <package> ]"
 		exit 1 ;;
 
 	    *)
@@ -117,25 +98,6 @@ done
 
 logdir="${logdir:-build/$SDECFG_ID/var/adm/logs}"
 pkgdir="${logdir%/*}/packages"
-
-if [ "$newdelete" = 1 ]; then
-	while read pkg cksum1
-	do
-		cksum2=$( pkgchksum package/*/$pkg/ )
-		if [ "$cksum1" != "$cksum2" ]; then
-			echo "Scheduling package '$pkg' for rebuild ..."
-			if [ ! "$dryrun" = "1" ]; then
-				mine -rf -R build/$SDECFG_ID $pkg
-				rm -f build/$SDECFG_ID/var/adm/*/?-$pkg.*
-			fi
-		fi
-	done < <(
-		grep -R '^\(ROCK Linux\|T2\|OpenSDE\) Package Source Checksum: ' \
-		     build/$SDECFG_ID/var/adm/packages/ |
-		sed 's,.*/\([^:]*\):.*:,\1,'
-	)
-	exit 0
-fi
 
 if [ "$repstat" = 1 ] ; then
     {
@@ -165,22 +127,7 @@ if [ "$repstat" = 1 ] ; then
 fi
 
 if [ "$1" ] ; then
-	if [ "$fulldelete" = 1 ] ; then
-		for x ; do
-			rm -vf "$logdir"/$stages-$x.{err,log,out}
-			rm -vf "$logdir"/../*/$x
-		done
-	elif [ "$remove" = 1 ] ; then
-		for x ; do
-			echo "Scheduling package '$x' for rebuild ..."
-			mine -rf -R build/$SDECFG_ID $x
-			rm -f build/$SDECFG_ID/var/adm/*/?-$x.*
-		done
-	elif [ "$delete" = 1 ] ; then
-		for x ; do rm -vf "$logdir"/$stages-$x.err ; done
-	else
-		for x ; do less "$logdir"/$stages-$x.err ; done
-	fi
+	for x ; do less "$logdir"/$stages-$x.err ; done
 	exit 0
 fi
 
@@ -273,12 +220,6 @@ for stagelevel in $( echo "$stages" | tr -d '[]' | sed 's,.,& ,g' ) ; do
 			if [ "$movedir" ] ; then
 				mkdir -p "$movedir"
 				mv "$logdir/$stagelevel-$pkg.err" "$movedir"
-			fi
-			if [ "$fulldelete" -eq 1 ] ; then
-				rm -f "$logdir"/$stages-$pkg.{err,log,out}
-				rm -f "$logdir"/../*/$pkg
-			elif [ "$delete" -eq 1 ] ; then
-				rm -f "$logdir/$stagelevel-$pkg.err"
 			fi
 			count_err=$(( $count_err + 1 ))
 		elif [ -f "$logdir/$stagelevel-$pkg.log" ] ; then
