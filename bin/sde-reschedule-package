@@ -81,16 +81,100 @@ while [ $# -gt 0 ]; do
 done
 
 . "$SDEROOT/lib/sde-config.in"
+. "$SDEROOT/lib/sde-package.in"
+
+reschedule_package()
+{
+	local config="$1" pkg= sandbox=
+	shift
+
+	[ $# -gt 0 ] || return
+
+	sandbox="$SDEROOT/build/$( config_id "$config" )"
+	for pkg; do
+		[ -s "$sandbox/var/adm/packages/$pkg" ] || continue
+
+		echo "$config: Removing $pkg..."
+
+		if [ "$reschedule_dry" != "yes" ]; then
+			if [ "$reschedule_soft" != "yes" ]; then
+				mine -rf -R "$sandbox" "$pkg"
+			fi
+			rm -f "$sandbox/var/adm/logs"/?-$pkg.* 2> /dev/null
+		fi
+	done
+}
 
 # which configs?
 #
-if [ -n "$reschedule_any" ]; then
+if [ "$reschedule_any" = "yes" ]; then
 	reschedule_configs=$( config_list )
 
 	[ -n "$reschedule_configs" ] || echo_abort 1 "No config found."
 elif [ -z "$reschedule_configs" ]; then
 	# try default
-	reschedule_configs=default
+
+	y="$( config_id default )"
+
+	if [ -z "$y" ]; then
+		echo_abort 1 "No config found."
+	elif [ -d "$SDEROOT/build/$y/" ]; then
+		reschedule_configs=default
+	else
+		exit 0
+	fi
+else
+	z="$reschedule_configs"
+	reschedule_configs=
+	for x in $z; do
+		y=$( config_id "$x" )
+		if [ -z "$y" ]; then
+			echo_warning "$x: Invalid config."
+		elif [ -d "$SDEROOT/build/$y/" ]; then
+			reschedule_configs="$reschedule_configs $x"
+		fi
+	done
 fi
 
-echo_abort 2 'Not Implemented'
+# any config ?
+[ -n "$reschedule_configs" ] || exit 0
+
+if [ "$reschedule_all" = "yes" ]; then
+	# every single package
+	#
+	for x in $reschedule_configs; do
+		y="$SDEROOT/build/$( config_id $x )/var/adm/logs"
+		reschedule_package "$x" $( ls -1d "$y"/* 2> /dev/null |
+			sed -e 's|.*/.-\(.*\)\..*|\1|' )
+	done
+	exit $?
+elif [ -n "$reschedule_new" ]; then
+	# every modified package
+	#
+	$SDEROOT/bin/sde-reschedule-new \
+		${reschedule_dry:+--dry-run} \
+		${reschedule_dependers:+--deps} \
+		${reschedule_soft:+--soft} \
+		$reschedule_configs
+fi
+
+reschedule_packages=
+for x; do
+	if package_exists "$x"; then
+		reschedule_packages="$reschedule_packages $x"
+	else
+		echo_warning "$x: Invalid package"
+	fi
+done
+
+set -- $reschedule_packages
+
+for x in $reschedule_configs; do
+	reschedule_package "$x" "$@"
+	if [ "$reschedule_dependers" = "yes" ]; then
+		$SDEROOT/bin/sde-reschedule-dependers \
+			${reschedule_dry:+--dry-run} \
+			${reschedule_soft:+--soft} \
+			-c "$x" "$@"
+	fi
+done
