@@ -22,8 +22,17 @@ config_exists()
 	[ -s "$SDEROOT/config/$1/packages" ]
 }
 
+config_getvar()
+{
+	grep "^export SDECFG_$1=" "$SDEROOT/config/$2/config" 2> /dev/null |
+			cut -d"'" -f2
+}
 config_id()
 {
-	grep ' SDECFG_ID=' "$SDEROOT/config/$1/config" 2> /dev/null |
-			cut -d"'" -f2
+	config_getvar ID "$1"
+}
+
+config_iscross()
+{
+	[ "$( config_getvar CROSSBUILD "$1" )" = 1 ]
 }
