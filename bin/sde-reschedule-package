@@ -167,6 +167,9 @@ for x; do
 	fi
 done
 
+[ $UID -eq 0 -o "$reschedule_dry" = "yes" ] ||
+	 echo_abort 1 "You have to be superuser to proceed, sorry."
+
 set -- $reschedule_packages
 
 for x in $reschedule_configs; do
