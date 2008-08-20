@@ -266,7 +266,7 @@ fi
 
 comment ' '
 if [ -d /sys/devices/ ]; then
-	cpus=`ls -1d /sys/devices/system/cpu/*/ | wc -l`
+	cpus=`ls -1d /sys/devices/system/cpu/*/cpufreq | wc -l`
 else
 	cpus=`grep '^processor[[:blank:]]:' /proc/cpuinfo  | wc -l`
 fi
