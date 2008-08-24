@@ -201,7 +201,7 @@ for item; do
 					# empty line at the end of the last section
 					echo >> "$tmpfile.0"
 				fi
-				echo -e "[$section]" >> "$tmpfile.1"
+				$ECHO_E "[$section]" >> "$tmpfile.1"
 			fi
 
 			if grep -q "^[ \t]*$key[ \t]*=" $tmpfile.1; then
