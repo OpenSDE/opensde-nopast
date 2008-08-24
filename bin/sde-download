@@ -475,14 +475,14 @@ download_file_now() {
 		      echo "WARNING: is required to complete" \
 			   "the download." ;;
 		      130)
-		      echo -e '\rWARNING: CURL got a SIGINT' \
+		      $ECHO_E '\rWARNING: CURL got a SIGINT' \
 			   "(someone pressed Ctrl-C). A re-run of"
 		      echo "WARNING: $0 is required to complete" \
 			   "the download." ; sleep 1 ;;
 		      *)
 		      echo "$curlret $gzfile $url" \
 					>> tmp/Download-Errors
-		      echo -e '\rERROR: CURL Returned Error' \
+		      $ECHO_E '\rERROR: CURL Returned Error' \
 			   "$curlret. Please read" \
 			   "the curl manpage." ;;
 		    esac
@@ -568,14 +568,14 @@ download_file_now() {
 		} &> .cvs_output &
 
 		while fuser .cvs_output &> /dev/null ; do
-			echo -ne `nice du -sh 2> /dev/null | \
+			$ECHO_E -n `nice du -sh 2> /dev/null | \
 				cut -f1` 'downloaded from archive so far...\r'
 			sleep 3
 		done
 
 		if [ -f .cvs_error ] ; then
 			cd $saved_pwd ; rm -rf $cvsdir
-			echo -e "\nError during checkout."
+			$ECHO_E "\nError during checkout."
 			return 1
 		fi
 
