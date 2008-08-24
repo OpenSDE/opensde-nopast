@@ -38,31 +38,31 @@ COLOR_FAILURE='\033[31m'
 # CLI fanciness
 #
 echo_msg() {
-	echo -e "${COLOR_MESSAGE}$*${COLOR_NORMAL}" >&2
+	$ECHO_E "${COLOR_MESSAGE}$*${COLOR_NORMAL}" >&2
 	}
 
 echo_title() {
-	echo -e "\n${COLOR_TITLE}$*${COLOR_NORMAL}" >&2
+	$ECHO_E "\n${COLOR_TITLE}$*${COLOR_NORMAL}" >&2
 	}
 
 echo_info() {
 	if [ ${verbose:-1} -ne 0 ]; then
 		if [ $# -gt 0 ]; then
-			echo -e "${COLOR_INFO}->${COLOR_NORMAL} $*" >&2
+			$ECHO_E "${COLOR_INFO}->${COLOR_NORMAL} $*" >&2
 		else
 			while read text; do
-				echo -e "${COLOR_INFO}->${COLOR_NORMAL} $text"
+				$ECHO_E "${COLOR_INFO}->${COLOR_NORMAL} $text"
 			done >&2
 		fi
 	fi
 	}
 
 echo_warning() {
-	echo -e "${COLOR_WARNING}*>${COLOR_NORMAL} $*" >&2
+	$ECHO_E "${COLOR_WARNING}*>${COLOR_NORMAL} $*" >&2
 	}
 
 echo_error() {
-	echo -e "${COLOR_FAILURE}!> ERROR:${COLOR_NORMAL} $@" >&2
+	$ECHO_E "${COLOR_FAILURE}!> ERROR:${COLOR_NORMAL} $@" >&2
 }
 
 echo_abort() {
