@@ -463,7 +463,7 @@ create_config_cache() {
 # (is overwritten in Build-Pkg)
 #
 abort() {
-	echo -e "The package build aborted with the following config" \
+	$ECHO_E "The package build aborted with the following config" \
 	     "error:\n$*" > $root/var/adm/logs/$stagelevel-$xpkg.err
 	echo_errorquote "`cat $root/var/adm/logs/$stagelevel-$xpkg.err`"
 	echo_pkg_abort $stagelevel $repository $xpkg
@@ -688,19 +688,19 @@ create_package_db() {
 		if [ -e $2/$bfile ] ; then
 			[ "$pkg" = TRANS.TBL ] && continue
 
-			( echo -e "$pkg"
-			  echo -e "\027"
+			( $ECHO_E "$pkg"
+			  $ECHO_E "\027"
 
 			  cat $1/descs/$pkg | grep -v '\[COPY\]'
-			  echo -e "\027"
+			  $ECHO_E "\027"
 
 			  cat $1/dependencies/$pkg
-			  echo -e "\027"
+			  $ECHO_E "\027"
 
 			  cat $1/cksums/$pkg
-			  echo -e "\027"
+			  $ECHO_E "\027"
 
-			  echo -e "\004"
+			  $ECHO_E "\004"
 			) >> $3.tmp
 		else
 			echo_error "Binary file for $bfile not present." \
