@@ -177,8 +177,8 @@ if [ -s $tmpfile.diff -o -s $tmpfile.status ]; then
 			commit=
 		fi
 
-		echo -en "\n${COLOR_MESSAGE}Is the message ok?${COLOR_NORMAL}"
-		echo -en " (${COLOR_MESSAGE}q${COLOR_NORMAL}:quit,${COLOR_MESSAGE}e${COLOR_NORMAL}:edit,${COLOR_MESSAGE}d${COLOR_NORMAL}:diff,${COLOR_MESSAGE}s${COLOR_NORMAL}:status$commit)${COLOR_MESSAGE}:${COLOR_NORMAL} "
+		$ECHO_E -n "\n${COLOR_MESSAGE}Is the message ok?${COLOR_NORMAL}"
+		$ECHO_E -n " (${COLOR_MESSAGE}q${COLOR_NORMAL}:quit,${COLOR_MESSAGE}e${COLOR_NORMAL}:edit,${COLOR_MESSAGE}d${COLOR_NORMAL}:diff,${COLOR_MESSAGE}s${COLOR_NORMAL}:status$commit)${COLOR_MESSAGE}:${COLOR_NORMAL} "
 		read opt
 
 		case "$opt" in
