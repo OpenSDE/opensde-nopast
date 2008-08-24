@@ -24,7 +24,7 @@ if [ -z "${lines:=$LINES}" -o -z "${columns:=$COLUMNS}" ] ; then
 	[ -z "$columns" -o "$columns" -le 0 ] 2> /dev/null && columns=80
 fi
 
-eval "$( egrep '^sdever=' lib/libsde.in )"
+. "lib/libsde.in"
 
 config=default
 do_config_cycle=0
@@ -169,7 +169,7 @@ bprof main start
 
 rm -f $cfgtmpdir/config.{dialog,data,help}
 touch $cfgtmpdir/config.{dialog,data,help}
-echo -e "#\n# OpenSDE ($sdever) Config File\n#" > $cfgtmpdir/config/config
+$ECHO_E "#\n# OpenSDE ($sdever) Config File\n#" > $cfgtmpdir/config/config
 spacer= ; expert=0 ; tabspace="5" ; tabspace_list=
 commentnr=0 ; editfilenr=0
 
@@ -218,14 +218,14 @@ bprof main start
 case "$returncode" in
 	0|6)
 		command="`grep "^$item	" $cfgtmpdir/config.data | cut -f2-`"
-		{ echo -e "\n# Remember menu position:\ncurrent='$item'"
-		echo -e "\n# Remember sub-menu:\nmenu_current='$menu_current'"
-		echo -e "\n# Execute this config command:\n$command"
+		{ $ECHO_E "\n# Remember menu position:\ncurrent='$item'"
+		$ECHO_E "\n# Remember sub-menu:\nmenu_current='$menu_current'"
+		$ECHO_E "\n# Execute this config command:\n$command"
 		} >> $cfgtmpdir/config/config
 		;;
 	menu-back)
-		{ echo -e "\n# New menu position:\ncurrent='$menu_backpos'"
-		echo -e "\n# New sub-menu:\nmenu_current='$menu_back'"
+		{ $ECHO_E "\n# New menu position:\ncurrent='$menu_backpos'"
+		$ECHO_E "\n# New sub-menu:\nmenu_current='$menu_back'"
 		} >> $cfgtmpdir/config/config
 		;;
 	1|255)
@@ -257,8 +257,8 @@ case "$returncode" in
 	2)
 		tempitem=$item
 		item=$(echo $item | cut -f1 -d' ')  # dialog(1) bug?
-		{ echo -e "\n# Remember menu position:\ncurrent='$item'"
-		echo -e "\n# Remember sub-menu:\nmenu_current='$menu_current'"
+		{ $ECHO_E "\n# Remember menu position:\ncurrent='$item'"
+		$ECHO_E "\n# Remember sub-menu:\nmenu_current='$menu_current'"
 		} >> $cfgtmpdir/config/config
 
 		get_help $item > $cfgtmpdir/config.dialog

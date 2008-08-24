@@ -288,7 +288,7 @@ choice() {
 	set_data "$1" "${defval:-$3}"
 
 	if [ "$menumode" -eq 1 -a $menu_current = $menu_this ] ; then
-		{ echo -en "$item\tchoice_action '$1' '$data'" ; shift ; shift
+		{ $ECHO_E -n "$item\tchoice_action '$1' '$data'" ; shift ; shift
 		for x ; do echo -n " '$x'" ; done ; echo ; } >> $cfgtmpdir/config.data
 	fi
 
@@ -334,7 +334,7 @@ text() {
 	set_data "$2" "$3"
 
 	if [ "$menumode" -eq 1 -a $menu_current = $menu_this ] ; then
-		echo -e "$2\ttext_action '$1' '$2'" \
+		$ECHO_E "$2\ttext_action '$1' '$2'" \
 				"'${data//$q/$q\\$q$q}'" >> $cfgtmpdir/config.data
 	fi
 
@@ -367,7 +367,7 @@ bool() {
 	set_data "$2" "$3"
 
 	if [ "$menumode" -eq 1 -a $menu_current = $menu_this ] ; then
-		echo -e "$2\tbool_action '$1' '$2' '$data'" >> $cfgtmpdir/config.data
+		$ECHO_E "$2\tbool_action '$1' '$2' '$data'" >> $cfgtmpdir/config.data
 	fi
 
 	if [ "$menumode" -gt 0 -a $menu_current = $menu_this ] ; then
@@ -406,7 +406,7 @@ editfile() {
 			printf "$1:${editfilenr} '$spacer%-${tabspace}s %s'\n" \
 			    `printf "%03d:" $line_nr` "$line" >> $cfgtmpdir/config.dialog
 
-			echo -e "$1:${editfilenr}\teditfile_action $2" \
+			$ECHO_E "$1:${editfilenr}\teditfile_action $2" \
 				"$line_nr '$3'" >> $cfgtmpdir/config.data
 		fi
 
@@ -418,7 +418,7 @@ editfile() {
 		printf "$1:${editfilenr} '$spacer%-${tabspace}s %s'\n" \
 		       `printf "%03d:" $line_nr` "<add new rule>" >> $cfgtmpdir/config.dialog
 
-		echo -e "$1:${editfilenr}\teditfile_action $2" \
+		$ECHO_E "$1:${editfilenr}\teditfile_action $2" \
 			"$line_nr '$3'" >> $cfgtmpdir/config.data
 	fi
 
@@ -454,7 +454,7 @@ startprog() {
 	   [ $menu_current = $menu_this ] ; then
 		printf "$1 '$spacer%-${tabspace}s %s'\n" \
 		       "-->" "$2" >> $cfgtmpdir/config.dialog
-		echo -e "$1\t$3" >> $cfgtmpdir/config.data
+		$ECHO_E "$1\t$3" >> $cfgtmpdir/config.data
 	fi
 	bprof startprog stop
 }
@@ -495,12 +495,12 @@ menu_begin() {
 	   [ $menu_current = $menu_this ] ; then
 		printf "$1 '$spacer%-${tabspace}s %s'\n" \
 			"===>" "$2" >> $cfgtmpdir/config.dialog
-		echo -e "$1\tmenu_current=$menu_counter" >> $cfgtmpdir/config.data
+		$ECHO_E "$1\tmenu_current=$menu_counter" >> $cfgtmpdir/config.data
 	fi
 	if [ $SDECFG_EXPERT -eq 1 -o $expert -eq 0 ] &&
 	   [ $menu_current = $menu_counter ] ; then
 		echo "$1 '===> $2'" >> $cfgtmpdir/config.dialog
-		echo -e "$1\tmenu_current=$menu_this" >> $cfgtmpdir/config.data
+		$ECHO_E "$1\tmenu_current=$menu_this" >> $cfgtmpdir/config.data
 	fi
 
 	if [ $menu_current = $menu_counter ] ; then
@@ -525,7 +525,7 @@ menu_end() {
 
 set_help() {
 	bprof set_help start
-	(echo -ne "$1 '$1:\n\n$2'" | sed 's,$,\\n,' |
+	($ECHO_E -n "$1 '$1:\n\n$2'" | sed 's,$,\\n,' |
 		tr -d '\n' | sed 's,\\n$,,'; echo ) >> $cfgtmpdir/config.help
 	bprof set_help stop
 }
