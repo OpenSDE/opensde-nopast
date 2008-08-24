@@ -135,12 +135,12 @@ cd "$SDEROOT/$root"
 # cache stats and diff
 if [ -d ".git" ]; then
 	# git status
-	git-diff-index -M --color --cached --stat=80,65 HEAD > $tmpfile.status
-	git-diff-index -M --color --cached -p HEAD | sed -e "s,^\(.\[1m\|\)\(---\|\+\+\+\) [ab]/,\1\2 $root/," > $tmpfile.diff
+	git diff-index -M --color --cached --stat=80,65 HEAD > $tmpfile.status
+	git diff-index -M --color --cached -p HEAD | sed -e "s,^\(.\[1m\|\)\(---\|\+\+\+\) [ab]/,\1\2 $root/," > $tmpfile.diff
 
 	if [ -z "$logfile" ]; then
 		logfile=$tmpfile.log
-		git-diff-index -M --cached -p HEAD | sed -e "s,^\(---\|\+\+\+\) [ab]/,\1 $root/," |
+		git diff-index -M --cached -p HEAD | sed -e "s,^\(---\|\+\+\+\) [ab]/,\1 $root/," |
 			gawk -f $SDEROOT/lib/sde-commit/commit-message.awk > $logfile
 	fi
 elif [ -d ".svn" ]; then
