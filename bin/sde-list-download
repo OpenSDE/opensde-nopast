@@ -101,6 +101,6 @@ $SDEROOT/bin/sde-list-pkg ${config:+-c $config} ${extenders:+-e} ${repositories:
 			output="$output\t$source"
 		fi
 
-		echo -e "$output"
+		$ECHO_E "$output"
 	done
 done
