@@ -132,8 +132,12 @@ for x in build/* ; do
 	fi
     fi
 done
-[ $fullhelp -eq 1 ] &&
-	echo -e "\nUse '$0 -build' to remove builds and '$0 -cache'
-to also flush the cache."
+if [ $fullhelp -eq 1 ]; then
+	cat <<-EOT
+
+	Use '$0 -build' to remove builds
+	and '$0 -cache' to also flush the cache.
+	EOT
+fi
 
 [ "$nocheck" = 1 ] || exec $SDEROOT/bin/sde-cleanup-linger
