@@ -38,8 +38,6 @@ fi
 # load new arguments list
 eval set -- "$options"
 
-GITSERVER="git://git.opensde.net"
-
 while [ $# -gt 0 ]; do
 	case "$1" in
 		--help)
@@ -136,13 +134,16 @@ update_svn()
 
 # hunt for the roots of the sub-working trees
 #
+baseurl=$( git config remote.origin.url | sed -e 's|/[^/]*$||' )
+[ -n "$baseurl" ] || baseurl="git://git.opensde.net/opensde"
+
+echo ".: $baseurl"
 for x in . package $( ls -1d package/* target/* 2> /dev/null ); do
 	if [ ! -d "$x" ]; then
 		case "$x" in
 			package)
 				echo "$tree/$x:"
-				( git clone --quiet \
-					"$GITSERVER/opensde/$x-nopast.git" "$x" 2>&1 &&
+				( git clone "$baseurl/$x-nopast.git" "$x" 2>&1 &&
 					echo "$x: cloned successfully"
 				) | indent_output
 				;;
