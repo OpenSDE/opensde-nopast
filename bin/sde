@@ -23,7 +23,7 @@ echo_info() {
 
 echo_abort() {
 	local errno="$1"; shift
-	echo -e "!> ERROR: $@" >&2
+	echo "!> ERROR: $@" >&2
 	exit "$errno"
 }
 
