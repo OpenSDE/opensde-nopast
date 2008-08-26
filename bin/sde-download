@@ -321,7 +321,7 @@ download_file() {
 		# Alternative Directory
 		#
 		if [ "$altdir" ] ; then
-		    altfile=$(find $altdir/ -name `basename $bzfile` | head -n 1)
+		    altfile=$(find -L "$altdir/" -name `basename $bzfile` | head -n 1)
 		else
 		    altfile=
 		fi
