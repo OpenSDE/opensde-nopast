@@ -668,48 +668,6 @@ pkgchksum() {
   )
 }
 
-# Create Package Database for gasgui install tool
-#
-create_package_db() {
-	rm -f $3.tmp
-	for file in $( echo $1/descs/* ) ; do
-		[ -f "$file" ] || continue
-		pkg="${file##*/}"
-		# only include the package if a binary file is available
-
-		if [ "$SDECFG_PKGFILE_VER" = 1 ] ; then
-			v=-$(grep '^Package Name and Version' \
-                                $1/packages/$pkg | cut -f6 -d' ')
-		else
-			v=
-		fi
-		bfile=${pkg}${v}.$SDECFG_PKGFILE_TYPE
-
-		if [ -e $2/$bfile ] ; then
-			[ "$pkg" = TRANS.TBL ] && continue
-
-			( $ECHO_E "$pkg"
-			  $ECHO_E "\027"
-
-			  cat $1/descs/$pkg | grep -v '\[COPY\]'
-			  $ECHO_E "\027"
-
-			  cat $1/dependencies/$pkg
-			  $ECHO_E "\027"
-
-			  cat $1/cksums/$pkg
-			  $ECHO_E "\027"
-
-			  $ECHO_E "\004"
-			) >> $3.tmp
-		else
-			echo_error "Binary file for $bfile not present." \
-			           "Skipped in package database."
-		fi
-	done
-	gzip -c $3.tmp > $3 ; rm -f $3.tmp
-}
-
 # Add files to the 'badfiles' list
 #
 register_badfiles() {
