@@ -50,10 +50,6 @@ while [ $# -gt 0 ]; do
 	shift
 done
 
-indent_output() {
-	sed -e '/^$/d;' -e 's/^/  /'
-}
-
 # jump to the working tree's root
 #
 cd "$SDEROOT"
@@ -69,11 +65,10 @@ update_git()
 	local remote_branch= remote_branch_list=
 
 	if [ -z "$remote_list" ]; then
-		echo "$prefix: no remotes set"
+		echo_warning "$prefix: no remotes set"
 		return 0
 	elif [ -n "$remote" -a -z "$( echo "$remote_list" | grep "^$remote\$" )" ]; then
-		echo "$prefix: what?! '$remote' is gone!"
-		return 1
+		echo_abort 1 "$prefix: what?! '$remote' is gone!"
 	elif [ -z "$remote" ]; then
 		# uhm, get a good remote
 		if [ "$( echo "$remote_list" | grep "^origin$" )" ]; then
@@ -86,8 +81,7 @@ update_git()
 		remote_branch_list=$( git branch -r | sed -n -e "s|^  $remote/||p" | grep -v '^HEAD$' )
 
 		if [ -z "$remote_branch_list" ]; then
-			echo "$prefix: no remote set, and couldn't guess one".
-			return 1
+			echo_abort 1 "$prefix: no remote set, and couldn't guess one".
 		elif [ "$( echo "$remote_branch_list" | grep "^$branch$" )" ]; then
 			remote_branch="$branch"
 		elif [ "$( echo "$remote_branch_list" | grep "^master$" )" ]; then
@@ -96,14 +90,14 @@ update_git()
 			remote_branch="$( echo "$remote_branch_list" | head -n 1 )"
 		fi
 			
-		echo "$prefix: no remote set, assuming $remote/$remote_branch."
+		echo_warning "$prefix: no remote set, assuming $remote/$remote_branch."
 		git config branch.$branch.remote "$remote"
 		git config branch.$branch.merge "refs/heads/$remote_branch"
 	else
-		echo "$prefix:"
+		echo_info "$prefix:"
 	fi	
 
-	( git reset && git pull --rebase ) 2>&1 | indent_output
+	git reset && git pull --rebase
 }
 
 update_svn_nested()
@@ -123,8 +117,8 @@ update_svn()
 {
 	local prefix="$1" x=
 
-	echo "$prefix:"
-	svn up --ignore-externals 2>&1 | indent_output
+	echo_info "$prefix:"
+	echo svn up --ignore-externals
 
 	# nested svn
 	for x in $( update_svn_nested ); do
@@ -138,21 +132,31 @@ baseurl=$( git config remote.origin.url | sed -e 's|/[^/]*$||' )
 [ -n "$baseurl" ] || baseurl="git://git.opensde.net/opensde"
 
 for x in . package $( ls -1d package/* target/* 2> /dev/null ); do
+	if [ "$x" = "." ]; then
+		prefix="$tree"
+	else
+		prefix="$tree/$x"
+	fi
+
 	if [ ! -d "$x" ]; then
 		case "$x" in
 			package)
-				echo "$tree/$x:"
-				( git clone "$baseurl/$x-nopast.git" "$x" 2>&1 &&
-					echo "$x: cloned successfully"
-				) | indent_output
+				echo_info "$prefix:"
+				git clone "$baseurl/$x-nopast.git" "$x"
+				errno=$?
+				if [ $errno -eq 0 ]; then
+					echo_info "$prefix: cloned successfully"
+				else
+					echo_warning "$prefix: cloning failed ($errno)"
+				fi
 				;;
 			*)
-				echo "$tree/$x: missing" >&2
+				echo_warning "$prefix: missing"
 				;;
 		esac
 	elif [ -d "$x/.git" ]; then
-		( cd "$x"; update_git "$tree/$x" )
+		( cd "$x" && update_git "$prefix" )
 	elif [ -d "$x/.svn" ]; then
-		( cd "$x"; update_svn "$tree/$x" )
+		( cd "$x" && update_svn "$prefix" )
 	fi
 done
