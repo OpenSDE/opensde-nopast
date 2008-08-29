@@ -118,7 +118,7 @@ update_svn()
 	local prefix="$1" x=
 
 	echo_info "$prefix:"
-	echo svn up --ignore-externals
+	svn up --ignore-externals
 
 	# nested svn
 	for x in $( update_svn_nested ); do
