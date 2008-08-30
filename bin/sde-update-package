@@ -113,8 +113,7 @@ update_package() {
 }
 
 update_package_md5() {
-	local md5="$1" baseurl=
-	local nolocation= location=
+	local md5="$1" nolocation=
 	shift
 
 	echo_info "Loading MD5 file from '$md5'"
@@ -123,11 +122,9 @@ update_package_md5() {
 		echo_info "(Using individual download locations)"
 	fi
 
-	baseurl="${md5%/*}"
 	$SDEROOT/bin/sde-parse-md5 "$md5" | while read pkg ver file; do
 		if [ -z "$nolocation" ]; then
-			location="$baseurl/$file";
-			update_package "$pkg" "$ver" "${location%/*}/"
+			update_package "$pkg" "$ver" "${file%/*}/"
 		else
 			update_package "$pkg" "$ver"
 		fi
@@ -136,7 +133,7 @@ update_package_md5() {
 
 if [ -n "$md5file" ]; then
 	update_package_md5 "$md5file" ${nolocation:+--no-location}
-	return $?
+	exit $?
 elif [ $# -eq 2 ]; then
 	# package and version
 	pkg="$( echo "$1" | tr A-Z a-z)"
