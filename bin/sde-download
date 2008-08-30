@@ -335,30 +335,23 @@ download_file() {
 
 		# Alternative Directory
 		#
-		if [ "$altdir" ] ; then
+		if [ -d "$altdir" ] ; then
 		    altfile=$(find -L "$altdir/" -name `basename $bzfile` | head -n 1)
 		else
 		    altfile=
 		fi
 
-		#FIXME: compatibility, can be removed sooner or later...
-		# Check old download dir layout
-		if [ -z "$altfile" ]; then
-			if [ -f "download/$repo${pkg:+/}$pkg/`basename $bzfile`" ]; then
-				altfile="download/$repo${pkg:+/}$pkg/`basename $bzfile`"
-			fi
-		fi
-
-		if [ "$altfile" ] ; then
+		if [ -s "$altfile" ] ; then
 
 			echo "Found `basename $bzfile` as $altfile."
-			if [ "$altcopy" = 'link' ]; then
-				cp -lv $altfile $bzfile
-			elif [ "$altcopy" = 'copy' ]; then
-				cp -v $altfile $bzfile
-			elif [ "$altcopy" = 'move' ]; then
-				mv -v $altfile $bzfile
-			fi
+			case "$altcopy" in
+			copy)
+				cp -v "$altfile" "$bzfile" ;;
+			move)
+				mv -v "$altfile" "$bzfile" ;;
+			*) #link
+				cp -lv "$altfile" "$bzfile" ;;
+			esac
 			gzfile="$bzfile"
 
 		else
