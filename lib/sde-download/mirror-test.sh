@@ -54,7 +54,7 @@ while read name country admin url ; do
 	if [ "${speed:-0}" = "0" ]; then
 		echo ' failed' 1>&2
 	else
-		if [ $speed -lt 4096 ]; then
+		if [ $speed -lt 1024 ]; then
 			speedf="$speed B/s"
 		elif [ $speed -lt 1048576 ]; then
 			speedf="$(div_dot2f $speed 1024) KB/s"
