@@ -60,7 +60,7 @@ mkdir -p tmp/ download/
 
 # Load system wide configuration for this tool
 #
-config=default mirror= altdir= proxy= proxyauth=
+config=default mirror= mirror_last= altdir= proxy= proxyauth=
 
 if [ -s "$SDESETTINGS" ]; then
 	eval $( $SDEROOT/bin/sde-config-ini -F "$SDESETTINGS" download )
@@ -109,10 +109,14 @@ while [ $# -gt 0 ]; do
 			exit 1;
 		elif [ "$2" = auto ]; then
 			mirror=
+			mirror_last=
 		else
 			options="$options -mirror $2"
 			mirror="$2"
-			$SDEROOT/bin/sde-config-ini -F "$SDESETTINGS" "download-$sdever.mirror=$mirror"
+			mirror_last=$(date +%s)
+			$SDEROOT/bin/sde-config-ini -F "$SDESETTINGS" \
+				"download-$sdever.mirror=$mirror" \
+				"download-$sdever.mirror_last=$mirror_last"
 		fi
 		shift ;;
 
@@ -181,14 +185,24 @@ curl_options="$curl_options -k"
 # Autodetect best Mirror and safe url in $mirror
 #
 detect_mirror() {
+	local age=
+
 	if [ "$mirror" = "none" ] ; then
 		echo_info "Using original download locations only."
 		return
 	elif [ "$mirror" = "broken" ]; then
 		echo_warning "Previous detection of the mirror failed, trying again."
 	elif [ -n "$mirror" ]; then
-		echo_info "Using mirror <$mirror>."
-		return
+		age=$(expr `date +%s` - ${mirror_last:-0})
+		age=$(expr $age / 3600)
+		if [ $age -gt 24 ]; then
+			echo_warning "Mirror choice <$mirror> is old, checking again."
+			mirror=
+			mirror_last=
+		else
+			echo_info "Using mirror <$mirror>."
+			return
+		fi
 	fi
 
 	echo_warning "Auto-detecting best mirror ..."
