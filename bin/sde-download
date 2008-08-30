@@ -363,15 +363,14 @@ download_file() {
 
 			if ! download_file_now "!$mirror/${bzfile#download/mirror/}" $bzfile $bzfile; then
 				echo "INFO: download from mirror failed, trying original URL."
-				download_file_now "$location" $gzfile $bzfile \
-					|| downloaderror=1
-
+				download_file_now "$location" $gzfile $bzfile ||
+					downloaderror=1
 			else
 				gzfile="$bzfile"
 			fi
 		    else
 			# don't want to use mirror
-			download_file_now "$location" $gzfile $bzfile \
+			download_file_now "$location" $gzfile $bzfile ||
 				downloaderror=1
 		    fi
 		fi
