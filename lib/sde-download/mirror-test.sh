@@ -19,6 +19,8 @@ maxspeed=0 mirror=
 
 . $SDEROOT/lib/libsde.in
 
+DC="$( type -p dc )"
+
 OLDIFS="$IFS" IFS=":"
 while read name country admin url ; do
 	# translate $country
@@ -42,7 +44,14 @@ while read name country admin url ; do
 	if [ "${speed:-0}" = "0" ]; then
 		echo ' failed' 1>&2
 	else
-		echo " $speed B/s" 1>&2
+		if [ -z "$DC" -o $speed -lt 4096 ]; then
+			echo " $speed B/s" 1>&2
+		elif [ $speed -lt 1048576 ]; then
+			echo " $($DC -e "2k $speed 1024 / p" ) KB/s" 1>&2
+		else
+			echo " $($DC -e "2k $speed 1048576 / p" ) MB/s" 1>&2
+		fi
+
 		# and make a choice
 		if [ "$speed" -gt "$maxspeed" ]; then
 			maxspeed="$speed"; mirror="$url"
