@@ -144,8 +144,9 @@ while [ $# -gt 0 ]; do
 	    -alt-dir)
 		# check for an alternative directory where to search for
 		# package source tarballs
-		altdir=$( cd $2; pwd -P )
-		options="$options -alt-dir $2"
+		altdir=$( cd "$2" && pwd -P )
+		$SDEROOT/bin/sde-config-ini -F "$SDESETTINGS" \
+			"download.altdir=$altdir"
 		shift ;;
 
 	    -try-questionable)
