@@ -73,4 +73,7 @@ IFS="$OLDIFS"
 
 [ -n "$mirror" ] || mirror=broken
 
-$SDEROOT/bin/sde-config-ini -F "$SDESETTINGS" "download-$sdever.mirror=$mirror"
+$SDEROOT/bin/sde-config-ini -F "$SDESETTINGS" \
+	"download-$sdever.mirror=$mirror" \
+	"download-$sdever.mirror_last=$(date +%s)"
+
