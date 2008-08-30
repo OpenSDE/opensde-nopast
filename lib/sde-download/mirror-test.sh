@@ -19,7 +19,17 @@ maxspeed=0 mirror=
 
 . $SDEROOT/lib/libsde.in
 
-DC="$( type -p dc )"
+DC="$(type -p dc)"
+
+div_dot2f()
+{
+	if [ -n "$DC" ]; then
+		$DC -e "2k $1 $2 / p"
+	else
+		expr $(expr $1 \* 100) / $2 |
+			sed -e 's/\(..\)$/\.\1/'
+	fi
+}
 
 OLDIFS="$IFS" IFS=":"
 while read name country admin url ; do
@@ -44,13 +54,14 @@ while read name country admin url ; do
 	if [ "${speed:-0}" = "0" ]; then
 		echo ' failed' 1>&2
 	else
-		if [ -z "$DC" -o $speed -lt 4096 ]; then
-			echo " $speed B/s" 1>&2
+		if [ $speed -lt 4096 ]; then
+			speedf="$speed B/s"
 		elif [ $speed -lt 1048576 ]; then
-			echo " $($DC -e "2k $speed 1024 / p" ) KB/s" 1>&2
+			speedf="$(div_dot2f $speed 1024) KB/s"
 		else
-			echo " $($DC -e "2k $speed 1048576 / p" ) MB/s" 1>&2
+			speedf="$(div_dot2f $speed 1048576) MB/s"
 		fi
+		echo " $speedf" 1>&2
 
 		# and make a choice
 		if [ "$speed" -gt "$maxspeed" ]; then
