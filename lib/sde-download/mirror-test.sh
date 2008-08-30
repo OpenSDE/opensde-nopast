@@ -35,7 +35,7 @@ OLDIFS="$IFS" IFS=":"
 while read name country admin url ; do
 	# translate $country
 	case "$country" in
-		cl)	country="Chile"	;;
+		cl)	country="Chile"		;;
 		cr)	country="Costa Rica"	;;
 		de)	country="Germany"	;;
 		my)	country="Malaysia"	;;
@@ -73,7 +73,6 @@ IFS="$OLDIFS"
 
 [ -n "$mirror" ] || mirror=broken
 
-$SDEROOT/bin/sde-config-ini -F "$SDESETTINGS" \
+exec "$SDEROOT/bin/sde-config-ini" -F "$SDESETTINGS" \
 	"download-$sdever.mirror=$mirror" \
 	"download-$sdever.mirror_last=$(date +%s)"
-
