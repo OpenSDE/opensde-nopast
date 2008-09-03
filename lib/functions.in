@@ -463,7 +463,7 @@ create_config_cache() {
 # (is overwritten in Build-Pkg)
 #
 abort() {
-	$ECHO_E "The package build aborted with the following config" \
+	${ECHO_E:-echo -e} "The package build aborted with the following config" \
 	     "error:\n$*" > $root/var/adm/logs/$stagelevel-$xpkg.err
 	echo_errorquote "`cat $root/var/adm/logs/$stagelevel-$xpkg.err`"
 	echo_pkg_abort $stagelevel $repository $xpkg
