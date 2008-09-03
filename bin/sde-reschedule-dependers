@@ -31,10 +31,12 @@ Supported Options:
 
 	--dry-run|-n	don't really reschedule
 	--soft|-s	don't remove the packages when rescheduling
+
+	-t		use theoric dependers (from .cache at \$confdir)
 EOT
 }
 
-shortopts='c:Ans'
+shortopts='c:Asnt'
 longopts='help,cfg:,any,soft,dry-run'
 options=$( getopt -o "$shortopts" -l "$longopts" -- "$@" )
 if [ $? -ne 0 ]; then
@@ -48,6 +50,7 @@ eval set -- "$options"
 reschedule_any=
 reschedule_soft=
 reschedule_dry=
+reschedule_theoric=
 
 reschedule_configs=
 
@@ -60,6 +63,8 @@ while [ $# -gt 0 ]; do
 		--any|-A)	reschedule_any=yes ;;
 		--soft|-s)	reschedule_soft=yes ;;
 		--dry-run|-n)	reschedule_dry=yes ;;
+
+		-t)		reschedule_theoric=yes ;;
 
 		--cfg|-c)	reschedule_configs="$reschedule_configs $2"
 				shift ;;
@@ -91,7 +96,7 @@ reschedule_dependers()
 	sandbox="$SDEROOT/build/$( config_id "$config" )"
 	pattern="^\[DEP\].* $pattern\( .*\)\?$"
 
-	if config_iscross "$config"; then
+	if config_iscross "$config" || [ "$reschedule_theoric" = "yes" ]; then
 		ls -1 "$sandbox/var/adm/packages"/* 2> /dev/null | sed -e 's|.*/||' |
 		while read x; do
 			y=$( package_confdir "$x" )
