@@ -86,13 +86,17 @@ done
 reschedule_package()
 {
 	local config="$1" pkg= sandbox=
+	local logs= log=
 	shift
 
 	[ $# -gt 0 ] || return
 
 	sandbox="$SDEROOT/build/$( config_id "$config" )"
 	for pkg; do
-		[ -s "$sandbox/var/adm/packages/$pkg" ] || continue
+		logs=$(ls -1 "$sandbox/var/adm/logs"/?-$pkg.{err,out,log} \
+			2> /dev/null)
+
+		[ -n "$logs" ] || continue
 
 		echo "$config: Removing $pkg..."
 
@@ -100,7 +104,11 @@ reschedule_package()
 			if [ "$reschedule_soft" != "yes" ]; then
 				mine -rf -R "$sandbox" "$pkg"
 			fi
-			rm -f "$sandbox/var/adm/logs"/?-$pkg.* 2> /dev/null
+
+			# in the case $SDEROOT includes spaces
+			echo "$logs" | while read log; do
+				rm -f "$log"
+			done
 		fi
 	done
 }
