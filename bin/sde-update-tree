@@ -132,7 +132,9 @@ baseurl=$( git config remote.origin.url | sed -e 's|/[^/]*$||' )
 [ -n "$baseurl" ] || baseurl="git://git.opensde.net/opensde"
 
 for x in . package $( ls -1d package/* target/* 2> /dev/null ); do
-	if [ "$x" = "." ]; then
+	if [ ! -d "$x/" ]; then
+		continue
+	elif [ "$x" = "." ]; then
 		prefix="$tree"
 	else
 		prefix="$tree/$x"
