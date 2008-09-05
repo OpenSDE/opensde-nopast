@@ -4,6 +4,7 @@ X sysfiles
 
 X linux-header
 X dietlibc
+X termcap
 
 X automake
 X autoconf
