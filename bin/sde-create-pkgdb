@@ -22,7 +22,7 @@
 . "$SDEROOT/lib/sde-config.in"
 
 create_usage() {
-	local progname=${0##*/} hive=
+	local progname=${0##*/}
 
 	echo "Usage:	${progname//-/ } -c <config>"
 }
