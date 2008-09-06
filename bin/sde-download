@@ -452,9 +452,12 @@ download_file_now() {
 		    resume=
 		fi
 
-		[ -s download/translations.sed ] &&
-			trfile=download/translations.sh ||
+		if [ -s download/translations.sed ]; then
+			trfile=download/translations.sed
+		else
 			trfile=etc/download.sed
+		fi
+
 		trurl="$( echo "$url" | sed -f $trfile )"
 		if [ -n "$trurl" -a "$trurl" != "$url" ]; then
 			echo "INFO: url translated."
