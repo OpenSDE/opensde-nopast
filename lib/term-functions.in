@@ -54,6 +54,8 @@ echo_info() {
 				$ECHO_E "${COLOR_INFO}->${COLOR_NORMAL} $text"
 			done >&2
 		fi
+	elif [ $# -eq 0 ]; then
+		cat > /dev/null
 	fi
 	}
 
