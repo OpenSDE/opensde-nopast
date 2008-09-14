@@ -346,11 +346,11 @@ download_file() {
 			echo "Found `basename $bzfile` as $altfile."
 			case "$altcopy" in
 			copy)
-				cp -v "$altfile" "$bzfile" ;;
+				cp "$altfile" "$bzfile" ;;
 			move)
-				mv -v "$altfile" "$bzfile" ;;
+				mv "$altfile" "$bzfile" ;;
 			*) #link
-				cp -lv "$altfile" "$bzfile" ;;
+				cp -l "$altfile" "$bzfile" ;;
 			esac
 			gzfile="$bzfile"
 
