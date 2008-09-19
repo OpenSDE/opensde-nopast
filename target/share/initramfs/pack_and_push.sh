@@ -73,21 +73,26 @@ KERVER=$(cd "$BUILD/boot" && ls -1 vmlinuz_* | tail -n1 | cut -d_ -f2-)
 [ -n "$KERVER" ] || die "$config_build: no kernel found."
 [ -s "$INITRD" ] || die "$config_early: no initrd template found."
 
-cat <<EOT
-packing: $config_build + $config_early
-EOT
-if "$BUILD/usr/sbin/mkinitramfs" -R "$BUILD" -T "$INITRD" "$KERVER"; then
+echo "packing: $config_build + $config_early"
 
-	vmlinuz="$BUILD/boot/vmlinuz_$KERVER"
-	initrd="$BUILD/boot/initrd-$KERVER.img"
+vmlinuz="$BUILD/boot/vmlinuz_$KERVER"
+initrd="$BUILD/boot/initrd-$KERVER.img"
 
-	[ -s "$vmlinuz" ] || die "\${root}/boot/vmlinuz_$KERVER: not found."
-	[ -s "$initrd" ] || die "\${root}/boot/initrd-$KERVER.img: not found."
+errno=0
+if [ "$vmlinuz" -nt "$initrd" -o "$INITRD" -nt "$initrd" ]; then
+	"$BUILD/usr/sbin/mkinitramfs" -R "$BUILD" -T "$INITRD" "$KERVER"
+	errno=$?
+fi
 
-	if [ -n "$TARGETDIR" ]; then
-		echo "pushing: $TARGETDIR/vmlinuz${SUFFIX:+-$SUFFIX}"
-		rsync -ztqP "$vmlinuz" "$TARGETDIR/vmlinuz${SUFFIX:+-$SUFFIX}"
-		echo "pushing: $TARGETDIR/initrd${SUFFIX:+-$SUFFIX}.img"
-		rsync -ztqP "$initrd"  "$TARGETDIR/initrd${SUFFIX:+-$SUFFIX}.img"
-	fi
+[ $errno -eq 0 ] || exit $errno
+
+[ -s "$vmlinuz" ] || die "\${root}/boot/vmlinuz_$KERVER: not found."
+[ -s "$initrd" ] || die "\${root}/boot/initrd-$KERVER.img: not found."
+
+if [ -n "$TARGETDIR" ]; then
+	echo "pushing: $TARGETDIR/vmlinuz${SUFFIX:+-$SUFFIX}"
+	rsync -ztqP "$vmlinuz" "$TARGETDIR/vmlinuz${SUFFIX:+-$SUFFIX}"
+
+	echo "pushing: $TARGETDIR/initrd${SUFFIX:+-$SUFFIX}.img"
+	rsync -ztqP "$initrd"  "$TARGETDIR/initrd${SUFFIX:+-$SUFFIX}.img"
 fi
