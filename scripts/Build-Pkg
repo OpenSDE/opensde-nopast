@@ -660,10 +660,6 @@ abort() {
 	sed -i -e 's,//*,/,g' $builddir/fl_wrapper.wlog
 	sed -i -e 's,//*,/,g' $builddir/fl_wrapper.rlog
 
-	# tolerate actions over /dev/null
-	# TODO: may we add /dev to the list of valid top levels? -mnemoc
-	sed -i -e '/\t\/dev\/null$/d;' $builddir/fl_wrapper.wlog
-
 	if [ "$SDECFG_FLIST" = "flwrapper" -o \
 	     "$SDECFG_FLIST" = "strace" ] ; then
 		if [ "$toolsdir" = "tools.cross" ]; then
