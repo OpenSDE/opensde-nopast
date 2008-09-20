@@ -41,6 +41,7 @@ overlay_apply() {
 	local overlaydir="$1" rootfs="${2:-$root}"
 	local file= source= target= ext=
 	local type= mode= ref= targetdir=
+	local patchopt="-p1 --no-backup-if-mismatch -N"
 
 	for file in "$overlaydir"/*; do
 		# only consider known overlay types
@@ -72,7 +73,8 @@ overlay_apply() {
 				ln -snf "$ref" "$rootfs/$target"
 				;;
 			patch)
-				echo_status "$(patch -p1 -d "${rootfs}" 2>&1 < $file )"
+				echo_status "$(patch $patchopt \
+					-d "${rootfs}" 2>&1 < $file )"
 				;;
 		esac
 	done
