@@ -14,6 +14,7 @@
 # --- SDE-COPYRIGHT-NOTE-END ---
 
 #Description: Reschedule packages from the builds
+#Alias: pkg
 
 [ -n "$SDEROOT" ] ||
 	export SDEROOT=$( cd "${0%/*}/.."; pwd -P )
@@ -35,11 +36,12 @@ Supported Options:
 
 	--dry-run|-n	don't really reschedule
 	--soft|-s	don't remove the packages when rescheduling
+	--force|-f	try to remove them even if we can't validate the package
 EOT
 }
 
-shortopts='aNDc:Ans'
-longopts='help,all,new,deps,cfg:,any,soft,dry-run'
+shortopts='aNDc:Ansf'
+longopts='help,all,new,deps,cfg:,any,soft,dry-run,force'
 options=$( getopt -o "$shortopts" -l "$longopts" -- "$@" )
 if [ $? -ne 0 ]; then
 	reschedule_usage
@@ -55,6 +57,7 @@ reschedule_dependers=
 reschedule_any=
 reschedule_soft=
 reschedule_dry=
+reschedule_force=
 
 reschedule_configs=
 
@@ -70,6 +73,7 @@ while [ $# -gt 0 ]; do
 		--any|-A)	reschedule_any=yes ;;
 		--soft|-s)	reschedule_soft=yes ;;
 		--dry-run|-n)	reschedule_dry=yes ;;
+		--force|-f)	reschedule_force=yes ;;
 
 		--cfg|-c)	reschedule_configs="$reschedule_configs $2"
 				shift ;;
@@ -169,6 +173,10 @@ fi
 reschedule_packages=
 for x; do
 	if package_exists "$x"; then
+		# in db
+		reschedule_packages="$reschedule_packages $x"
+	elif [ "$reschedule_force" = yes ]; then
+		echo_warning "$x: Unknown package, but forcing..."
 		reschedule_packages="$reschedule_packages $x"
 	else
 		echo_warning "$x: Invalid package"
