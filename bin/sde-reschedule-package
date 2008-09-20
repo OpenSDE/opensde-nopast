@@ -96,7 +96,7 @@ reschedule_package()
 		logs=$(ls -1 "$sandbox/var/adm/logs"/?-$pkg.{err,out,log} \
 			2> /dev/null)
 
-		[ -n "$logs" ] || continue
+		[ -n "$logs" -o -s "$sandbox/var/adm/packages/$pkg" ] || continue
 
 		echo "$config: Removing $pkg..."
 
