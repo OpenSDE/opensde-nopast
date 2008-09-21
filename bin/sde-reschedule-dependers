@@ -97,7 +97,7 @@ reschedule_dependers()
 	pattern="^\[DEP\].* $pattern\( .*\)\?$"
 
 	if config_iscross "$config" || [ "$reschedule_theoric" = "yes" ]; then
-		ls -1 "$sandbox/var/adm/packages"/* 2> /dev/null | sed -e 's|.*/||' |
+		(cd "$sandbox/var/adm/packages" && ls -1 .) |
 		while read x; do
 			y=$( package_confdir "$x" )
 			if [ -s "$y/$x.cache" ]; then
@@ -107,8 +107,7 @@ reschedule_dependers()
 			fi
 		done
 	else
-		grep -l "$pattern" "$sandbox/var/adm/cache"/* 2> /dev/null |
-			sed -e 's|.*/||'
+		(cd "$sandbox/var/adm/cache" && grep -l "$pattern" *)
 	fi
 }
 
