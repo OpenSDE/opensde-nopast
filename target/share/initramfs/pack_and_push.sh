@@ -23,6 +23,7 @@ usage() {
 	exit 1
 }
 
+rsyncopt="-ztqP"
 config_build=
 config_early=
 SUFFIX=
@@ -90,9 +91,13 @@ fi
 [ -s "$initrd" ] || die "\${root}/boot/initrd-$KERVER.img: not found."
 
 if [ -n "$TARGETDIR" ]; then
-	echo "pushing: $TARGETDIR/vmlinuz${SUFFIX:+-$SUFFIX}"
-	rsync -ztqP "$vmlinuz" "$TARGETDIR/vmlinuz${SUFFIX:+-$SUFFIX}"
+	source=$(mktemp -d -p "$BUILD/tmp/")
+	[ -d "$source" ] || die "failed to create tempdir."
 
-	echo "pushing: $TARGETDIR/initrd${SUFFIX:+-$SUFFIX}.img"
-	rsync -ztqP "$initrd"  "$TARGETDIR/initrd${SUFFIX:+-$SUFFIX}.img"
+	cp -l "$initrd" "$source/initrd${SUFFIX:+-$SUFFIX}.img"
+	cp -l "$vmlinuz" "$source/vmlinuz${SUFFIX:+-$SUFFIX}"
+
+	rsync $rsyncopt "$source"/*  "$TARGETDIR/"
+
+	rm -rf "$source"
 fi
