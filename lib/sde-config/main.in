@@ -376,8 +376,7 @@ break packages!'
 	choice SDECFG_OPT speed \
 		speed	'Hard optimise for speed (recommended)'		\
 		size	'Hard optimise for size (sometimes faster)'	\
-		lazy	'Lazy optimisation (debugging and fast building)' \
-		smart   'Smart optimisation using a profile database'
+		lazy	'Lazy optimisation (debugging and fast building)'
 
 	bool 'Create binaries with debug symbols' SDECFG_DEBUG 0
 	bool 'Create statically linked binaries' SDECFG_STATIC 0
