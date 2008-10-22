@@ -32,9 +32,9 @@ sde_wrapper_discriminator_help() {
 	for toy in $( sde_wrapper_discriminator_list "$1" ); do
 		name=$( sde_wrapper_name "$toy" )
 		desc=$( sde_wrapper_desc "$toy" )
-		aliases=$( sde_wrapper_aliases "$toy" )
+		aliases=$( sde_wrapper_aliases "$toy" | tr ' ' ',')
 
-		printf "%15s %s%s\n" "$name" "${desc:-...}" "${aliases:+ (Alias: ${aliases// /,})}"
+		printf "%15s %s%s\n" "$name" "${desc:-...}" "${aliases:+ (Alias: $aliases)}"
 	done
 	cat <<-EOT
 
