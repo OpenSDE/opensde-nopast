@@ -750,6 +750,15 @@ autoextract_tar_bz2() {
 	tar -v $taropt $1 > untar.txt
 }
 
+autoextract_subdir_tar_bz2() {
+	local taropt_orig="$taropt"
+
+	mkdir -p "$pkg-$ver"
+	taropt="-C $pkg-$ver $taropt"
+	autoextract_tar_bz2 "$@"
+	taropt="$taropt_orig"
+}
+
 autoextract_zip() {
 	echo "Extracting $xsrctar ($zipopt) ... "
 	unzip $zipopt $1 | sed 's,^.*/$,,' |
