@@ -23,10 +23,11 @@ usage() {
 	exit 1
 }
 
-rsyncopt="-ztP"
+rsyncopt="-ztvvP"
 config_build=
 config_early=
 SUFFIX=
+force=
 
 while [ $# -gt 0 ]; do
 	case "$1" in
@@ -36,6 +37,8 @@ while [ $# -gt 0 ]; do
 			config_early="$2"; shift ;;
 		-s|--suffix)
 			SUFFIX="$2"; shift ;;
+		-f|--force)
+			force=yes ;;
 		--)
 			shift; break ;;
 		-*)
@@ -80,9 +83,11 @@ vmlinuz="$BUILD/boot/vmlinuz_$KERVER"
 initrd="$BUILD/boot/initrd-$KERVER.img"
 
 errno=0
-if [ "$vmlinuz" -nt "$initrd" -o "$INITRD" -nt "$initrd" ]; then
+if [ -n "$force" -o "$vmlinuz" -nt "$initrd" -o "$INITRD" -nt "$initrd" ]; then
 	"$BUILD/usr/sbin/mkinitramfs" -R "$BUILD" -T "$INITRD" "$KERVER"
 	errno=$?
+else
+	echo "WARNING: skipping new image creation, use -f to force it."
 fi
 
 [ $errno -eq 0 ] || exit $errno
@@ -97,7 +102,14 @@ if [ -n "$TARGETDIR" ]; then
 	cp -l "$initrd" "$source/initrd${SUFFIX:+-$SUFFIX}.img"
 	cp -l "$vmlinuz" "$source/vmlinuz${SUFFIX:+-$SUFFIX}"
 
-	rsync $rsyncopt "$source"/*  "$TARGETDIR/"
+	if [ $UID -eq 0 -a -n "$SUDO_UID" ]; then
+		echo "pushing as $SUDO_USER to $TARGETDIR/"
+		chown -R "$SUDO_UID:$SUDO_GID" "$source/"
+		su $SUDO_USER -c "rsync $rsyncopt '$source'/*  '$TARGETDIR/'"
+	else
+		echo "pushing to $TARGETDIR/"
+		rsync $rsyncopt "$source"/*  "$TARGETDIR/"
+	fi
 
 	rm -rf "$source"
 fi
