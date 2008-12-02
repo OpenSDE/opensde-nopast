@@ -71,7 +71,7 @@ initramfs_install_pattern() {
 
 	case "$pkg_name" in
 	udev)
-		echo -n "-n -e '/etc\/udev\//p;' -e '/lib\/udev\/devices\//p;' -e '/lib\/udev\/.*_id$/p;' "
+		echo -n "-n -e '/etc\/udev\//p;' -e '/lib.*\/udev\/devices\//p;' -e '/lib\/udev\/.*_id$/p;' "
 		echo "-e '/sbin\/\(udevd\|udevsettle\|udevtrigger\|udevadm\)$/P'"
 		;;
 	lvm2)
