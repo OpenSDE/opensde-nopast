@@ -23,7 +23,7 @@ usage() {
 	exit 1
 }
 
-rsyncopt="-ztvvP"
+rsyncopt="-ztP --inplace"
 config_build=
 config_early=
 SUFFIX=
