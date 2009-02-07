@@ -660,8 +660,8 @@ abort() {
 	sed -i -e 's,//*,/,g' $builddir/fl_wrapper.wlog
 	sed -i -e 's,//*,/,g' $builddir/fl_wrapper.rlog
 
-	# ignore writes to /dev/null
-	sed -i -e '/\t\/dev\/null$/d;' $builddir/fl_wrapper.wlog
+	# ignore writes to /dev/(null|stderr)
+	sed -i -e '/\t\/dev\/\(null\|stderr\)$/d;' $builddir/fl_wrapper.wlog
 
 	if [ "$SDECFG_FLIST" = "flwrapper" -o \
 	     "$SDECFG_FLIST" = "strace" ] ; then
