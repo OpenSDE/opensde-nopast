@@ -22,7 +22,7 @@ qmail:21
 Gqscanq:27
 qscand:28
 exim:30
-uucp:31
+dialout:31
 lp:32
 floppy:33
 cdrom:34
