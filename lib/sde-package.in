@@ -31,9 +31,11 @@ package_confdir() {
 }
 
 package_parse() {
-	local ref= list= dir=
+	local ref= list=
 
 	for ref; do
+		# sanitise
+		ref=$(echo "$ref" | tr 'A-Z' 'a-z')
 		if [ -d "$ref" ]; then
 			list="$ref"
 		elif expr "$ref" : '.*/' > /dev/null; then
