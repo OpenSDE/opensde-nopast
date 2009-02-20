@@ -29,3 +29,25 @@ package_exists() {
 package_confdir() {
 	ls -1d "$SDEROOT/package"/*/"$1" 2> /dev/null | head -n 1
 }
+
+package_parse() {
+	local ref= list= dir=
+
+	for ref; do
+		if [ -d "$ref" ]; then
+			list="$ref"
+		elif expr "$ref" : '.*/' > /dev/null; then
+			if [ -e "$ref" ]; then
+				list="${ref%/*}"
+			else
+				list=$(eval "ls -1d '$SDEROOT/package'/$ref/")
+			fi
+		else
+			list=$(eval "ls -1d '$SDEROOT/package'/*/$ref/")
+		fi
+
+		echo "$list" | while read dir; do
+			(cd "$dir" && pwd -P)
+		done | sed -n -e "s,^$SDEROOT/package/\([^/]*\)/\([^/]*\).*,\1/\2,p"
+	done
+}
