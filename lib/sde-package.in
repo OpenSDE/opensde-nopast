@@ -53,3 +53,26 @@ package_parse() {
 		done | sed -n -e "s,^$SDEROOT/package/\([^/]*\)/\([^/]*\).*,\1/\2,p"
 	done
 }
+
+# package_desc <pkg>
+#
+package_desc() {
+	ls -1d "$SDEROOT/package"/*/"$1/$1.desc" 2> /dev/null | head -n 1
+}
+
+# package_tag <tag>
+#
+package_tag() {
+	local tag=$(echo "$1" | tr 'a-z' 'A-Z')
+
+	grep -e "^\(\[.*\)\?\[$tag\]" "$SDEROOT/etc/desc_format" |
+		sed -e 's, *(\*) *$,,' -e 's,[\t ]\+, ,g' | tr -d '[]'
+}
+
+# package_desc_extract <descfile> <tag>
+#
+package_desc_extract() {
+	local pattern=$(package_tag "$2" | sed -e '/ / {s/ \+/\\|/g;s/^/\\(/;s/$/\\)/;}')
+
+	sed -n -e "s/^\[$pattern\][ \t]*//p;" "$1"
+}
