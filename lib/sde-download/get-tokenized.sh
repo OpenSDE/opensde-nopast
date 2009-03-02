@@ -19,7 +19,7 @@
 # here)
 #
 
-curl_options="-s"
+curl_options="-s -L"
 curl_options="$curl_options --disable-epsv"
 curl_options="$curl_options -y 60 -Y 1 --connect-timeout 300"
 
