@@ -14,20 +14,62 @@
  * --- SDE-COPYRIGHT-NOTE-END ---
  */
 
-#define _GNU_SOURCE
 #include <string.h>
+#include <ctype.h>
 #include <stdio.h>
 
 #include <stdlib.h>
 
-static int cmp_version(const void *p1, const void *p2) {
-	const char **s1=(const char **)p1;
-	const char **s2=(const char **)p2;
-	
-	return strverscmp(*s1, *s2);
+typedef int cmp_t(const void *, const void *);
+
+
+static int cmp_version(const char *s0, const char *s1)
+{
+	const char *p, *q;
+	unsigned int a, b, ck0 = 1, ck1 = 1;
+
+
+	while (ck0 || ck1) {
+		a = b = 0;
+		for (p = s0; *p != 0 && !isdigit(*p); p++) ;
+		for (q = s1; *q != 0 && !isdigit(*q); q++) ;
+
+		if (ck0) {
+			for (s0 = p; isdigit(*s0); s0++) ;
+			a = atoi(p);
+		}
+		if (ck1) {
+			for (s1 = q; isdigit(*s1); s1++) ;
+			b = atoi(q);
+		}
+		ck0 = ck0 && (*s0 == '.' || *s0 == '-');
+		ck1 = ck1 && (*s1 == '.' || *s1 == '-');
+
+		if (a != b)
+			break;
+		else if (ck0 && ck1 && *s0 != *s1) {
+			a = ((*s0 == '.') << 1) | (*s0 == '-');
+			b = ((*s1 == '.') << 1) | (*s1 == '-');
+			break;
+		} else if (ck0 ^ ck1) {
+			a = ck0;
+			b = ck1;
+			break;
+		}
+		s0++;
+		s1++;
+	}
+
+	if (a > b)
+		return 1;
+	else if (a < b)
+		return -1;
+	return 0;
 }
 
-int main(int argc, char **argv) {
+
+int main(int argc, char **argv)
+{
 	register unsigned i;
 
 	if (argc == 1 || strcmp(argv[1],"-?") == 0) {
@@ -35,10 +77,12 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 
-	qsort(&argv[1], argc-1, sizeof(argv[0]), cmp_version);
+	qsort(&argv[1], argc-1, sizeof(argv[0]), (cmp_t *)cmp_version);
 
 	for (i=1; i<(unsigned)argc; i++)
 		printf("%s\n", argv[i]);
 
 	return EXIT_SUCCESS;
 }
+
+
