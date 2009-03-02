@@ -14,7 +14,7 @@
 # --- SDE-COPYRIGHT-NOTE-END ---
 
 #Description: Checks for possible updates of a list of packages
-#Alias: pkg
+#Alias: pkg ver version
 
 [ -n "$SDEROOT" ] ||
 	export SDEROOT=$( cd "${0%/*}/.."; pwd -P )
