@@ -22,12 +22,10 @@
 
 typedef int cmp_t(const void *, const void *);
 
-
 static int cmp_version(const char *s0, const char *s1)
 {
 	const char *p, *q;
 	unsigned int a, b, ck0 = 1, ck1 = 1;
-
 
 	while (ck0 || ck1) {
 		a = b = 0;
@@ -67,7 +65,6 @@ static int cmp_version(const char *s0, const char *s1)
 	return 0;
 }
 
-
 int main(int argc, char **argv)
 {
 	register unsigned i;
@@ -84,5 +81,3 @@ int main(int argc, char **argv)
 
 	return EXIT_SUCCESS;
 }
-
-
