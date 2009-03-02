@@ -141,7 +141,7 @@ check_package() {
 	done < <(package_desc_extract "$desc" D)
 }
 
-mkdir -p "$cachedir"
+mkdir -p "$cachedir" || exit $?
 
 # compile vsersionsort is missing
 #
