@@ -20,11 +20,9 @@
 
 #include <stdlib.h>
 
-typedef int cmp_t(const void *, const void *);
-
-static int cmp_version(const char *s0, const char *s1)
+static int cmp_version(const void *p0, const void *p1)
 {
-	const char *p, *q;
+	const char *p, *q, *s0 = *(const char **)p0, *s1 = *(const char **)p1;
 	unsigned int a, b, ck0 = 1, ck1 = 1;
 
 	while (ck0 || ck1) {
@@ -58,11 +56,7 @@ static int cmp_version(const char *s0, const char *s1)
 		s1++;
 	}
 
-	if (a > b)
-		return 1;
-	else if (a < b)
-		return -1;
-	return 0;
+	return a - b;
 }
 
 int main(int argc, char **argv)
@@ -74,7 +68,7 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
-	qsort(&argv[1], argc-1, sizeof(argv[0]), (cmp_t *)cmp_version);
+	qsort(&argv[1], argc-1, sizeof(argv[0]), cmp_version);
 
 	for (i=1; i<(unsigned)argc; i++)
 		printf("%s\n", argv[i]);
