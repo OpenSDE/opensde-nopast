@@ -127,7 +127,7 @@ check_package() {
 
 			found=$(check_package_update "$pkg" "$ver" "$file" "$dump")
 			if [ -n "$found" ]; then
-				found=$("$versionsort" $found $ver | sort -u | tac | sed -e "s|^${ver//./\.}\$|*$ver*|" | tr '\n' ' ')
+				found=$("$versionsort" $found | tac | sed -e "s|^${ver//./\.}\$|*$ver*|" | tr '\n' ' ')
 				echo "$pkg: $ver ($url) $found"
 			else
 				echo_error "$pkg: nothing found. ($url)"
