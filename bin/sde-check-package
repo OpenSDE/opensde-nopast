@@ -146,8 +146,9 @@ mkdir -p "$cachedir" || exit $?
 # compile vsersionsort is missing
 #
 versionsort="$SDEROOT/bin/versionsort"
-if [ ! -x "$versionsort" ]; then
-	gcc -o "$versionsort" -Os -W -Wall "$SDEROOT/src/tools-source/versionsort.c" || exit $?
+versionsort_c="$SDEROOT/src/tools-source/versionsort.c"
+if [ "$versionsort_c" -nt "$versionsort" ]; then
+	gcc -o "$versionsort" -Os -W -Wall "$versionsort_c" || exit $?
 fi
 
 for x in $pkgs; do
