@@ -123,7 +123,12 @@ check_package() {
 			;;
 		esac
 
-		[ -z "$cvurl" ] || url="$cvurl"
+		if [ -n "$cvurl" ]; then
+			url="$cvurl"
+		elif [ -s "$SDEROOT/etc/check_package.sed" ]; then
+			# translate
+			url=$(echo "$url" | sed -f "$SDEROOT/etc/check_package.sed")
+		fi
 
 		x="${url%%:*}"
 		case "$x" in
