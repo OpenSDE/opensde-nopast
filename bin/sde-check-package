@@ -77,18 +77,28 @@ done
 
 check_package_update() {
 	local pkg="$1" ver="$2" file="$3" dump="$4"
-	local prefix= suffix= x=
+	local prefix= suffix= matches= found=
 
 	# case 1, version is obvious part of the name
-	prefix="${file%$ver*}"
-	if [ "$prefix" != "$file" ]; then
+	if expr "$file" : ".*$ver" > /dev/null; then
+		prefix="${file%$ver*}"
 		suffix="${file#$prefix$ver}"
-		# I feel lucky
-		matches=$(grep "^${prefix}.*${suffix//\./\\.}$" "$dump" | sort -u)
-		for x in $matches; do
-			y=$(echo "$x" | sed -e "s,^$prefix\(.*\)$suffix\$,\1,")
-			echo "$y"
-		done
+		found=$(sed -n -e "s,^$prefix\([0-9].*\)$suffix\$,\1,p" "$dump" | sort -u)
+	fi
+
+	# case 2, known suffix and a dash separating prefix and version
+	if [ -z "$found" ]; then
+		suffix='\.tar\.\(gz\|bz2\)$'
+		if [ -n "$(echo "$file" | sed "/.*$suffix/p;")" ]; then
+			found=$(sed -n -e "s,^.*-\([0-9].*\)$suffix,\1,p" "$dump" | sort -u)
+		fi
+	fi
+
+	if [ -n "$found" ]; then
+		found=$("$versionsort" $found | tac | sed -e "s|^${ver//./\.}\$|*$ver*|" | tr '\n' ' ')
+		echo "$pkg ($ver) $file ($url) $found"
+	else
+		echo_warning "$pkg ($ver) $file ($url) nothing found."
 	fi
 }
 
@@ -125,16 +135,14 @@ check_package() {
 				"$SDEROOT/lib/sde-download/get-tokenized.sh" "$url" > "$dump" 2> "$dump.stderr"
 			unlock "$dump"
 
-			found=$(check_package_update "$pkg" "$ver" "$file" "$dump")
-			if [ -n "$found" ]; then
-				found=$("$versionsort" $found | tac | sed -e "s|^${ver//./\.}\$|*$ver*|" | tr '\n' ' ')
-				echo "$pkg: $ver ($url) $found"
+			if [ ! -s "$dump" ]; then
+				echo_warning "$pkg ($ver) $file ($url) empty output."
 			else
-				echo_error "$pkg: nothing found. ($url)"
+				check_package_update "$pkg" "$ver" "$file" "$dump"
 			fi
 			;;
 		*)
-			echo_error "$pkg: $x not supported."
+			echo_warning "$pkg: $x not supported."
 			continue
 			;;
 		esac
