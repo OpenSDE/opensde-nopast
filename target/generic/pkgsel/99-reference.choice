@@ -52,8 +52,6 @@ O wu-ftpd
 
 # we still prefer rocknet
 O etcnet
-# we still prefer glibc's zoneinfo
-O tzdata
 
 # broken kernel modules
 O rivatv
