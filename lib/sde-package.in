@@ -33,19 +33,24 @@ package_confdir() {
 package_parse() {
 	local ref= list=
 
+	try_list() {
+		eval "cd '$SDEROOT/package' && ls -1d $1/ 2> /dev/null"	|
+			sed -e "s,^,$SDEROOT/package/,"
+	}
+
 	for ref; do
 		# sanitise
-		ref=$(echo "$ref" | tr 'A-Z' 'a-z')
+		ref=$(echo "$ref" | tr 'A-Z.; ' 'a-z___')
 		if [ -d "$ref" ]; then
 			list="$ref"
 		elif expr "$ref" : '.*/' > /dev/null; then
 			if [ -e "$ref" ]; then
 				list="${ref%/*}"
 			else
-				list=$(eval "ls -1d '$SDEROOT/package'/$ref/")
+				list=$(try_list "$ref")
 			fi
 		else
-			list=$(eval "ls -1d '$SDEROOT/package'/*/$ref/")
+			list=$(try_list "*/$ref")
 		fi
 
 		echo "$list" | while read dir; do
