@@ -80,18 +80,24 @@ check_package_update() {
 	local prefix= suffix= matches= found=
 
 	# case 1, version is obvious part of the name
-	if expr "$file" : ".*$ver" > /dev/null; then
+	if expr "$file" : ".*${ver//\./\\.}" > /dev/null; then
 		prefix="${file%$ver*}"
 		suffix="${file#$prefix$ver}"
-		found=$(sed -n -e "s,^$prefix\([0-9].*\)$suffix\$,\1,p" "$dump" | sort -u)
 	fi
 
 	# case 2, known suffix and a dash separating prefix and version
-	if [ -z "$found" ]; then
-		suffix='\.tar\.\(gz\|bz2\)$'
-		if [ -n "$(echo "$file" | sed "/.*$suffix/p;")" ]; then
-			found=$(sed -n -e "s,^.*-\([0-9].*\)$suffix,\1,p" "$dump" | sort -u)
-		fi
+	if [ -z "$prefix$suffix" ]; then
+		suffix='\.tar\.\(gz\|bz2\)'
+		prefix=$(echo "$file" | sed -n -e "s,^\(.*-\)\([0-9].*\)$suffix\$,\1,p")
+
+		[ -n "$prefix" ] || suffix=
+	fi
+
+	if [ -n "$prefix$suffix" ]; then
+		# if we have a prefix or suffix at this point
+		found=$(sed -n -e "s,^$prefix\([0-9].*\)$suffix\$,\1,p" "$dump" | sort -u)
+	else
+		found=
 	fi
 
 	if [ -n "$found" ]; then
