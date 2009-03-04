@@ -143,7 +143,7 @@ check_package() {
 		http|https|ftp)
 			lock "$dump"
 			[ -e "$dump" ] ||
-				"$SDEROOT/lib/sde-download/get-tokenized.sh" "$url" > "$dump" 2> "$dump.stderr"
+				"$SDEROOT/lib/sde-download/dump-tokenized.sh" "$url" > "$dump" 2> "$dump.stderr"
 			unlock "$dump"
 			;;
 		*)
