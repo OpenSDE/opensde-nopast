@@ -14,4 +14,4 @@
 # GNU General Public License can be found in the file COPYING.
 # --- SDE-COPYRIGHT-NOTE-END ---
 
-s,^http://\(.*\.\)\?dl\.\(sourceforge\|sf\)\.net/,http://prdownloads.sourceforge.net/,
+s,^http://\(.*\.\)\?dl\.\(sourceforge\|sf\)\.net/\(sourceforge/\)\?,sourceforge://,

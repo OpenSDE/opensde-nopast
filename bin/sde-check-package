@@ -146,6 +146,18 @@ check_package() {
 				"$SDEROOT/lib/sde-download/dump-tokenized.sh" "$url" > "$dump" 2> "$dump.stderr"
 			unlock "$dump"
 			;;
+		sourceforge)
+			lock "$dump"
+			url="http://prdownloads.sourceforge.net/sourceforge/${url#sourceforge://}"
+			if [ ! -e "$dump" ]; then
+				"$SDEROOT/lib/sde-download/dump.sh" "$url" 2> "$dump.stderr" | grep "showfiles.php.*release_id" |
+					sed -e 's,.*"\([^"]\+\)".*,http://sourceforge.net\1,' -e 's,&amp;,\&,g' | sort -u |
+					while read x; do
+						"$SDEROOT/lib/sde-download/dump-tokenized.sh" "$x"
+					done > "$dump" 2>> "$dump.stderr"
+			fi
+			unlock "$dump"
+			;;
 		*)
 			echo_warning "$pkg: $protocol not supported."
 			continue
