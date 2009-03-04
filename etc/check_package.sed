@@ -15,3 +15,4 @@
 # --- SDE-COPYRIGHT-NOTE-END ---
 
 s,^http://\(.*\.\)\?dl\.\(sourceforge\|sf\)\.net/\(sourceforge/\)\?,sourceforge://,
+s,^http://prdownloads.\(sourceforge\|sf\)\.net/\(sourceforge/\)\?,sourceforge://,
