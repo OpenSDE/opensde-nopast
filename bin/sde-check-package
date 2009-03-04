@@ -115,8 +115,7 @@ check_package() {
 	local cvurl=$(package_desc_extract "$desc" CV-URL)
 	local ver=$(package_desc_extract "$desc" V)
 
-	local x= y= file= url= dump= found=
-
+	local x= y= file= url= protocol= dump=
 
 	while read x file url; do
 		case "$url" in
@@ -136,27 +135,28 @@ check_package() {
 			url=$(echo "$url" | sed -f "$SDEROOT/etc/check_package.sed")
 		fi
 
-		x="${url%%:*}"
-		case "$x" in
+		protocol="${url%%:*}"
+		dump=$(echo "$url.out" | tr '?&:/ ' '_____')
+		dump="$cachedir/$dump"
+
+		case "$protocol" in
 		http|https|ftp)
-			dump=$(echo "$url.out" | tr '?&:/ ' '_____')
-			dump="$cachedir/$dump"
 			lock "$dump"
 			[ -e "$dump" ] ||
 				"$SDEROOT/lib/sde-download/get-tokenized.sh" "$url" > "$dump" 2> "$dump.stderr"
 			unlock "$dump"
-
-			if [ ! -s "$dump" ]; then
-				echo_warning "$pkg ($ver) $file ($url) empty output."
-			else
-				check_package_update "$pkg" "$ver" "$file" "$dump"
-			fi
 			;;
 		*)
-			echo_warning "$pkg: $x not supported."
+			echo_warning "$pkg: $protocol not supported."
 			continue
 			;;
 		esac
+
+		if [ -s "$dump" ]; then
+			check_package_update "$pkg" "$ver" "$file" "$dump"
+		else
+			echo_warning "$pkg ($ver) $file ($url) empty output."
+		fi
 	done < <(package_desc_extract "$desc" D)
 }
 
@@ -169,6 +169,8 @@ versionsort_c="$SDEROOT/src/tools-source/versionsort.c"
 if [ "$versionsort_c" -nt "$versionsort" ]; then
 	gcc -o "$versionsort" -Os -W -Wall "$versionsort_c" || exit $?
 fi
+
+trap ':' 'INT'
 
 for x in $pkgs; do
 	check_package "$x" &
