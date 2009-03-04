@@ -19,5 +19,4 @@
 # here)
 #
 
-set -x
-echo "${0%/*}/dump.sh" "$@" #| sed -e "s,[\r\t\"'<>= /],\n,g"
+exec "${0%/*}/dump.sh" "$@" | sed -e "s,[\r\t\"'<>= /],\n,g"
