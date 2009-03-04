@@ -23,7 +23,8 @@
 static int cmp_version(const void *p0, const void *p1)
 {
 	const char *p, *q, *s0 = *(const char **)p0, *s1 = *(const char **)p1;
-	unsigned int a, b, ck0 = 1, ck1 = 1;
+	unsigned int a = 0, b = 0;
+	unsigned int ck0 = 1, ck1 = 1;
 
 	while (ck0 || ck1) {
 		a = b = 0;
