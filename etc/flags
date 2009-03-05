@@ -47,6 +47,7 @@ MONO		Package is part of the Mono project
 SQUIRRELMAIL	Package is SquirrelMail addon/plugin
 
 LUA		Package needs lua's generic configuration
+X11R6		Package has hardcoded references to X11R6
 
 CLAWS		Package is a Claws-mail plugin
 
