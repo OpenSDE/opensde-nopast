@@ -27,6 +27,6 @@ $(LIB): $(SRCS)
 clean:
 	@rm -vf $(LIB) $(GENERATED) $(GENERATED).tmp
 
-$(GENERATED): $(GENERATED).sh
+$(GENERATED): $(GENERATED).sh $(wildcard tpl_*.c)
 	$(SHELL) $< > $(GENERATED).tmp
 	mv $(GENERATED).tmp $(GENERATED)
