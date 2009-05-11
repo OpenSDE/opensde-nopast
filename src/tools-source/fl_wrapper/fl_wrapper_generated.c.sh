@@ -49,9 +49,10 @@ add_wrapper()
 		;;
 	esac
 
-	sed -e "s/FUNCTION/$function/g" -e "s/RET_TYPE/$ret_type/g" \
+	sed	-e '/SDE-COPYRIGHT-NOTE-BEGIN/,/SDE-COPYRIGHT-NOTE-END/d;' \
+		-e "s/FUNCTION/$function/g" -e "s/RET_TYPE/$ret_type/g" \
 		-e "s/P1/$p1/g" -e "s/P2/$p2/g" \
-		"$template"
+		"$template" | sed -e 'N;/^\/\*\n \*\/$/d;'
 }
 
 add_wrapper 'int,   open,    const char* f, int a, ...'
