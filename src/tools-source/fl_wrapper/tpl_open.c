@@ -1,25 +1,26 @@
-extern $ret_type $function($p1);
-$ret_type (*orig_$function)($p1) = 0;
 
-$ret_type $function($p1)
+extern RET_TYPE FUNCTION(P1);
+RET_TYPE (*orig_FUNCTION)(P1) = 0;
+
+RET_TYPE FUNCTION(P1)
 {
 	struct status_t status;
 	int old_errno=errno;
-	$ret_type rc;
+	RET_TYPE rc;
 	mode_t b = 0;
 
 #ifdef FLWRAPPER_BASEDIR
 	if (a & (O_WRONLY|O_CREAT|O_APPEND))
-		check_write_access("$function", f);
+		check_write_access("FUNCTION", f);
 #endif
 
-	handle_file_access_before("$function", f, &status);
-	if (!orig_$function) orig_$function = get_dl_symbol("$function");
+	handle_file_access_before("FUNCTION", f, &status);
+	if (!orig_FUNCTION) orig_FUNCTION = get_dl_symbol("FUNCTION");
 	errno=old_errno;
 
 #if DEBUG == 1
-	fprintf(stderr, "fl_wrapper.so debug [%d]: going to run original $function() at %p (wrapper is at %p).\n",
-		getpid(), orig_$function, $function);
+	fprintf(stderr, "fl_wrapper.so debug [%d]: going to run original FUNCTION() at %p (wrapper is at %p).\n",
+		getpid(), orig_FUNCTION, FUNCTION);
 #endif
 
 	if (a & O_CREAT) {
@@ -29,13 +30,13 @@ $ret_type $function($p1)
 	  b = va_arg(ap, mode_t);
 	  va_end(ap);
 
-	  rc = orig_$function($p2, b);
+	  rc = orig_FUNCTION(P2, b);
 	}
 	else
-	  rc = orig_$function($p2);
+	  rc = orig_FUNCTION(P2);
 
 	old_errno=errno;
-	handle_file_access_after("$function", f, &status);
+	handle_file_access_after("FUNCTION", f, &status);
 	errno=old_errno;
 
 	return rc;

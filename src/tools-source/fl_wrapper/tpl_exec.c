@@ -1,13 +1,14 @@
-extern $ret_type $function($p1);
-$ret_type (*orig_$function)($p1) = 0;
 
-$ret_type $function($p1)
+extern RET_TYPE FUNCTION(P1);
+RET_TYPE (*orig_FUNCTION)(P1) = 0;
+
+RET_TYPE FUNCTION(P1)
 {
 	int old_errno=errno;
 
-	handle_file_access_after("$function", f, 0);
-	if (!orig_$function) orig_$function = get_dl_symbol("$function");
+	handle_file_access_after("FUNCTION", f, 0);
+	if (!orig_FUNCTION) orig_FUNCTION = get_dl_symbol("FUNCTION");
 	errno=old_errno;
 
-	return orig_$function($p2);
+	return orig_FUNCTION(P2);
 }
