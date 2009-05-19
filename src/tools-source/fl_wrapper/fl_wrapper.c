@@ -132,18 +132,23 @@ static void * get_dl_symbol(char * symname)
 
 static pid_t pid2ppid(pid_t pid)
 {
-	char buffer[100];
-	int fd, rc;
 	pid_t ppid = 0;
 
-	sprintf(buffer, "/proc/%d/stat", pid);
-	if ( (fd = open(buffer, O_RDONLY, 0)) < 0 ) return 0;
-	if ( (rc = read(fd, buffer, 99)) > 0) {
-		buffer[rc] = 0;
-		/* format: 27910 (bash) S 27315 ... */
-		sscanf(buffer, "%*[^ ] %*[^ ] %*[^ ] %d", &ppid);
+	/* in some broken systems the last (pid,ppid) is (1,1)
+	   instead of (1,0), good excuse to speed this up a bit */
+	if (pid > 1) {
+		char buffer[100];
+		int fd, rc;
+
+		sprintf(buffer, "/proc/%d/stat", pid);
+		if ( (fd = open(buffer, O_RDONLY, 0)) < 0 ) return 0;
+		if ( (rc = read(fd, buffer, sizeof(buffer)-1)) > 0) {
+			buffer[rc] = '\0';
+			/* format: 27910 (bash) S 27315 ... */
+			sscanf(buffer, "%*[^ ] %*[^ ] %*[^ ] %d", &ppid);
+		}
+		close(fd);
 	}
-	close(fd);
 
 	return ppid;
 }
@@ -159,7 +164,7 @@ static char *getpname(int pid)
 
 	sprintf(buffer, "/proc/%d/cmdline", pid);
 	if ( (fd = open(buffer, O_RDONLY, 0)) < 0 ) return "unkown";
-	if ( (rc = read(fd, buffer, 99)) > 0) {
+	if ( (rc = read(fd, buffer, sizeof(buffer)-1)) > 0) {
 		buffer[rc--] = 0;
 		for (i=0; i<rc; i++)
 			if (!buffer[i]) { arg = buffer+i+1; break; }
