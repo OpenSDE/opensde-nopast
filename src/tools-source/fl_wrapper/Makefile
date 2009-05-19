@@ -13,7 +13,14 @@
 # --- SDE-COPYRIGHT-NOTE-END ---
 
 CC=gcc
-CFLAGS=-Wall -O2 -ldl -shared
+CFLAGS=-Wall -O2 -ldl -shared -fPIC
+
+ifneq ($(BASE),)
+	CFLAGS += '-DFLWRAPPER_BASEDIR="$(BASE)"'
+endif
+ifneq ($(LIBC),)
+	CFLAGS += '-DFLWRAPPER_LIBC="$(LIBC)"'
+endif
 
 LIB=fl_wrapper.so
 GENERATED=fl_wrapper_generated.c
@@ -22,7 +29,8 @@ SRCS=fl_wrapper.c fl_wrapper_execl.c $(GENERATED)
 .PHONY: clean
 
 $(LIB): $(SRCS)
-	$(CC) $(CFLAGS) -o $@ $<
+	$(CC) $(CFLAGS) -o "$@.tmp" $<
+	mv "$@.tmp" "$@"
 
 clean:
 	@rm -vf $(LIB) $(GENERATED) $(GENERATED).tmp
