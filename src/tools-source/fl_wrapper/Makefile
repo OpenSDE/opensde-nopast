@@ -15,6 +15,9 @@
 CC=gcc
 CFLAGS=-Wall -O2 -ldl -shared -fPIC
 
+ifeq ($(DEBUG),yes)
+	CFLAGS += -DDEBUG=1
+endif
 ifneq ($(BASE),)
 	CFLAGS += '-DFLWRAPPER_BASEDIR="$(BASE)"'
 endif

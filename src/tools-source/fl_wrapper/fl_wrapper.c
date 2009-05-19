@@ -26,7 +26,9 @@
 
 /* Headers and prototypes */
 
-#define DEBUG 0
+#ifndef DEBUG
+#  define DEBUG 0
+#endif
 #define DLOPEN_LIBC 1
 #ifndef FLWRAPPER_LIBC
 #  define FLWRAPPER_LIBC "libc.so.6"
