@@ -40,12 +40,18 @@ overlay_apply() {
 	local file= source= target= fulltarget= ext=
 	local type= mode= ref= targetdir=
 	local patchopt="-p1 --no-backup-if-mismatch -N"
-	local overwrite=yes
+	local overwrite=yes echo_status=echo_status
 
-	if [ "x$1" = "x-n" ]; then
-		overwrite=
+	while [ $# -gt 0 ]; do
+		case "$1" in
+		-n)	overwrite= ;;
+		-q)	echo_status=echo ;;
+		--)	shift; break ;;
+		-*)	echo_warning "overlay_apply: $1: invalid option." ;;
+		*)	break ;;
+		esac
 		shift
-	fi
+	done
 
 	overlaydir="$1" rootfs="${2:-$root}"
 
@@ -62,7 +68,7 @@ overlay_apply() {
 			if [ "$overwrite" = yes ]; then
 				[ "$type" = patch ] || rm -f "$fulltarget"
 			else
-				echo_status "skipping $target ($type)"
+				$echo_status "skipping $target ($type)"
 				continue
 			fi
 		fi
@@ -76,18 +82,18 @@ overlay_apply() {
 		# and finally inject the file
 		case "$type" in
 			exec|txt)
-				echo_status "injecting $target ($type)"
+				$echo_status "injecting $target ($type)"
 				mkdir -p "$targetdir"
 				cat "$file" | rock_substitute > "$rootfs/$target"
 				chmod $mode "$rootfs/$target"
 				;;
 			ln)	ref=$( cat "$file" | rock_substitute )
-				echo_status "injecting $target -> $ref"
+				$echo_status "injecting $target -> $ref"
 				mkdir -p "$targetdir"
 				ln -snf "$ref" "$rootfs/$target"
 				;;
 			patch)
-				echo_status "$(patch $patchopt \
+				$echo_status "$(patch $patchopt \
 					-d "${rootfs}" 2>&1 < $file )"
 				;;
 		esac
