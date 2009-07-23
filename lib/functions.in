@@ -198,7 +198,7 @@ set_confopt() {
 		z="$root"
 	fi
 
-	confopt="--prefix=$z/$prefix"
+	confopt="--prefix=$z${prefix:+/$prefix}"
 
 	for x in bindir sbindir libdir datadir includedir \
 	    docdir infodir mandir sysconfdir localstatedir
@@ -1110,9 +1110,9 @@ init_vars_and_hooks()
 	makeopt='CC="$CC" CPP="$CPP" CXX="$CXX"'
 
 	if atstage toolchain; then
-		makeopt="$makeopt"' prefix="$root/$prefix"'
+		makeopt="$makeopt"' prefix="$root${prefix:+/$prefix}"'
 	else
-		makeopt="$makeopt"' prefix="/$prefix"'
+		makeopt="$makeopt"' prefix="${prefix:+/$prefix}"'
 	fi
 
 	if ! atstage native; then
