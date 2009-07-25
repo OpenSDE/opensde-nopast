@@ -574,18 +574,23 @@ pkginstalled() {
 	fi
 }
 
-# pkgprefix [-t] [<type>] <package>
+# pkgprefix [-rt] [<type>] <package>
 # returns the prefix or the location of a 'type' of an already build package
 #
 pkgprefix() {
 	local type= pkg=
-	local dotest= abortmsg=
+	local dotest= addroot= abortmsg=
 	local prefix= value=
 
-	# -t : only see if it's possible to get the values
-	if [ "$1" = "-t" ]; then
-		dotest=1; shift
-	fi
+	while [ $# -gt 1 ]; do
+		case "$1" in
+		-t)	dotest=1 ;;
+		-r)	addroot="${root:-/}" ;;
+		-*)	abortmsg="invalid option $1" ;;
+		*)	break ;;
+		esac
+		shift
+	done
 
 	if [ $# -eq 2 ]; then
 		type="$1"; shift
@@ -593,7 +598,9 @@ pkgprefix() {
 	pkg="$1"
 
 	# test usual error causes
-	if [ -z "$pkg" ]; then
+	if [ -n "$abortmsg" ]; then
+		:
+	elif [ -z "$pkg" ]; then
 		abortmsg="you must specify a package"
 	elif [ ! -f "$root/var/adm/packages/$pkg" ]; then
 		abortmsg="package $pkg is not present"
@@ -613,8 +620,8 @@ pkgprefix() {
 	elif [ "$abortmsg" ]; then
 		echo "pkgprefix: $abortmsg" 1>&2
 	elif [ -z "$type" -o "$type" = "prefix" ]; then
-		echo "$prefix"
-		return 0
+		type="prefix"
+		value="$prefix"
 	elif [ "$type" = "ver" ]; then
 		value=$( grep "^Package Name and Version:" "$root/var/adm/packages/$pkg" | cut -d' ' -f6 )
 	else
@@ -624,7 +631,12 @@ pkgprefix() {
 			value=$( xpkg="$pkg"; pkggetdir "$type" )
 		fi
 	fi
-	echo "${value:-PKGPREFIX_ERROR}"
+
+	if [ -n "$value" -o "$type" = "prefix" ]; then
+		echo "$addroot$value" | sed -e 's|/\+/|/|g' -e 's|\(.\+\)/$|\1|'
+	else
+		echo "PKGPREFIX_ERROR"
+	fi
 }
 
 # pkggetdir <type>     (needs $prefix and $xpkg)
