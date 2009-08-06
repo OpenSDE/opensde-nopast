@@ -66,3 +66,12 @@ ac_cv_func_fnmatch_gnu=yes
 gl_cv_func_getcwd_null=yes
 gl_cv_func_gnu_getopt=yes
 gl_cv_func_wcwidth_works=yes
+## for m4 1.4.13
+gl_cv_func_mbrtowc_incomplete_state=yes
+gl_cv_func_mbrtowc_sanitycheck=yes
+gl_cv_func_mbrtowc_null_arg=yes
+gl_cv_func_mbrtowc_retval=yes
+gl_cv_func_mbrtowc_nul_retval=yes
+gl_cv_func_btowc_eof=yes
+gl_cv_func_wcrtomb_retval=yes
+gl_cv_func_wctob_works=yes
