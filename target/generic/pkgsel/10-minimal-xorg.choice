@@ -79,6 +79,8 @@ X lesstif
 X libgd
 X netpbm
 X xaw3d
+X libxml
+X libxslt
 
 # a window manager and terminal
 X twm
