@@ -37,7 +37,7 @@ overlay_get_filename() {
 # apply an overlay dir
 overlay_apply() {
 	local overlaydir= rootfs=
-	local file= source= target= fulltarget= ext=
+	local file= source= target= xtarget= ext=
 	local type= mode= ref= targetdir=
 	local patchopt="-p1 --no-backup-if-mismatch -N"
 	local overwrite=yes echo_status=echo_status
@@ -62,11 +62,11 @@ overlay_apply() {
 
 		# full filename of the target file, and it's directory
 		target=$( overlay_get_filename "$file" )
-		fulltarget="$rootfs/$target" targetdir="${fulltarget%/*}"
+		xtarget="$rootfs/$target" targetdir="${xtarget%/*}"
 
-		if [ -L "$rootfs/$target" -o -e "$rootfs/$target" ]; then
+		if [ -L "$xtarget" -o -e "$xtarget" ]; then
 			if [ "$overwrite" = yes ]; then
-				[ "$type" = patch ] || rm -f "$fulltarget"
+				[ "$type" = patch ] || rm -f "$xtarget"
 			else
 				$echo_status "skipping $target ($type)"
 				continue
@@ -84,13 +84,13 @@ overlay_apply() {
 			exec|txt)
 				$echo_status "injecting $target ($type)"
 				mkdir -p "$targetdir"
-				cat "$file" | rock_substitute > "$rootfs/$target"
-				chmod $mode "$rootfs/$target"
+				cat "$file" | rock_substitute > "$xtarget"
+				chmod $mode "$xtarget"
 				;;
 			ln)	ref=$( cat "$file" | rock_substitute )
 				$echo_status "injecting $target -> $ref"
 				mkdir -p "$targetdir"
-				ln -snf "$ref" "$rootfs/$target"
+				ln -snf "$ref" "$xtarget"
 				;;
 			patch)
 				$echo_status "$(patch $patchopt \
