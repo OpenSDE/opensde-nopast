@@ -86,11 +86,13 @@ overlay_apply() {
 				mkdir -p "$targetdir"
 				cat "$file" | rock_substitute > "$xtarget"
 				chmod $mode "$xtarget"
+				add_flist "$xtarget"
 				;;
 			ln)	ref=$( cat "$file" | rock_substitute )
 				$echo_status "injecting $target -> $ref"
 				mkdir -p "$targetdir"
 				ln -snf "$ref" "$xtarget"
+				add_flist "$xtarget"
 				;;
 			patch)
 				$echo_status "$(patch $patchopt \
