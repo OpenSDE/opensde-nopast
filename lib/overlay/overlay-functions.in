@@ -19,7 +19,8 @@ overlay_get_type() {
 
 	case "$ext" in
 		sh|exec)	echo "exec"	;;
-		txt|patch|ln)	echo "$ext"	;;
+		txt|patch|ln|bin)
+				echo "$ext"	;;
 		*)	# and skip anything else
 			;;
 	esac
@@ -79,25 +80,29 @@ overlay_apply() {
 			*)	mode=0644 ;;
 		esac
 
+		[ "$type" = "patch" ] || mkdir -p "$targetdir"
+
 		# and finally inject the file
 		case "$type" in
-			exec|txt)
+			bin|exec|txt)
 				$echo_status "injecting $target ($type)"
-				mkdir -p "$targetdir"
-				cat "$file" | rock_substitute > "$xtarget"
+				if [ "$type" = bin ]; then
+					cp "$file" "$xtarget"
+				else
+					cat "$file" | rock_substitute > "$xtarget"
+				fi
 				chmod $mode "$xtarget"
-				add_flist "$xtarget"
 				;;
 			ln)	ref=$( cat "$file" | rock_substitute )
 				$echo_status "injecting $target -> $ref"
-				mkdir -p "$targetdir"
 				ln -snf "$ref" "$xtarget"
-				add_flist "$xtarget"
 				;;
 			patch)
 				$echo_status "$(patch $patchopt \
 					-d "${rootfs}" 2>&1 < $file )"
 				;;
 		esac
+
+		[ "$type" = "patch" ] || add_flist "$xtarget"
 	done
 }
