@@ -108,6 +108,13 @@ check_package_update() {
 	fi
 }
 
+download_url_dump() {
+	lock "$dump"
+	[ -e "$dump" ] ||
+		"$SDEROOT/lib/sde-download/dump-tokenized.sh" "$url" > "$dump" 2> "$dump.stderr"
+	unlock "$dump"
+}
+
 check_package() {
 	local repo="${1%/*}" pkg="${1#*/}"
 	local desc="$SDEROOT/package/$repo/$pkg/$pkg.desc"
@@ -141,22 +148,11 @@ check_package() {
 
 		case "$protocol" in
 		http|https|ftp)
-			lock "$dump"
-			[ -e "$dump" ] ||
-				"$SDEROOT/lib/sde-download/dump-tokenized.sh" "$url" > "$dump" 2> "$dump.stderr"
-			unlock "$dump"
+			download_url_dump
 			;;
 		sourceforge)
-			lock "$dump"
-			url="http://prdownloads.sourceforge.net/sourceforge/${url#sourceforge://}"
-			if [ ! -e "$dump" ]; then
-				"$SDEROOT/lib/sde-download/dump.sh" "$url" 2> "$dump.stderr" | grep "showfiles.php.*release_id" |
-					sed -e 's,.*"\([^"]\+\)".*,http://sourceforge.net\1,' -e 's,&amp;,\&,g' | sort -u |
-					while read x; do
-						"$SDEROOT/lib/sde-download/dump-tokenized.sh" "$x"
-					done > "$dump" 2>> "$dump.stderr"
-			fi
-			unlock "$dump"
+			url="http://sourceforge.net/projects/${url#sourceforge://}files/"
+			download_url_dump
 			;;
 		*)
 			echo_warning "$pkg: $protocol not supported."
