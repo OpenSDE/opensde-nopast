@@ -265,7 +265,7 @@ trap 'umount_chroot' EXIT
 	ln -sf build_target_$$.log ${build_logs}/build_target.log
 	./bin/sde-build-tools -1 -c $config
 	_built=0
-	for x in $( get_expanded ./target/%/build.sh $targetchain ); do
+	for x in $(get_expanded ./target/%/build.sh $targetchain generic); do
 		if [ -f $x ]; then
 			. $x
 			_built=1
