@@ -241,7 +241,16 @@ pkgloop_package() {
 # before calling pkgloop().
 #
 pkgloop_action() {
+	local rc=
 	$cmd_buildpkg
+	rc=$?
+
+	if [ -f "config/$config/.stop" ]; then
+		rm -f "config/$config/.stop"
+		exit 0
+	fi
+
+	return $rc
 }
 
 # Try to umount any directories mounted by Build-Pkg -chroot
