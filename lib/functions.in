@@ -815,7 +815,11 @@ build_this_package() {
 		buildloop=1
 		var_append patchfiles " " \
 		           "`ls $confdir/*.patch.${xsrctar/-[v0-9]*/} 2> /dev/null`"
-		if [ "$xsrctar" != none -a "$autoextract" = 1 ]; then
+		if [ -d "$confdir/$xsrctar" ]; then
+			xsrcdir="$pkg-$ver-$xsrctar"
+			cp -a "$confdir/$xsrctar" "$builddir/$xsrcdir"
+			cd "$builddir/$xsrcdir"
+		elif [ "$xsrctar" != none -a "$autoextract" = 1 ]; then
 			cd $builddir
 			if [ -z "$custextract" ]; then
 				# No custom extraction, so determine what
