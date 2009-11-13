@@ -653,18 +653,17 @@ abort() {
 		sleep 1 ; kill -INT $strace_pid ; sleep 1
 		fl_stparse -w $builddir/fl_wrapper.wlog \
 			   -r $builddir/fl_wrapper.rlog < $builddir/strace.out
-
 	fi
-
-	# sanitize accidental //s
-	sed -i -e 's,//*,/,g' $builddir/fl_wrapper.wlog
-	sed -i -e 's,//*,/,g' $builddir/fl_wrapper.rlog
-
-	# ignore writes to /dev/(null|stderr)
-	sed -i -e '/\t\/dev\/\(null\|stderr\)$/d;' $builddir/fl_wrapper.wlog
 
 	if [ "$SDECFG_FLIST" = "flwrapper" -o \
 	     "$SDECFG_FLIST" = "strace" ] ; then
+
+		# sanitize accidental //s
+		sed -i -e 's,//*,/,g' $builddir/fl_wrapper.{w,r}log
+
+		# ignore writes to /dev/(null|stderr)
+		sed -i -e '/\t\/dev\/\(null\|stderr\)$/d;' $builddir/fl_wrapper.wlog
+
 		if [ "$toolsdir" = "tools.cross" ]; then
 			xbase="$( cd $xroot/ 2> /dev/null ; pwd -P )"
 			flistvalid="$xbase|$flistvalid"
