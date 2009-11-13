@@ -255,7 +255,7 @@ if [ "$SDECFG_FLIST" = "flwrapper" -a -z "$FLWRAPPER" ] ; then
 	export FLWRAPPER_WLOG="$builddir/fl_wrapper.wlog"
 	export FLWRAPPER_RLOG="$builddir/fl_wrapper.rlog"
 	export FLWRAPPER_BASEPID=$$
-	export FLWRAPPER_FILTERDIR="/tmp/:$builddir"
+	export FLWRAPPER_FILTERDIR="/tmp/:/dev/:/proc/:$builddir"
 	[ "$LD_PRELOAD" ] && LD_PRELOAD="${LD_PRELOAD}:"
 	export FLWRAPPER="$base/build/$SDECFG_ID/TOOLCHAIN/$toolsdir/lib/fl_wrapper.so"
 	export LD_PRELOAD="${LD_PRELOAD}$FLWRAPPER"
@@ -660,9 +660,6 @@ abort() {
 
 		# sanitize accidental //s
 		sed -i -e 's,//*,/,g' $builddir/fl_wrapper.{w,r}log
-
-		# ignore writes to /dev/(null|stderr)
-		sed -i -e '/\t\/dev\/\(null\|stderr\)$/d;' $builddir/fl_wrapper.wlog
 
 		if [ "$toolsdir" = "tools.cross" ]; then
 			xbase="$( cd $xroot/ 2> /dev/null ; pwd -P )"
