@@ -22,6 +22,7 @@ NO-AS-NEEDED	Packages that do not link properly with --as-needed
 NO-SSP		Packages that do not compile properly with the GCC SSP enabled
 
 LDAP-QUIRK	Packages that need explicit -L and -I to find openldap
+QT3-QUIRK	Packages that need explicit -L and -I to find qt3
 
 CC		A C compiler (the package is using SDECFG_DEFAULT_CC)
 CXX		A C++ compiler (the package is using SDECFG_DEFAULT_CXX)
