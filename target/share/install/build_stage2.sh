@@ -48,7 +48,7 @@ modutils           pciutils           portmap
 sysklogd           setserial          iproute2
 netkit-base        netkit-ftp         netkit-telnet      netkit-tftp
 sysfiles           libpcap            iptables           tcp_wrappers
-stone              mkinitrd           rocknet
+stone              mkinitrd           mkinitramfs        rocknet
 kbd		   ntfsprogs
 libol              memtester
 serpnp             udev
