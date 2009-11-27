@@ -154,3 +154,6 @@ X nasm
 X stone
 X rocknet
 X mkinitramfs
+
+# needed by nfs-utils
+X libtirpc
