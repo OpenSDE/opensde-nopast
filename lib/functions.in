@@ -1158,7 +1158,9 @@ init_vars_and_hooks()
 	buildloop=1 buildloops=1
 
 	[ "$SDECFG_DO_CHECK" = 1 ] && hook_add inmake 6 'run_check'
-	hook_add postflist 3 'postflist_static_lib'
+
+	# no static lib corrections at toolchain stage
+	atstage toolchain || hook_add postflist 3 'postflist_static_lib'
 
 	createarchcache=0
 
