@@ -8,6 +8,10 @@ X termcap
 
 X automake
 X autoconf
+X gmp
+X mpfr
+X ppl
+X cloog-ppl
 X gcc
 X binutils
 X flex
