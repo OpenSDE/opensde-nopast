@@ -13,7 +13,6 @@
 # GNU General Public License can be found in the file COPYING.
 # --- SDE-COPYRIGHT-NOTE-END ---
 
-
 #Description: Generates .desc files from the data in freshmeat
 #Alias: fm2
 
@@ -31,8 +30,14 @@ EOT
 	exit 2
 }
 
+clean_xml() {
+	sed -e 's,^[ \t]\+,,' |
+	tr -d '\r\n' |
+	sed -e 's,>,>\n,' -e 's,\(</[^>]\+>\),\1\n,g' -e 's,>\(<[^/]\),>\n\1,g'
+}
+
 fm_exists() {
-	local uri="http://freshmeat.net/projects/$name"
+	local uri="http://freshmeat.net/projects/$1"
 	local response="$(curl -s -I "$uri" | tr -d '\r' | head -n 1)"
 
 	if [ "$response" = "" ]; then
@@ -45,6 +50,20 @@ fm_exists() {
 		echo_error "$uri -> $response"
 	fi
 	return 1
+}
+
+fm_fetch_xml() {
+	local uri="http://freshmeat.net/projects/$1.xml?auth_code=$2"
+	curl -s "$uri" | clean_xml
+}
+
+fm_parse_xml() {
+	local l=
+	while read l; do
+		tag=$(echo "$l" | sed -e 's,<\([^ >]\+\)[ >].*,\1,' -e 's,/,-,')
+		value=$(echo "$l" | sed -n -e 's,.*>\([^<]*\)<.*,\1,p')
+		echo "$tag: $value"
+	done
 }
 
 shortopts='u:'
@@ -72,7 +91,7 @@ done
 name="$1"
 
 if fm_exists "$name"; then
-	echo "$name: OK"
+	fm_fetch_xml "$name" "$authcode" | fm_parse_xml
 else
 	echo "$name: NOT FOUND"
 fi
