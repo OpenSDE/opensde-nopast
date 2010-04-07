@@ -310,8 +310,8 @@ expert_begin
 	rm -f $cfgtmpdir/config/pkgsel $cfgtmpdir/pkgsel.awk
       fi
       startprog SDECFG_SHOW_PKGLIST 'Show the current package list' \
-              "./tmp/confdialog.bin --title 'T2 Config - Package List' \
-                        --backtitle 'T2 $sdever Configuration' \
+              "./tmp/confdialog.bin --title 'OpenSDE Config - Package List' \
+                        --backtitle 'OpenSDE ($sdever) Configuration' \
                         --textbox $cfgtmpdir/packages.txt \
                         $(( $lines - 4 )) $(( $columns - 5 ))"
     block_end
