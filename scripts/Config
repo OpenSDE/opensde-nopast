@@ -195,7 +195,7 @@ cut -f1,2,4,5,8- -d' ' $cfgtmpdir/config/packages | sed 's, [^ ]*$,,' | \
 tr ' ' '\t' | expand -t2,15,35, > $cfgtmpdir/packages.txt
 
 configtitle="$(printf ' %-50s %6s active packages ]' \
-	"The OpenSDE ($sdever) Configuration - $config" \
+	"OpenSDE ($sdever) Configuration - $config" \
 	"[ $(echo `grep '^X' $cfgtmpdir/config/packages | wc -l`)" )"
 
 bprof main stop
@@ -264,8 +264,8 @@ case "$returncode" in
 		get_help $item > $cfgtmpdir/config.dialog
 
 		bprof main stop
-		./tmp/confdialog.bin --title 'The OpenSDE Config - Help' \
-			--backtitle "The OpenSDE ($sdever) Configuration" \
+		./tmp/confdialog.bin --title 'OpenSDE Config - Help' \
+			--backtitle "OpenSDE ($sdever) Configuration" \
 			--textbox $cfgtmpdir/config.dialog \
 			$(( $lines - 4 )) $(( $columns - 5 ))
 		bprof main start
