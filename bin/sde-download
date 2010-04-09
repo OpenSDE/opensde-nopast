@@ -58,13 +58,16 @@ cd "$SDEROOT"
 #
 mkdir -p tmp/ download/
 
+# determine version of the package tree
+pkgver=$("$SDEROOT/lib/version.sh" -p)
+
 # Load system wide configuration for this tool
 #
 config=default mirror= mirror_last= altdir= proxy= proxyauth= notimeout=0
 
 if [ -s "$SDESETTINGS" ]; then
 	eval $( $SDEROOT/bin/sde-config-ini -F "$SDESETTINGS" download )
-	eval $( $SDEROOT/bin/sde-config-ini -F "$SDESETTINGS" download-$sdever )
+	eval $( $SDEROOT/bin/sde-config-ini -F "$SDESETTINGS" download-$pkgver )
 fi
 
 this_is_the_2nd_run=0
@@ -115,8 +118,8 @@ while [ $# -gt 0 ]; do
 			mirror="$2"
 			mirror_last=$(date +%s)
 			$SDEROOT/bin/sde-config-ini -F "$SDESETTINGS" \
-				"download-$sdever.mirror=$mirror" \
-				"download-$sdever.mirror_last=$mirror_last"
+				"download-$pkgver.mirror=$mirror" \
+				"download-$pkgver.mirror_last=$mirror_last"
 		fi
 		shift ;;
 
@@ -210,7 +213,7 @@ detect_mirror() {
 
 	echo_info "Downloading mirror-list from opensde.net."
 	curl -s -S $curl_options -o tmp/Download-Mirror-List \
-		"http://opensde.net/opensde-download-mirrors/$sdever"
+		"http://opensde.net/opensde-download-mirrors/$pkgver"
 
 	if [ -r tmp/Download-Mirror-List ]; then
 		bash lib/sde-download/mirror-test.sh < tmp/Download-Mirror-List
@@ -218,7 +221,7 @@ detect_mirror() {
 
 	# read new mirror info
 	mirror=
-	eval $( $SDEROOT/bin/sde-config-ini -F "$SDESETTINGS" download-$sdever )
+	eval $( $SDEROOT/bin/sde-config-ini -F "$SDESETTINGS" download-$pkgver )
 
 	if [ -z "$mirror" ]; then
 		echo_error "Mirror detection loop hit a bug!"
