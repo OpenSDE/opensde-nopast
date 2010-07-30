@@ -796,6 +796,16 @@ createprefix_function() {
 			mkdir -p $dir
 			rmemptydir="$rmemptydir $dir"
 		fi
+		case $foodir in
+		  libdir)
+			# create lib -> lib64 compat symlinks
+			# TODO: MULTILIB
+			if [[ "$dir" = *lib64 ]] && [ ! -L "$root/$prefix/lib" ]; then
+				echo "Creating 'lib -> lib64' compatibility symlink"
+				ln -sf lib64 "$root/$prefix/lib"
+			fi
+		  ;;
+		esac
 	done
 }
 
