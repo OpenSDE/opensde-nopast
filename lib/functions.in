@@ -786,6 +786,17 @@ autoextract_subdir_zip() {
 	zipopt="$zipopt_orig"
 }
 
+createprefix_function() {
+	echo "Creating $root/$prefix/<..> if required ..."
+	for x in $foodirlist; do
+		eval "x=\"$root\$$x\""
+		if [ ! -e $x ]; then
+			mkdir -p $x
+			rmemptydir="$rmemptydir $x"
+		fi
+	done
+}
+
 # Main program for building a package
 #
 build_this_package() {
@@ -883,14 +894,7 @@ build_this_package() {
 		fi
 
 		if [ "$createprefix" = 1 ]; then
-			echo "Creating $root/$prefix/<..> if required ..."
-			for x in $foodirlist; do
-				eval "x=\"$root\$$x\""
-				if [ ! -e $x ]; then
-					mkdir -p $x
-					rmemptydir="$rmemptydir $x"
-				fi
-			done
+			createprefix_function
 		fi
 
 		if [ -z "$custmain" ]; then
