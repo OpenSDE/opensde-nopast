@@ -788,11 +788,13 @@ autoextract_subdir_zip() {
 
 createprefix_function() {
 	echo "Creating $root/$prefix/<..> if required ..."
-	for x in $foodirlist; do
-		eval "x=\"$root\$$x\""
-		if [ ! -e $x ]; then
-			mkdir -p $x
-			rmemptydir="$rmemptydir $x"
+	local dir=
+	local foodir=
+	for foodir in $foodirlist; do
+		eval "dir=\"$root\$$foodir\""
+		if [ ! -e $dir ]; then
+			mkdir -p $dir
+			rmemptydir="$rmemptydir $dir"
 		fi
 	done
 }
