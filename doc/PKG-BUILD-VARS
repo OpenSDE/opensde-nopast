@@ -85,10 +85,12 @@ pyscript ...... script to run 'setup.py', python by default.
 pyconfopt ..... options for 'setup.py' - Python setup scripts
 plconfopt ..... options for 'Makefile.pl' - Perl setup scripts
 
+runcmake ...... set to '0' if you want to skip running 'cmake' (default 1)
 runxmkmf ...... set to '0' if you want to skip running 'xmkmf'
 runmkpl ....... set to '0' if you want to skip running 'perl Makefile.PL'
 runpysetup .... set to '0' if you want to skip running 'python setup.py'
 
+cmakeopt ...... options for 'cmake'
 makeopt ....... options for 'make' (default = ' ')
 makeinstopt ... options for 'make install' (default = 'install')
 

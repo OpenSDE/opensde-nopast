@@ -929,6 +929,16 @@ build_this_package() {
 			  fi
 			fi
 
+			# CMake based Makefile generation
+			#
+			if [ -f CMakeLists.txt -a $runcmake = 1 -a ! -f Makefile ]; then
+				# use a dedicated build directory
+				mkdir -p build
+				cd build
+				eval echo "Running cmake $cmakeopt"
+				cmake $( eval echo $cmakeopt ) ..
+			fi
+
 			# automated package build
 
 			# styles without make run first:
@@ -1128,6 +1138,7 @@ detect_confdir()
 init_vars_and_hooks()
 {
 	makeopt='CC="$CC" CPP="$CPP" CXX="$CXX"'
+	cmakeopt='-DCMAKE_INSTALL_PREFIX="$root/$prefix"'
 
 	if atstage toolchain; then
 		makeopt="$makeopt"' prefix="$root${prefix:+/$prefix}"'
@@ -1171,7 +1182,7 @@ init_vars_and_hooks()
 	taropt="--use-compress-program=bzip2 -xf"
 
 	mainfunction="build_this_package"
-	runconf=1 ; runxmkmf=1 ; runmkpl=1 ; runpysetup=1 ; autopatch=1
+	runconf=1 ; runcmake=1 ; runxmkmf=1 ; runmkpl=1 ; runpysetup=1 ; autopatch=1
 	autoextract=1 ; chownsrcdir=1 ; nocvsinsrcdir=1 ; cleanconfopt=1
 	patchopt="-bfp1 -z .orig"
 	createprefix=1 ; createdocs= ; rmemptydir=
