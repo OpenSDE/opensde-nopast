@@ -800,7 +800,7 @@ createprefix_function() {
 		  libdir)
 			# create lib -> lib64 compat symlinks
 			# TODO: MULTILIB
-			if [[ "$dir" = *lib64 ]] && [ ! -L "$root/$prefix/lib" ]; then
+			if [[ "$dir" = *lib64 ]] && [ ! -e "$root/$prefix/lib" ]; then
 				echo "Creating 'lib -> lib64' compatibility symlink"
 				ln -sf lib64 "$root/$prefix/lib"
 			fi
