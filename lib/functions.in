@@ -913,10 +913,11 @@ build_this_package() {
 					sh autogen.sh
 				else
 					echo "Running builtin autogen script."
-					libtoolize --force --automake ; aclocal
-					if grep AM_INIT_AUTOMAKE \
-					   configure.[ia][nc]
-					then automake ; fi
+					libtoolize --force --automake
+					aclocal $ACLOCAL_FLAGS
+					if grep AM_INIT_AUTOMAKE configure.[ia][nc]; then
+						automake --add-missing
+					fi
 					autoconf
 				fi
 			fi
