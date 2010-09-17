@@ -41,16 +41,15 @@ RET_TYPE FUNCTION(P1)
 #endif
 
 	if (a & O_CREAT) {
-	  va_list ap;
+		va_list ap;
 
-	  va_start(ap, a);
-	  b = va_arg(ap, mode_t);
-	  va_end(ap);
+		va_start(ap, a);
+		b = va_arg(ap, mode_t);
+		va_end(ap);
 
-	  rc = orig_FUNCTION(P2, b);
-	}
-	else
-	  rc = orig_FUNCTION(P2);
+		rc = orig_FUNCTION(P2, b);
+	} else
+		rc = orig_FUNCTION(P2);
 
 	old_errno=errno;
 	handle_file_access_after("FUNCTION", f, &status);
