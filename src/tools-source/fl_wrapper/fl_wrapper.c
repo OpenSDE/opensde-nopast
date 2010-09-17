@@ -27,11 +27,11 @@
 /* Headers and prototypes */
 
 #ifndef DEBUG
-#  define DEBUG 0
+#	define DEBUG 0
 #endif
 #define DLOPEN_LIBC 1
 #ifndef FLWRAPPER_LIBC
-#  define FLWRAPPER_LIBC "libc.so.6"
+#	define FLWRAPPER_LIBC "libc.so.6"
 #endif
 
 #include "fl_wrapper.h"
@@ -71,17 +71,17 @@ static void * get_dl_symbol(char * symname)
 		abort();
 	}
 
-        rc = dlsym(libc_handle, symname);
-#  if DEBUG == 1
+	rc = dlsym(libc_handle, symname);
+#	if DEBUG == 1
 	fprintf(stderr, "fl_wrapper.so debug [%d]: Symbol '%s' in libc (%p) has been resolved to %p.\n",
 		getpid(), symname, libc_handle, rc);
-#  endif
+#	endif
 #else
-        rc = dlsym(RTLD_NEXT, symname);
-#  if DEBUG == 1
+	rc = dlsym(RTLD_NEXT, symname);
+#	if DEBUG == 1
 	fprintf(stderr, "fl_wrapper.so debug [%d]: Symbol '%s' (RTLD_NEXT) has been resolved to %p.\n",
 		getpid(), symname, rc);
-#  endif
+#	endif
 #endif
 	if (!rc) {
 		fprintf(stderr, "fl_wrapper.so: Can't resolve %s: %s\n",
@@ -89,7 +89,7 @@ static void * get_dl_symbol(char * symname)
 		abort();
 	}
 
-        return rc;
+	return rc;
 }
 
 static inline ssize_t readonce_from(char *buf, size_t buf_len, const char *tpl, ...)
@@ -223,7 +223,7 @@ static void check_write_access(const char * func, const char * file)
 #endif
 
 static void handle_file_access_before(const char * func, const char * file,
-                               struct status_t * status)
+				      struct status_t * status)
 {
 	struct stat st;
 #if DEBUG == 1
@@ -283,7 +283,7 @@ static void sort_of_realpath (const char *file, char *absfile)
 }
 
 static void handle_file_access_after(const char * func, const char * file,
-                              struct status_t * status)
+				     struct status_t * status)
 {
 	char buf[PATH_MAX], *logfile, filterdir2 [PATH_MAX], *tfilterdir;
 	char absfile [PATH_MAX];
@@ -301,7 +301,7 @@ static void handle_file_access_after(const char * func, const char * file,
 	     status->size  != st.st_size || status->mtime != st.st_mtime ||
 	     status->ctime != st.st_ctime) ) { logfile = wlog; }
 	else { logfile = rlog; }
-        if ( logfile == 0 ) return;
+	if ( logfile == 0 ) return;
 
 	/* make sure the filename is "canonical" */
 	sort_of_realpath (file, absfile);
@@ -316,8 +316,8 @@ static void handle_file_access_after(const char * func, const char * file,
 		if ( !strncmp(absfile, tfilterdir, strlen(tfilterdir)) ) {
 #if DEBUG == 1
 		  fprintf(stderr,
-		          "fl_wrapper.so debug [%d]: \"%s\" dropped due to filterdir \"%s\"\n",
-		          getpid(), absfile, tfilterdir);
+			  "fl_wrapper.so debug [%d]: \"%s\" dropped due to filterdir \"%s\"\n",
+			  getpid(), absfile, tfilterdir);
 #endif
 		  return;
 		}
@@ -331,11 +331,11 @@ static void handle_file_access_after(const char * func, const char * file,
 #endif
 	if (fd == -1) return;
 
-    flock(fd, LOCK_EX);
-    lseek(fd, 0, SEEK_END);
+	flock(fd, LOCK_EX);
+	lseek(fd, 0, SEEK_END);
 
-    sprintf(buf,"%s.%s:\t%s\n", cmdname, func, absfile);
-    write(fd,buf,strlen(buf));
+	sprintf(buf,"%s.%s:\t%s\n", cmdname, func, absfile);
+	write(fd,buf,strlen(buf));
 
 	close(fd);
 #if DEBUG == 1
