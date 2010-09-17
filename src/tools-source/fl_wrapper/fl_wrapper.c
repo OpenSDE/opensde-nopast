@@ -92,6 +92,26 @@ static void * get_dl_symbol(char * symname)
         return rc;
 }
 
+static inline ssize_t readonce_from(char *buf, size_t buf_len, const char *tpl, ...)
+{
+	int fd;
+	ssize_t rc;
+	va_list ap;
+
+	va_start(ap, tpl);
+	vsnprintf(buf, buf_len, tpl, ap);
+	va_end(ap);
+
+	/* EINTR? */
+	if ((fd = open(buf, O_RDONLY)) < 0)
+		return -1;
+	if ((rc = read(fd, buf, buf_len-1)) > 0)
+		buf[rc] = '\0';
+	close(fd);
+
+	return rc;
+}
+
 static pid_t pid2ppid(pid_t pid)
 {
 	pid_t ppid = 0;
@@ -100,16 +120,12 @@ static pid_t pid2ppid(pid_t pid)
 	   instead of (1,0), good excuse to speed this up a bit */
 	if (pid > 1) {
 		char buffer[100];
-		int fd, rc;
 
-		sprintf(buffer, "/proc/%d/stat", pid);
-		if ( (fd = open(buffer, O_RDONLY, 0)) < 0 ) return 0;
-		if ( (rc = read(fd, buffer, sizeof(buffer)-1)) > 0) {
-			buffer[rc] = '\0';
-			/* format: 27910 (bash) S 27315 ... */
-			sscanf(buffer, "%*[^ ] %*[^ ] %*[^ ] %d", &ppid);
-		}
-		close(fd);
+		if (readonce_from(buffer, sizeof(buffer), "/proc/%d/stat", pid) < 0)
+			return 0;
+
+		/* format: 27910 (bash) S 27315 ... */
+		sscanf(buffer, "%*[^ ] %*[^ ] %*[^ ] %d", &ppid);
 	}
 
 	return ppid;
@@ -120,18 +136,16 @@ static pid_t pid2ppid(pid_t pid)
 static char *getpname(int pid)
 {
 	static char p[512];
-	char buffer[100]="";
+	char buffer[100];
 	char *arg=0, *b;
-	int i, fd, rc;
+	int i, rc;
 
-	sprintf(buffer, "/proc/%d/cmdline", pid);
-	if ( (fd = open(buffer, O_RDONLY, 0)) < 0 ) return "unkown";
-	if ( (rc = read(fd, buffer, sizeof(buffer)-1)) > 0) {
-		buffer[rc--] = 0;
-		for (i=0; i<rc; i++)
-			if (!buffer[i]) { arg = buffer+i+1; break; }
-	}
-	close(fd);
+	if ((rc = readonce_from(buffer, sizeof(buffer), "/proc/%d/cmdline", pid)) < 0)
+		return "unknown";
+
+	buffer[rc--] = '\0';
+	for (i=0; i<rc; i++)
+		if (!buffer[i]) { arg = buffer+i+1; break; }
 
 	b = basename(buffer);
 	snprintf(p, 512, "%s", b);
