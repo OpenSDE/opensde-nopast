@@ -13,7 +13,7 @@
 # --- SDE-COPYRIGHT-NOTE-END ---
 
 CC=gcc
-CFLAGS=-Wall -O2 -ldl -shared -fPIC
+CFLAGS=-Wall -Wextra -O2 -ldl -shared -fPIC
 
 ifeq ($(DEBUG),yes)
 	CFLAGS += -DDEBUG=1

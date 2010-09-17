@@ -25,7 +25,11 @@ RET_TYPE FUNCTION(P1)
 	int old_errno=errno;
 	RET_TYPE rc;
 
+#if HAS_FFD
+	handle_fileat_access_before("FUNCTION", ffd, f, &status);
+#else
 	handle_file_access_before("FUNCTION", f, &status);
+#endif
 	if (!orig_FUNCTION) orig_FUNCTION = get_dl_symbol("FUNCTION");
 	errno=old_errno;
 
@@ -36,7 +40,11 @@ RET_TYPE FUNCTION(P1)
 	rc = orig_FUNCTION(P2);
 
 	old_errno=errno;
+#if HAS_FFD
+	handle_fileat_access_after("FUNCTION", ffd, f, &status);
+#else
 	handle_file_access_after("FUNCTION", f, &status);
+#endif
 	errno=old_errno;
 
 	return rc;
