@@ -117,7 +117,7 @@ static inline ssize_t readonce_from(char *buf, size_t buf_len, const char *tpl, 
 	return rc;
 }
 
-static pid_t pid2ppid(pid_t pid)
+static inline pid_t pid2ppid(pid_t pid)
 {
 	pid_t ppid = 0;
 
@@ -153,11 +153,11 @@ static char *getpname(int pid)
 		if (!buffer[i]) { arg = buffer+i+1; break; }
 
 	b = basename(buffer);
-	snprintf(p, 512, "%s", b);
+	snprintf(p, sizeof(p), "%s", b);
 
 	if ( !strcmp(b, "bash") || !strcmp(b, "sh") || !strcmp(b, "perl") )
 		if (arg && *arg && *arg != '-')
-			snprintf(p, 512, "%s(%s)", b, basename(arg));
+			snprintf(p, sizeof(p), "%s(%s)", b, basename(arg));
 
 	return p;
 }
@@ -213,6 +213,8 @@ void __attribute__ ((constructor)) fl_wrapper_init()
 #ifdef FLWRAPPER_BASEDIR
 static void check_write_access(const char * func, const char * file)
 {
+	(void) func;
+
 	if (*file == '/') { /* do only check rooted paths */
 		while (file[1] == '/') file++;
 
@@ -317,7 +319,7 @@ static inline void log_append(const char *logfile, const char *fmt, ...)
 #ifdef __USE_LARGEFILE
 	fd=open64(logfile,O_APPEND|O_WRONLY|O_LARGEFILE,0);
 #else
-#warning "The wrapper library will not work properly for large logs!"
+#	warning "The wrapper library will not work properly for large logs!"
 	fd=open(logfile,O_APPEND|O_WRONLY,0);
 #endif
 	if (fd == -1) return;
@@ -325,6 +327,7 @@ static inline void log_append(const char *logfile, const char *fmt, ...)
 	flock(fd, LOCK_EX);
 	lseek(fd, 0, SEEK_END);
 
+	/* EINTR? */
 	write(fd,buf,l);
 
 	close(fd);
