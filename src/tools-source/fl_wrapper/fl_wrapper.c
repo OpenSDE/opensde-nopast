@@ -55,6 +55,8 @@ struct status_t {
 
 #ifdef FLWRAPPER_BASEDIR
 static void check_write_access(const char * , const char * );
+/* only for absolute paths anyway */
+#define check_writeat_access(FUNC, FD, FILENAME)	check_write_access(FUNC, FILENAME)
 #endif
 static void handle_file_access_before(const char *, const char *, struct status_t *);
 static void handle_file_access_after(const char *, const char *, struct status_t *);
