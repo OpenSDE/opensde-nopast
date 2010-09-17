@@ -27,19 +27,22 @@ nopaste_usage() {
 	echo "Usage:	$progname [<file>]"
 }
 
+file= tmpfile=
 if [ $# -gt 0 ]; then
 	if [ -s "$1" ]; then
-		text=$(cat -- "$1")
+		file="$1"
 	else
 		nopaste_usage >&2
 		exit 1
 	fi
 else
-	text=$(cat)
+	file=$(mktemp)
+	cat > "$file"
+	tmpfile=yes
 fi
 
-mime=$(echo "$text" | file --mime-type - | cut -d' ' -f2)
-type=$(echo "$text" | file - | cut -d' ' -f2-)
+mime=$(file --mime-type "$file" | cut -d' ' -f2)
+type=$(file "$file" | cut -d' ' -f2-)
 
 # lang = (bash|c|diff|lua|perl|python|text)
 case "$mime" in
@@ -49,8 +52,10 @@ text/x-c) lang=c ;;
 *) lang=text ;;
 esac
 
-hash=$(echo "$text" | curl -si -H 'Expect:' -F sourcefile=@- -F lang=$lang \
+hash=$(curl -si -H 'Expect:' -F "sourcefile=@$file" -F lang=$lang \
 	$NOPASTE | grep ^Location: | tr -d '\r' | cut -d' ' -f2-)
+
+[ -z "$tmpfile" ] || rm -vf "$file"
 
 if [ -z "$hash" ]; then
 	echo_error "failed to paste to $NOPASTE."
