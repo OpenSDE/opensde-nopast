@@ -304,12 +304,38 @@ static void sort_of_realpath (const char *file, char *absfile)
 		*dst = 0;
 }
 
+static inline void log_append(const char *logfile, const char *fmt, ...)
+{
+	va_list ap;
+	char buf[PATH_MAX];
+	int fd, l;
+
+	va_start(ap, fmt);
+	l = vsnprintf(buf, sizeof(buf), fmt, ap);
+	va_end(ap);
+
+#ifdef __USE_LARGEFILE
+	fd=open64(logfile,O_APPEND|O_WRONLY|O_LARGEFILE,0);
+#else
+#warning "The wrapper library will not work properly for large logs!"
+	fd=open(logfile,O_APPEND|O_WRONLY,0);
+#endif
+	if (fd == -1) return;
+
+	flock(fd, LOCK_EX);
+	lseek(fd, 0, SEEK_END);
+
+	write(fd,buf,l);
+
+	close(fd);
+}
+
 static void handle_file_access_after(const char * func, const char * file,
 				     struct status_t * status)
 {
-	char buf[PATH_MAX], *logfile, filterdir2 [PATH_MAX], *tfilterdir;
+	char *logfile, filterdir2 [PATH_MAX], *tfilterdir;
 	char absfile [PATH_MAX];
-	int fd; struct stat st;
+	struct stat st;
 
 	LOG("begin of handle_file_access_after(\"%s\", \"%s\", xxx)\n", func, file);
 
@@ -338,21 +364,6 @@ static void handle_file_access_after(const char * func, const char * file,
 			return;
 		}
 	}
-
-#ifdef __USE_LARGEFILE
-	fd=open64(logfile,O_APPEND|O_WRONLY|O_LARGEFILE,0);
-#else
-#warning "The wrapper library will not work properly for large logs!"
-	fd=open(logfile,O_APPEND|O_WRONLY,0);
-#endif
-	if (fd == -1) return;
-
-	flock(fd, LOCK_EX);
-	lseek(fd, 0, SEEK_END);
-
-	sprintf(buf,"%s.%s:\t%s\n", cmdname, func, absfile);
-	write(fd,buf,strlen(buf));
-
-	close(fd);
+	log_append(logfile, "%s.%s:\t%s\n", cmdname, func, absfile);
 	LOG("end   of handle_file_access_after(\"%s\", \"%s\", xxx)", func, file);
 }
