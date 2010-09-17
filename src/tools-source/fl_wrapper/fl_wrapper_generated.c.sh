@@ -26,10 +26,13 @@ EOT
 add_wrapper() {
 	local template=
 	local ret_type="$1" function="$2"
-	local p1= p2=
+	local p1= p2= ffd=0
 
 	p1="$3"
 	p2=$(echo "$3" | tr ' \n' '\n,' | grep , | tr '\n' ' ' | sed -e 's/[\[\]]//g' -e 's/, $//')
+	if echo "$p1" | grep -q ' ffd'; then
+		ffd=1
+	fi
 
 	case "${function}" in
 	open*)
@@ -47,12 +50,14 @@ add_wrapper() {
 
 	sed	-e '/SDE-COPYRIGHT-NOTE-BEGIN/,/SDE-COPYRIGHT-NOTE-END/d;' \
 		-e "s/FUNCTION/$function/g" -e "s/RET_TYPE/$ret_type/g" \
-		-e "s/P1/$p1/g" -e "s/P2/$p2/g" \
+		-e "s/P1/$p1/g" -e "s/P2/$p2/g" -e "s/HAS_FFD/$ffd/g" \
 		"$template" | sed -e 'N;/^\/\*\n \*\/$/d;'
 }
 
 add_wrapper int open	'const char* f, int a, ...'
 add_wrapper int open64	'const char* f, int a, ...'
+add_wrapper int openat		'int ffd, const char* f, int a, ...'
+add_wrapper int openat64	'int ffd, const char* f, int a, ...'
 
 add_wrapper 'FILE*' fopen	'const char* f, const char* g'
 add_wrapper 'FILE*' fopen64	'const char* f, const char* g'
@@ -61,13 +66,21 @@ add_wrapper int creat	'const char* f, mode_t m'
 add_wrapper int creat64	'const char* f, mode_t m'
 
 add_wrapper int mkdir	'const char* f, mode_t m'
+add_wrapper int mkdirat	'int ffd, const char* f, mode_t m'
+
 add_wrapper int mkfifo	'const char* f, mode_t m'
 add_wrapper int mknod	'const char* f, mode_t m, dev_t d'
 add_wrapper int __xmknod	'int ver, const char* f, mode_t m, dev_t d'
+add_wrapper int mkfifoat	'int ffd, const char* f, mode_t m'
+add_wrapper int mknodat		'int ffd, const char* f, mode_t m, dev_t d'
+add_wrapper int __xmknodat	'int ver, int ffd, const char* f, mode_t m, dev_t d'
 
 add_wrapper int link	'const char* s, const char* f'
 add_wrapper int symlink	'const char* s, const char* f'
 add_wrapper int rename	'const char* s, const char* f'
+add_wrapper int linkat		'int sfd, const char* s, int ffd, const char* f, int g'
+add_wrapper int symlinkat	'const char* s, int ffd, const char* f'
+add_wrapper int renameat	'int sfd, const char* s, int ffd, const char* f'
 
 add_wrapper int utime	'const char* f, const struct utimbuf* t'
 add_wrapper int utimes	'const char* f, struct timeval* t'
