@@ -34,45 +34,7 @@
 #  define FLWRAPPER_LIBC "libc.so.6"
 #endif
 
-#define _GNU_SOURCE
-#define _REENTRANT
-
-#define open   xxx_open
-#define open64 xxx_open64
-#define mknod  xxx_mknod
-
-#define _LARGEFILE_SOURCE
-#define _LARGEFILE64_SOURCE
-
-#include <dlfcn.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/file.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <utime.h>
-#include <stdarg.h>
-#include <limits.h>
-/* somehow it can happen that PATH_MAX does not get defined...? -- jsaw */
-#ifndef PATH_MAX
-#include <linux/limits.h>
-#endif
-#ifndef PATH_MAX
-#warning "PATH_MAX was not defined - BUG in your system headers?"
-#define PATH_MAX 4095
-#endif
-#include <libgen.h>
-
-#undef _LARGEFILE64_SOURCE
-#undef _LARGEFILE_SOURCE
-
-#undef mknod
-#undef open
-#undef open64
+#include "fl_wrapper.h"
 
 static void * get_dl_symbol(char *);
 

@@ -1,3 +1,4 @@
 fl_wrapper.so
 fl_wrapper_generated.c
+fl_wrapper.h
 *.o
