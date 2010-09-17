@@ -17,7 +17,7 @@
  */
 
 extern RET_TYPE FUNCTION(P1);
-RET_TYPE (*orig_FUNCTION)(P1) = 0;
+RET_TYPE (*orig_FUNCTION)(P1) = NULL;
 
 RET_TYPE FUNCTION(P1)
 {
