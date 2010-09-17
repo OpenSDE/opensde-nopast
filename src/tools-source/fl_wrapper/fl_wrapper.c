@@ -28,7 +28,15 @@
 
 #ifndef DEBUG
 #	define DEBUG 0
+#	define LOG(F, ...)
+#elif DEBUG == 1
+#	define LOG(F, ...)	fprintf(stderr, "fl_wrapper.so debug [%d]: " F "\n", \
+#					getpid(), __VA_ARGS__)
+#else
+#	define LOG(F, ...)
 #endif
+#define ERR(F, ...)		fprintf(stderr, "fl_wrapper.so: " F "\n", __VA_ARGS__)
+
 #define DLOPEN_LIBC 1
 #ifndef FLWRAPPER_LIBC
 #	define FLWRAPPER_LIBC "libc.so.6"
@@ -67,21 +75,15 @@ static void * get_dl_symbol(char * symname)
 
 	if (!libc_handle) libc_handle=dlopen(FLWRAPPER_LIBC, RTLD_LAZY);
 	if (!libc_handle) {
-		fprintf(stderr, "fl_wrapper.so: Can't dlopen libc: %s\n", dlerror()); fflush(stderr);
+		ERR("Can't dlopen libc: %s", dlerror()); fflush(stderr);
 		abort();
 	}
 
 	rc = dlsym(libc_handle, symname);
-#	if DEBUG == 1
-	fprintf(stderr, "fl_wrapper.so debug [%d]: Symbol '%s' in libc (%p) has been resolved to %p.\n",
-		getpid(), symname, libc_handle, rc);
-#	endif
+	LOG("Symbol '%s' in libc (%p) has been resolved to %p.", symname, libc_handle, rc);
 #else
 	rc = dlsym(RTLD_NEXT, symname);
-#	if DEBUG == 1
-	fprintf(stderr, "fl_wrapper.so debug [%d]: Symbol '%s' (RTLD_NEXT) has been resolved to %p.\n",
-		getpid(), symname, rc);
-#	endif
+	LOG("Symbol '%s' (RTLD_NEXT) has been resolved to %p.", symname, rc);
 #endif
 	if (!rc) {
 		fprintf(stderr, "fl_wrapper.so: Can't resolve %s: %s\n",
@@ -214,7 +216,7 @@ static void check_write_access(const char * func, const char * file)
 		if (!strcmp(file, "/dev/null") || !strncmp(file, "/tmp", 4)) {
 		}
 		else if (strncmp(file, FLWRAPPER_BASEDIR, sizeof(FLWRAPPER_BASEDIR)-1)) {
-			fprintf(stderr, "fl_wrapper.so: write outside basedir (%s): %s\n", FLWRAPPER_BASEDIR, file);
+			ERR("write outside basedir (%s): %s", FLWRAPPER_BASEDIR, file);
 			fflush(stderr);
 			exit(-1);
 		}
@@ -226,10 +228,11 @@ static void handle_file_access_before(const char * func, const char * file,
 				      struct status_t * status)
 {
 	struct stat st;
-#if DEBUG == 1
-	fprintf(stderr, "fl_wrapper.so debug [%d]: begin of handle_file_access_before(\"%s\", \"%s\", xxx)\n",
-		getpid(), func, file);
+#if DEBUG != 1
+	(void) func;
 #endif
+
+	LOG("begin of handle_file_access_before(\"%s\", \"%s\", xxx)", func, file);
 	if ( lstat(file,&st) ) {
 		status->inode=0;  status->size=0;
 		status->mtime=0;  status->ctime=0;
@@ -237,10 +240,7 @@ static void handle_file_access_before(const char * func, const char * file,
 		status->inode=st.st_ino;    status->size=st.st_size;
 		status->mtime=st.st_mtime;  status->ctime=st.st_ctime;
 	}
-#if DEBUG == 1
-	fprintf(stderr, "fl_wrapper.so debug [%d]: end   of handle_file_access_before(\"%s\", \"%s\", xxx)\n",
-		getpid(), func, file);
-#endif
+	LOG("end   of handle_file_access_before(\"%s\", \"%s\", xxx)", func, file);
 }
 
 /* sort of, private realpath, mostly not readlink() */
@@ -289,10 +289,8 @@ static void handle_file_access_after(const char * func, const char * file,
 	char absfile [PATH_MAX];
 	int fd; struct stat st;
 
-#if DEBUG == 1
-	fprintf(stderr, "fl_wrapper.so debug [%d]: begin of handle_file_access_after(\"%s\", \"%s\", xxx)\n",
-		getpid(), func, file);
-#endif
+	LOG("begin of handle_file_access_after(\"%s\", \"%s\", xxx)\n", func, file);
+
 	if ( !strcmp(file, wlog) ) return;
 	if ( !strcmp(file, rlog) ) return;
 	if ( lstat(file, &st) ) return;
@@ -314,12 +312,8 @@ static void handle_file_access_after(const char * func, const char * file,
 	for ( ; tfilterdir ; tfilterdir = strtok(NULL, ":") )
 	{
 		if ( !strncmp(absfile, tfilterdir, strlen(tfilterdir)) ) {
-#if DEBUG == 1
-		  fprintf(stderr,
-			  "fl_wrapper.so debug [%d]: \"%s\" dropped due to filterdir \"%s\"\n",
-			  getpid(), absfile, tfilterdir);
-#endif
-		  return;
+			LOG("\"%s\" dropped due to filterdir \"%s\"", absfile, tfilterdir);
+			return;
 		}
 	}
 
@@ -338,8 +332,5 @@ static void handle_file_access_after(const char * func, const char * file,
 	write(fd,buf,strlen(buf));
 
 	close(fd);
-#if DEBUG == 1
-	fprintf(stderr, "fl_wrapper.so debug [%d]: end   of handle_file_access_after(\"%s\", \"%s\", xxx)\n",
-		getpid(), func, file);
-#endif
+	LOG("end   of handle_file_access_after(\"%s\", \"%s\", xxx)", func, file);
 }

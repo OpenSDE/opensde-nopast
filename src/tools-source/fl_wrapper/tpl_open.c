@@ -43,10 +43,7 @@ RET_TYPE FUNCTION(P1)
 	if (!orig_FUNCTION) orig_FUNCTION = get_dl_symbol("FUNCTION");
 	errno=old_errno;
 
-#if DEBUG == 1
-	fprintf(stderr, "fl_wrapper.so debug [%d]: going to run original FUNCTION() at %p (wrapper is at %p).\n",
-		getpid(), orig_FUNCTION, FUNCTION);
-#endif
+	LOG("going to run original FUNCTION() at %p (wrapper is at %p).", orig_FUNCTION, FUNCTION);
 
 	if (a & O_CREAT) {
 		va_list ap;
