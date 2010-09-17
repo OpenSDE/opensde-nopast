@@ -61,6 +61,7 @@ static void check_write_access(const char * , const char * );
 static void handle_file_access_before(const char *, const char *, struct status_t *);
 static void handle_file_access_after(const char *, const char *, struct status_t *);
 static void handle_fileat_access_before(const char *, int, const char *, struct status_t *);
+static void handle_fileat_access_after(const char *, int, const char *, struct status_t *);
 
 char filterdir[PATH_MAX], wlog[PATH_MAX], rlog[PATH_MAX], *cmdname = "unkown";
 
@@ -97,6 +98,21 @@ static void * get_dl_symbol(char * symname)
 	return rc;
 }
 
+static inline ssize_t readlink_from(char *buf, size_t buf_len, const char *tpl, ...)
+{
+	ssize_t l;
+	va_list ap;
+
+	va_start(ap, tpl);
+	vsnprintf(buf, buf_len, tpl, ap);
+	va_end(ap);
+
+	if ((l = readlink(buf, buf, buf_len)) < 0)
+		return -1;
+	buf[l] = '\0';
+	return l;
+}
+
 static inline ssize_t readonce_from(char *buf, size_t buf_len, const char *tpl, ...)
 {
 	int fd;
@@ -110,7 +126,7 @@ static inline ssize_t readonce_from(char *buf, size_t buf_len, const char *tpl, 
 	/* EINTR? */
 	if ((fd = open(buf, O_RDONLY)) < 0)
 		return -1;
-	if ((rc = read(fd, buf, buf_len-1)) > 0)
+	else if ((rc = read(fd, buf, buf_len-1)) > 0)
 		buf[rc] = '\0';
 	close(fd);
 
@@ -267,17 +283,37 @@ static void handle_fileat_access_before(const char * func, int dirfd, const char
 	LOG("end   of handle_fileat_access_before(\"%s\", \"%s\", xxx)", func, file);
 }
 
-/* sort of, private realpath, mostly not readlink() */
-static void sort_of_realpath (const char *file, char *absfile)
+static const char *make_file_absolute(char *absfile, const char *file)
 {
-	/* make sure the filename is absolute */
-	if (file[0] != '/') {
+	if (file[0] == '/')
+		return file;
+	else {
 		char cwd[PATH_MAX];
-		getcwd(cwd, PATH_MAX);
+		if (getcwd(cwd, PATH_MAX) == NULL)
+			return NULL;
 		snprintf(absfile, PATH_MAX, "%s/%s", cwd, file);
-		file = absfile;
+		return absfile;
 	}
+}
 
+static const char *make_fileat_absolute(char *absfile, int dirfd, const char *file)
+{
+	if (file[0] == '/')
+		return file;
+	else if (dirfd == AT_FDCWD)
+		return make_file_absolute(absfile, file);
+	else {
+		char cwd[PATH_MAX];
+		if (readlink_from(cwd, PATH_MAX, "/proc/self/fd/%d", dirfd) < 0)
+			return NULL;
+		snprintf(absfile, PATH_MAX, "%s/%s", cwd, file);
+		return absfile;
+	}
+}
+
+/* sort of, private realpath, mostly not readlink() */
+static void sanitize_absfile(char *absfile, const char *file)
+{
 	const char* src = file; char* dst = absfile;
 	/* till the end, remove //, ./ and ../ parts */
 	while (dst < absfile + PATH_MAX && *src) {
@@ -333,27 +369,22 @@ static inline void log_append(const char *logfile, const char *fmt, ...)
 	close(fd);
 }
 
-static void handle_file_access_after(const char * func, const char * file,
-				     struct status_t * status)
+
+static inline void _handle_file_access_after(const char *func, const char *absfile,
+					     struct status_t *status, struct stat *st)
 {
+	LOG("begin of _handle_file_access_after(\"%s\", \"%s\", xxx, xxx)\n", func, absfile);
+
 	char *logfile, filterdir2 [PATH_MAX], *tfilterdir;
-	char absfile [PATH_MAX];
-	struct stat st;
 
-	LOG("begin of handle_file_access_after(\"%s\", \"%s\", xxx)\n", func, file);
-
-	if ( !strcmp(file, wlog) ) return;
-	if ( !strcmp(file, rlog) ) return;
-	if ( lstat(file, &st) ) return;
-
-	if ( (status != 0) && (status->inode != st.st_ino ||
-	     status->size  != st.st_size || status->mtime != st.st_mtime ||
-	     status->ctime != st.st_ctime) ) { logfile = wlog; }
-	else { logfile = rlog; }
-	if ( logfile == 0 ) return;
-
-	/* make sure the filename is "canonical" */
-	sort_of_realpath (file, absfile);
+	if ((status != NULL) && (status->inode != st->st_ino ||
+	     status->size  != st->st_size || status->mtime != st->st_mtime ||
+	     status->ctime != st->st_ctime)) {
+		logfile = wlog;
+	} else {
+		logfile = rlog;
+	}
+	if (logfile == NULL) return;
 
 	/* We ignore access inside the collon seperated directory list
 	   $FLWRAPPER_BASE, to keep the log smaller and reduce post
@@ -368,5 +399,44 @@ static void handle_file_access_after(const char * func, const char * file,
 		}
 	}
 	log_append(logfile, "%s.%s:\t%s\n", cmdname, func, absfile);
-	LOG("end   of handle_file_access_after(\"%s\", \"%s\", xxx)", func, file);
+	LOG("end   of _handle_file_access_after(\"%s\", \"%s\", xxx, xxx)\n", func, absfile);
+}
+
+
+static void handle_file_access_after(const char * func, const char * file,
+				     struct status_t * status)
+{
+	struct stat st;
+	char absfile[PATH_MAX];
+
+	LOG("begin of handle_file_access_after(\"%s\", \"%s\", xxx)\n", func, file);
+
+	if (strcmp(file, wlog) == 0) return;
+	else if (strcmp(file, rlog) == 0) return;
+	else if (lstat(file, &st) < 0) return;
+
+	/* make sure the filename is "canonical" */
+	file = make_file_absolute(absfile, file);
+	sanitize_absfile(absfile, file);
+
+	_handle_file_access_after(func, absfile, status, &st);
+}
+
+static void handle_fileat_access_after(const char * func, int dirfd, const char * file,
+				       struct status_t * status)
+{
+	struct stat st;
+	char absfile [PATH_MAX];
+
+	LOG("begin of handle_fileat_access_after(\"%s\", %d, \"%s\", xxx)\n", func, dirfd, file);
+
+	if (strcmp(file, wlog) == 0) return;
+	else if (strcmp(file, rlog) == 0) return;
+	else if (fstatat(dirfd, file, &st, AT_SYMLINK_NOFOLLOW) < 0) return;
+
+	/* make sure the filename is "canonical" */
+	file = make_fileat_absolute(absfile, dirfd, file);
+	sanitize_absfile(absfile, file);
+
+	_handle_file_access_after(func, absfile, status, &st);
 }
