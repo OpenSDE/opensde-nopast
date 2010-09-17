@@ -55,7 +55,7 @@ esac
 hash=$(curl -si -H 'Expect:' -F "sourcefile=@$file" -F lang=$lang \
 	$NOPASTE | grep ^Location: | tr -d '\r' | cut -d' ' -f2-)
 
-[ -z "$tmpfile" ] || rm -vf "$file"
+[ -z "$tmpfile" ] || rm -f "$file"
 
 if [ -z "$hash" ]; then
 	echo_error "failed to paste to $NOPASTE."
