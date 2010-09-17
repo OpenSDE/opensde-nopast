@@ -60,6 +60,7 @@ static void check_write_access(const char * , const char * );
 #endif
 static void handle_file_access_before(const char *, const char *, struct status_t *);
 static void handle_file_access_after(const char *, const char *, struct status_t *);
+static void handle_fileat_access_before(const char *, int, const char *, struct status_t *);
 
 char filterdir[PATH_MAX], wlog[PATH_MAX], rlog[PATH_MAX], *cmdname = "unkown";
 
@@ -243,6 +244,25 @@ static void handle_file_access_before(const char * func, const char * file,
 		status->mtime=st.st_mtime;  status->ctime=st.st_ctime;
 	}
 	LOG("end   of handle_file_access_before(\"%s\", \"%s\", xxx)", func, file);
+}
+
+static void handle_fileat_access_before(const char * func, int dirfd, const char * file,
+					struct status_t * status)
+{
+	struct stat st;
+#if DEBUG != 1
+	(void) func;
+#endif
+
+	LOG("begin of handle_fileat_access_before(\"%s\", &d, \"%s\", xxx)", func, dirfd, file);
+	if ( fstatat(dirfd, file, &st, AT_SYMLINK_NOFOLLOW) ) {
+		status->inode=0;  status->size=0;
+		status->mtime=0;  status->ctime=0;
+	} else {
+		status->inode=st.st_ino;    status->size=st.st_size;
+		status->mtime=st.st_mtime;  status->ctime=st.st_ctime;
+	}
+	LOG("end   of handle_fileat_access_before(\"%s\", \"%s\", xxx)", func, file);
 }
 
 /* sort of, private realpath, mostly not readlink() */
