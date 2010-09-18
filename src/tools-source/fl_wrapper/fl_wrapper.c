@@ -390,18 +390,20 @@ static inline void _handle_file_access_after(const char *func, const char *absfi
 		logfile = rlog;
 		LOG("%s(\"%s\"): inode was not modified", func, absfile);
 	}
-	if (logfile == NULL) return;
+	if (logfile == NULL || logfile[0] == '\0') return;
 
-	/* We ignore access inside the collon seperated directory list
-	   $FLWRAPPER_BASE, to keep the log smaller and reduce post
-	   processing time. -ReneR */
-	strcpy (filterdir2, filterdir); /* due to strtok - sigh */
-	tfilterdir = strtok(filterdir2, ":");
-	for ( ; tfilterdir ; tfilterdir = strtok(NULL, ":") )
-	{
-		if ( !strncmp(absfile, tfilterdir, strlen(tfilterdir)) ) {
-			LOG("%s(\"%s\"): skipped due to filterdir \"%s\"", func, absfile, tfilterdir);
-			return;
+	if (filterdir[0] != '\0') {
+		/* We ignore access inside the collon seperated directory list
+		   $FLWRAPPER_BASE, to keep the log smaller and reduce post
+		   processing time. -ReneR */
+		strcpy (filterdir2, filterdir); /* due to strtok - sigh */
+		tfilterdir = strtok(filterdir2, ":");
+		for ( ; tfilterdir ; tfilterdir = strtok(NULL, ":") )
+		{
+			if ( !strncmp(absfile, tfilterdir, strlen(tfilterdir)) ) {
+				LOG("%s(\"%s\"): skipped due to filterdir \"%s\"", func, absfile, tfilterdir);
+				return;
+			}
 		}
 	}
 	LOG("%s(\"%s\"): logging to \"%s\"", func, absfile, logfile);
