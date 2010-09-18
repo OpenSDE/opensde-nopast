@@ -31,7 +31,7 @@
 #	define LOG(F, ...)
 #elif DEBUG == 1
 #	define LOG(F, ...)	fprintf(stderr, "fl_wrapper.so debug [%d]: " F "\n", \
-#					getpid(), __VA_ARGS__)
+					getpid(), __VA_ARGS__)
 #else
 #	define LOG(F, ...)
 #endif
@@ -272,7 +272,7 @@ static void handle_fileat_access_before(const char * func, int dirfd, const char
 	(void) func;
 #endif
 
-	LOG("begin of handle_fileat_access_before(\"%s\", &d, \"%s\", xxx)", func, dirfd, file);
+	LOG("begin of handle_fileat_access_before(\"%s\", %d, \"%s\", xxx)", func, dirfd, file);
 	if ( fstatat(dirfd, file, &st, AT_SYMLINK_NOFOLLOW) ) {
 		status->inode=0;  status->size=0;
 		status->mtime=0;  status->ctime=0;
