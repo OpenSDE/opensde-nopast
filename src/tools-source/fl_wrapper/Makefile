@@ -13,10 +13,15 @@
 # --- SDE-COPYRIGHT-NOTE-END ---
 
 CC=gcc
-CFLAGS=-Wall -Wextra -O2 -ldl -shared -fPIC
+CFLAGS=-Wall -Wextra
+LIB_LDFLAGS=-ldl -shared -fPIC
+BIN_LDFLAGS=
 
 ifeq ($(DEBUG),yes)
 	CFLAGS += -DDEBUG=1
+	CFLAGS += -g -O0
+else
+	CFLAGS += -O2
 endif
 ifneq ($(BASE),)
 	CFLAGS += '-DFLWRAPPER_BASEDIR="$(BASE)"'
@@ -25,20 +30,32 @@ ifneq ($(LIBC),)
 	CFLAGS += '-DFLWRAPPER_LIBC="$(LIBC)"'
 endif
 
+FLTEST=fltest
+
 LIB=fl_wrapper.so
 GENERATED=fl_wrapper_generated.c
 HEADER=fl_wrapper.h
 
 SRCS=fl_wrapper.c fl_wrapper_execl.c $(GENERATED)
 
-.PHONY: clean
+.PHONY: clean test gdb
 
 $(LIB): $(SRCS) $(HEADER)
-	$(CC) $(CFLAGS) -o "$@.tmp" $<
+	$(CC) $(CFLAGS) $(LIB_LDFLAGS) -o "$@.tmp" $<
 	mv "$@.tmp" "$@"
+
+$(FLTEST): fl_wrapper_test.c
+	$(CC) $(CFLAGS) $(BIN_LDFLAGS) -o $@ $<
+
+test: $(LIB) $(FLTEST)
+	sh ./fl_wrapper_test.sh
+
+gdb: $(LIB) $(FLTEST)
+	sh ./fl_wrapper_test.sh gdb
 
 clean:
 	@rm -vf $(LIB) *.o *.tmp $(GENERATED) $(HEADER)
+	@rm -vf fltest* rlog.txt wlog.txt
 
 $(GENERATED): $(GENERATED).sh $(wildcard tpl_*.c)
 $(HEADER): $(HEADER).sh $(GENERATED).sh
