@@ -90,8 +90,7 @@ static void * get_dl_symbol(char * symname)
 	LOG("Symbol '%s' (RTLD_NEXT) has been resolved to %p.", symname, rc);
 #endif
 	if (!rc) {
-		fprintf(stderr, "fl_wrapper.so: Can't resolve %s: %s\n",
-		       symname, dlerror()); fflush(stderr);
+		ERR("Can't resolve %s: %s", symname, dlerror()); fflush(stderr);
 		abort();
 	}
 
@@ -216,14 +215,22 @@ void __attribute__ ((constructor)) fl_wrapper_init()
 	if (basepid_txt)
 		basepid = atoi(basepid_txt);
 
+	LOG("FLWRAPPER_BASEPID=%d", basepid);
+
 	addptree(&txtpos, cmdtxt, getpid(), basepid);
 	cmdname = strdup(cmdtxt);
+
+	LOG("cmdname=\"%s\"", cmdname);
 
 	/* we copy the vars, so evil code can not unset them ... e.g.
 	   the perl/spamassassin build ... -ReneR */
 	copy_getenv(filterdir, "FLWRAPPER_FILTERDIR");
 	copy_getenv(wlog, "FLWRAPPER_WLOG");
 	copy_getenv(rlog, "FLWRAPPER_RLOG");
+
+	LOG("FLWRAPPER_FILTERDIR=\"%s\"", filterdir);
+	LOG("FLWRAPPER_RLOG=\"%s\"", rlog);
+	LOG("FLWRAPPER_WLOG=\"%s\"", wlog);
 }
 
 #ifdef FLWRAPPER_BASEDIR
@@ -253,15 +260,15 @@ static void handle_file_access_before(const char * func, const char * file,
 	(void) func;
 #endif
 
-	LOG("begin of handle_file_access_before(\"%s\", \"%s\", xxx)", func, file);
-	if ( lstat(file,&st) ) {
+	if (lstat(file,&st) < 0) {
 		status->inode=0;  status->size=0;
 		status->mtime=0;  status->ctime=0;
+		LOG("%s(\"%s\"): No such file or directory", func, file);
 	} else {
 		status->inode=st.st_ino;    status->size=st.st_size;
 		status->mtime=st.st_mtime;  status->ctime=st.st_ctime;
+		LOG("%s(\"%s\"): inode info backed up", func, file);
 	}
-	LOG("end   of handle_file_access_before(\"%s\", \"%s\", xxx)", func, file);
 }
 
 static void handle_fileat_access_before(const char * func, int dirfd, const char * file,
@@ -272,15 +279,15 @@ static void handle_fileat_access_before(const char * func, int dirfd, const char
 	(void) func;
 #endif
 
-	LOG("begin of handle_fileat_access_before(\"%s\", %d, \"%s\", xxx)", func, dirfd, file);
 	if ( fstatat(dirfd, file, &st, AT_SYMLINK_NOFOLLOW) ) {
 		status->inode=0;  status->size=0;
 		status->mtime=0;  status->ctime=0;
+		LOG("%s(%d, \"%s\"): No such file or directory", func, dirfd, file);
 	} else {
 		status->inode=st.st_ino;    status->size=st.st_size;
 		status->mtime=st.st_mtime;  status->ctime=st.st_ctime;
+		LOG("%s(%d, \"%s\"): inode info backed up", func, dirfd, file);
 	}
-	LOG("end   of handle_fileat_access_before(\"%s\", \"%s\", xxx)", func, file);
 }
 
 static const char *make_file_absolute(char *absfile, const char *file)
@@ -369,20 +376,19 @@ static inline void log_append(const char *logfile, const char *fmt, ...)
 	close(fd);
 }
 
-
 static inline void _handle_file_access_after(const char *func, const char *absfile,
 					     struct status_t *status, struct stat *st)
 {
-	LOG("begin of _handle_file_access_after(\"%s\", \"%s\", xxx, xxx)\n", func, absfile);
-
 	char *logfile, filterdir2 [PATH_MAX], *tfilterdir;
 
 	if ((status != NULL) && (status->inode != st->st_ino ||
 	     status->size  != st->st_size || status->mtime != st->st_mtime ||
 	     status->ctime != st->st_ctime)) {
 		logfile = wlog;
+		LOG("%s(\"%s\"): inode was modified", func, absfile);
 	} else {
 		logfile = rlog;
+		LOG("%s(\"%s\"): inode was not modified", func, absfile);
 	}
 	if (logfile == NULL) return;
 
@@ -394,30 +400,37 @@ static inline void _handle_file_access_after(const char *func, const char *absfi
 	for ( ; tfilterdir ; tfilterdir = strtok(NULL, ":") )
 	{
 		if ( !strncmp(absfile, tfilterdir, strlen(tfilterdir)) ) {
-			LOG("\"%s\" dropped due to filterdir \"%s\"", absfile, tfilterdir);
+			LOG("%s(\"%s\"): skipped due to filterdir \"%s\"", func, absfile, tfilterdir);
 			return;
 		}
 	}
+	LOG("%s(\"%s\"): logging to \"%s\"", func, absfile, logfile);
 	log_append(logfile, "%s.%s:\t%s\n", cmdname, func, absfile);
-	LOG("end   of _handle_file_access_after(\"%s\", \"%s\", xxx, xxx)\n", func, absfile);
 }
-
 
 static void handle_file_access_after(const char * func, const char * file,
 				     struct status_t * status)
 {
 	struct stat st;
+	const char *file2;
 	char absfile[PATH_MAX];
 
-	LOG("begin of handle_file_access_after(\"%s\", \"%s\", xxx)\n", func, file);
+	LOG("%s(\"%s\"): post processing", func, file);
 
 	if (strcmp(file, wlog) == 0) return;
 	else if (strcmp(file, rlog) == 0) return;
 	else if (lstat(file, &st) < 0) return;
 
-	/* make sure the filename is "canonical" */
-	file = make_file_absolute(absfile, file);
-	sanitize_absfile(absfile, file);
+	file2 = make_file_absolute(absfile, file);
+	if (file2 == NULL) {
+		ERR("%s(\"%s\"): failed to make absolute!", func, file);
+		return;
+	} else {
+		LOG("%s(\"%s\"): is now absolute", func, file2);
+	}
+
+	sanitize_absfile(absfile, file2);
+	LOG("%s(\"%s\"): is now sanitized", func, absfile);
 
 	_handle_file_access_after(func, absfile, status, &st);
 }
@@ -426,17 +439,25 @@ static void handle_fileat_access_after(const char * func, int dirfd, const char 
 				       struct status_t * status)
 {
 	struct stat st;
+	const char *file2;
 	char absfile [PATH_MAX];
 
-	LOG("begin of handle_fileat_access_after(\"%s\", %d, \"%s\", xxx)\n", func, dirfd, file);
+	LOG("%s(%d, \"%s\"): post processing", func, dirfd, file);
 
 	if (strcmp(file, wlog) == 0) return;
 	else if (strcmp(file, rlog) == 0) return;
 	else if (fstatat(dirfd, file, &st, AT_SYMLINK_NOFOLLOW) < 0) return;
 
-	/* make sure the filename is "canonical" */
-	file = make_fileat_absolute(absfile, dirfd, file);
-	sanitize_absfile(absfile, file);
+	file2 = make_fileat_absolute(absfile, dirfd, file);
+	if (file2 == NULL) {
+		ERR("%s(%d, \"%s\"): failed to make absolute!", func, dirfd, file);
+		return;
+	} else {
+		LOG("%s(\"%s\"): is now absolute", func, file2);
+	}
+
+	sanitize_absfile(absfile, file2);
+	LOG("%s(\"%s\"): is now sanitized", func, absfile);
 
 	_handle_file_access_after(func, absfile, status, &st);
 }
