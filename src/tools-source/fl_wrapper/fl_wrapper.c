@@ -70,6 +70,17 @@ char filterdir[PATH_MAX], wlog[PATH_MAX], rlog[PATH_MAX], *cmdname = "unkown";
 #include "fl_wrapper_execl.c"
 
 /* Internal Functions */
+static inline void writeall(int fd, const char *buf, int l)
+{
+	while (l>0) {
+		int wc = write(fd, buf, l);
+		if (wc >= 0) {
+			l -= wc;
+			buf += wc;
+		} else if (errno != EINTR)
+			return;
+	}
+}
 
 static void * get_dl_symbol(char * symname)
 {
@@ -370,8 +381,7 @@ static inline void log_append(const char *logfile, const char *fmt, ...)
 	flock(fd, LOCK_EX);
 	lseek(fd, 0, SEEK_END);
 
-	/* EINTR? */
-	write(fd,buf,l);
+	writeall(fd,buf,l);
 
 	close(fd);
 }
