@@ -60,7 +60,7 @@ mkdir -p tmp/ download/
 
 # Load system wide configuration for this tool
 #
-config=default mirror= mirror_last= altdir= proxy= proxyauth= notimeout=
+config=default mirror= mirror_last= altdir= proxy= proxyauth= notimeout=0
 
 if [ -s "$SDESETTINGS" ]; then
 	eval $( $SDEROOT/bin/sde-config-ini -F "$SDESETTINGS" download )
