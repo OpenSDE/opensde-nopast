@@ -56,6 +56,9 @@ RET_TYPE FUNCTION(P1)
 	} else
 		rc = orig_FUNCTION(P2);
 
+	if (rc < 0)
+		return rc;
+
 	old_errno=errno;
 #if HAS_FFD
 	handle_fileat_access_after("FUNCTION", ffd, f, &status);
