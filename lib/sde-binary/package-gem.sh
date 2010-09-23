@@ -76,7 +76,7 @@ if $SDEROOT/lib/sde-binary/package.sh --type "tar.bz2" ${versioned:+--versioned}
 		echo_error "Failed to create '$output/$filename.gem'"
 		rm -f "$output/$filename.gem.tmp"
 	else
-		mv "$output/$filename.gem"{.tmp,}
+		mv "$output/$filename.gem.tmp" "$output/$filename.gem"
 	fi
 
 	echo_status "Removing temporary ${filename}tar.bz2 file"

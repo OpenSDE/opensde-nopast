@@ -98,5 +98,5 @@ if [ "$errno" != "0" ]; then
 	rm -f "$output/$filename.tmp"
 	exit 4
 else
-	mv "$output/$filename"{.tmp,}
+	mv "$output/$filename.tmp" "$output/$filename"
 fi
