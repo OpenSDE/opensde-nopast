@@ -22,9 +22,9 @@
 . "$SDEROOT/lib/libsde.in"
 
 reschedule_usage() {
-	local progname=${0##*/}
+	local progname="$(echo ${0##*/} | tr '-' ' ')"
 	cat <<EOT
-Usage:	${progname//-/ } [<options>] <package_1> ...
+Usage:	$progname [<options>] <package_1> ...
 
 Supported Options:
 	--all|-a	every package
