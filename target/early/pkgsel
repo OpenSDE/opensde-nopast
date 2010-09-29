@@ -3,7 +3,7 @@ X fhs
 X sysfiles
 
 X linux-header
-X dietlibc
+X uclibc
 X termcap
 
 X automake
