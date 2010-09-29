@@ -20,6 +20,9 @@ SDECFGSET_CROSSBUILD=1
 
 SDECFGSET_LIBC='uclibc'
 
+# enable uClibc SUSv4 legacy support because lvm2 needs siginterrupt()
+SDECFGSET_PKG_UCLIBC_SUSV4_LEGACY='1'
+
 SDECFGSET_OPT='size'
 SDECFGSET_DISABLE_NLS=1
 
