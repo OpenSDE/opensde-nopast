@@ -49,7 +49,12 @@ case "$mime" in
 text/x-shellscript) lang=bash ;;
 text/x-diff) lang=diff ;;
 text/x-c) lang=c ;;
-*) lang=text ;;
+*)
+	case "$type" in
+		"diff output text") lang=diff ;;
+		*)	echo_warning "Assuming plain text (type:$type mime:$mime)"
+			lang=text ;;
+	esac
 esac
 
 hash=$(curl -si -H 'Expect:' -F "sourcefile=@$file" -F lang=$lang \
