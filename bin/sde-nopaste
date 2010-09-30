@@ -51,6 +51,7 @@ text/x-diff) lang=diff ;;
 text/x-c) lang=c ;;
 *)
 	case "$type" in
+		empty) exit ;;
 		"diff output text") lang=diff ;;
 		*)	echo_warning "Assuming plain text (type:$type mime:$mime)"
 			lang=text ;;
