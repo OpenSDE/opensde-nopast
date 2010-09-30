@@ -46,7 +46,7 @@ type=$(file "$file" | cut -d' ' -f2-)
 
 # lang = (bash|c|diff|lua|perl|python|text)
 case "$mime" in
-text/x-shellscript) lang=bash ;;
+text/x-shellscript|application/x-shellscript) lang=bash ;;
 text/x-diff) lang=diff ;;
 text/x-c) lang=c ;;
 *)
