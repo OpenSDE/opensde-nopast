@@ -63,7 +63,7 @@ done
 for x in fmver:etc/VERSION pkgver:package/VERSION; do
 	k="${x%%:*}" f="${x#*:}"
 	v=$(head -n1 "$SDEROOT/$f" 2> /dev/null)
-	[ -n "$v" ] || v='trunk'
+	[ -n "$v" ] || v=master
 	eval "$k='$v'"
 done
 
