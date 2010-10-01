@@ -60,6 +60,7 @@ mkdir -p tmp/ download/
 
 # determine version of the package tree
 pkgver=$("$SDEROOT/lib/version.sh" -p)
+xpkgver=$(echo "$pkgver" | tr '.' '_')
 
 # Load system wide configuration for this tool
 #
@@ -67,7 +68,7 @@ config=default mirror= mirror_last= altdir= proxy= proxyauth= notimeout=0
 
 if [ -s "$SDESETTINGS" ]; then
 	eval $( $SDEROOT/bin/sde-config-ini -F "$SDESETTINGS" download )
-	eval $( $SDEROOT/bin/sde-config-ini -F "$SDESETTINGS" download-$pkgver )
+	eval $( $SDEROOT/bin/sde-config-ini -F "$SDESETTINGS" download-$xpkgver )
 fi
 
 this_is_the_2nd_run=0
@@ -118,8 +119,8 @@ while [ $# -gt 0 ]; do
 			mirror="$2"
 			mirror_last=$(date +%s)
 			$SDEROOT/bin/sde-config-ini -F "$SDESETTINGS" \
-				"download-$pkgver.mirror=$mirror" \
-				"download-$pkgver.mirror_last=$mirror_last"
+				"download-$xpkgver.mirror=$mirror" \
+				"download-$xpkgver.mirror_last=$mirror_last"
 		fi
 		shift ;;
 
@@ -221,7 +222,7 @@ detect_mirror() {
 
 	# read new mirror info
 	mirror=
-	eval $( $SDEROOT/bin/sde-config-ini -F "$SDESETTINGS" download-$pkgver )
+	eval $( $SDEROOT/bin/sde-config-ini -F "$SDESETTINGS" download-$xpkgver )
 
 	if [ -z "$mirror" ]; then
 		echo_error "Mirror detection loop hit a bug!"
