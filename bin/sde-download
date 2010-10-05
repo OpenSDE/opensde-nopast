@@ -718,7 +718,9 @@ all() {
     local each repo pkg
 
     for repo in $( cd package; ls -1 ); do
+	[ -d "package/$repo/" ] || continue
 	for each in package/$repo/*/*.desc; do
+		[ -r "$each" ] || continue
 		pkg="`echo $each | cut -f3 -d/`"
 
 		download_file_desc "$repo" "$pkg"
