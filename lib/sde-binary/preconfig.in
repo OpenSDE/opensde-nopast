@@ -20,7 +20,7 @@ if [ ! -f $cfgtmpdir/cache_pkgfile_type.in ]; then
 		choice SDECFG_PKGFILE_TYPE tar.bz2 \\
 EOT
 	# generate choices
-	for x in tar.{bz2,gz,lzma,lzo} \
+	for x in tar.{bz2,gz,lzma,lzo,xz} \
 		$( ls -1 lib/sde-binary/package-*.sh 2> /dev/null |
 			sed -e 's,.*/package-\(.*\).sh,\1,' ); do
 		$ECHO_E "\t\t${x} 'Create ${x} binary packages' \\" >> $cfgtmpdir/cache_pkgfile_type.in

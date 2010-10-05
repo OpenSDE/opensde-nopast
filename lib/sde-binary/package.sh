@@ -72,6 +72,7 @@ case "$pkg_type" in
 	tar.bz2)	compressor=bzip2 ;;
 	tar.lzo)	compressor=lzop ;;
 	tar.lzma)	compressor=lzma ;;
+	tar.xz)		compressor=xz ;;
 	*)		# external type
 		if [ -x "$SDEROOT/lib/sde-package/package-$pkg_type.sh" ]; then
 			exec $SDEROOT/lib/sde-package/package-$pkg_type.sh ${versioned:+--versioned} --root "${root}" \
