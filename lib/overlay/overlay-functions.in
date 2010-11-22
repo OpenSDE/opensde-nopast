@@ -99,7 +99,7 @@ overlay_apply() {
 				;;
 			patch)
 				$echo_status "$(patch $patchopt \
-					-d "${rootfs:-/}" 2>&1 < $file )"
+					"${xtarget}" 2>&1 < $file )"
 				;;
 		esac
 
