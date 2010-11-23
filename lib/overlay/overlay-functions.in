@@ -98,8 +98,8 @@ overlay_apply() {
 				ln -snf "$ref" "$xtarget"
 				;;
 			patch)
-				$echo_status "$(patch $patchopt \
-					"${xtarget}" 2>&1 < $file )"
+				$echo_status "overlay: patching $xtarget"
+				rock_substitute "$file" | patch $patchopt "$xtarget"
 				;;
 		esac
 
