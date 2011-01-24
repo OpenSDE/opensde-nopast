@@ -135,6 +135,7 @@ Reserved User and Group IDs:
 
 - dovecot:
 97	dovecot		dovecot
+98	dovenull	dovenull
 
 - pdns:
 107    pdns            pdns
