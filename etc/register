@@ -136,6 +136,9 @@ Reserved User and Group IDs:
 - dovecot:
 97	dovecot		dovecot
 
+- pdns:
+107    pdns            pdns
+
 - ldap:
 389	ldap		ldap
 

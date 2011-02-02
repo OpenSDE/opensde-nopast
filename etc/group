@@ -52,6 +52,7 @@ http:80
 partimag:81
 pound:82
 users:100
+pdns:107
 ldap:389
 jboss:390
 secoff:400
