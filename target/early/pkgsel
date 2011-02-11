@@ -19,7 +19,6 @@ X libtool
 X ccache
 
 X busybox
-X udev
 X hotplug2
 
 X device-mapper
