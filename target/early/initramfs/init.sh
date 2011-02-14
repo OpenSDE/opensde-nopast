@@ -57,7 +57,6 @@ done
 banner "Starting Early User Space environment"
 
 title "Mounting /proc and /sys"
-check mount -n -t usbfs none /proc/bus/usb
 check mount -n -t sysfs none /sys
 status
 
