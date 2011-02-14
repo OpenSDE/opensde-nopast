@@ -63,16 +63,12 @@ status
 
 [ -x /bin/dmesg ] && /bin/dmesg -n 3
 
-title "Preparing /dev"
-check mount -n -t tmpfs none /dev
+title "Mounting devtmpfs at /dev"
+check mount -n -t devtmpfs devtmpfs /dev
 status
 
 title "Setting mdev as kernel hotplug helper"
 echo "/sbin/mdev" > /proc/sys/kernel/hotplug
-status
-
-title "Populating initial devices"
-check mdev -s
 status
 
 if [ -x /sbin/modprobe -a -n "$modules" ]; then
