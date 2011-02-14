@@ -62,9 +62,18 @@ status
 
 [ -x /bin/dmesg ] && /bin/dmesg -n 3
 
-title "Mounting devtmpfs at /dev"
-check mount -n -t devtmpfs devtmpfs /dev
-status
+if grep -q devtmpfs /proc/filesystems; then
+	title "Preparing /dev (devtmpfs)"
+	check mount -n -t devtmpfs devtmpfs /dev
+	status
+else
+	title "Preparing /dev (tmpfs)"
+	check mount -n -t tmpfs none /dev
+	status
+	title "Populating initial device nodes"
+	check mdev -s
+	status
+fi
 
 title "Setting mdev as kernel hotplug helper"
 echo "/sbin/mdev" > /proc/sys/kernel/hotplug
