@@ -132,9 +132,12 @@ if [ -n "$root" ]; then
 	[ -e "$root" ] || sleep 2;
 
 	if [ -e "$root" ]; then
-		title "Mounting $root (${ID_FS_TYPE:-unknown}) "
-		[ -z "$ID_FS_TYPE" ] || modprobe -q "$ID_FS_TYPE" 2> /dev/null
-		check mount ${ID_FS_TYPE:+-t $ID_FS_TYPE} ${mode:+-o $mode} "$root" /rootfs
+		# store detected root filesystem in ROOT_FS_TYPE
+		eval ROOT_FS_$(blkid $root | cut -d ' ' -f3)
+
+		title "Mounting $root (${ROOT_FS_TYPE:-unknown}) "
+		[ -z "$ROOT_FS_TYPE" ] || modprobe -q "$ROOT_FS_TYPE" 2> /dev/null
+		check mount ${ROOT_FS_TYPE:+-t $ROOT_FS_TYPE} ${mode:+-o $mode} "$root" /rootfs
 		status
 	else
 		echo "root device ($root) not found on time."
