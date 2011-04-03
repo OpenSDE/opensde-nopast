@@ -84,15 +84,20 @@ cleanconfopt .. set to '0' if you don't want to remove unsupported options
 pyscript ...... script to run 'setup.py', python by default.
 pyconfopt ..... options for 'setup.py' - Python setup scripts
 plconfopt ..... options for 'Makefile.pl' - Perl setup scripts
+wafscript ..... script to run for waf based builds (default = './waf')
+wafconfopt .... options for 'waf configure' (default = 'configure --prefix=/$prefix')
 
 runcmake ...... set to '0' if you want to skip running 'cmake' (default 1)
 runxmkmf ...... set to '0' if you want to skip running 'xmkmf'
 runmkpl ....... set to '0' if you want to skip running 'perl Makefile.PL'
 runpysetup .... set to '0' if you want to skip running 'python setup.py'
+runwaf ........ set to '0' if you want to skip running 'waf' build system.
 
 cmakeopt ...... options for 'cmake'
 makeopt ....... options for 'make' (default = ' ')
 makeinstopt ... options for 'make install' (default = 'install')
+wafbuildopt ... options for 'waf build' (default = 'build')
+wafinstopt .... options for 'waf install' (default = 'install --destdir=$root --force')
 
 crossnative ... has the value 'cross' or 'native'
 archprefix .... prefix for binutils and compiler binaries (for cross-building)
