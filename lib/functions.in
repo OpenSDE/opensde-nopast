@@ -970,6 +970,14 @@ build_this_package() {
 				hook_eval inmake
 				eval ${wafscript:-./waf} $wafinstopt
 				hook_eval postmake
+			elif [ -f Sconstruct -o -f SConstruct -a $runscons = 1 -a ! -f configure ] ; then
+				hook_eval premake
+				eval ${sconsscript:-scons} $sconsopt
+				hook_eval inmake
+				if [ "$sconsinstopt" ]; then
+					eval ${sconsscript:-scons} $sconsinstopt
+				fi
+				hook_eval postmake
 			else # styles that include a make run
 				if [ ! -f Makefile -a ! -f makefile -a \
 				     -f Makefile.PL -a $runmkpl = 1 ]; then
@@ -1162,6 +1170,9 @@ init_vars_and_hooks()
 {
 	makeopt='CC="$CC" CPP="$CPP" CXX="$CXX"'
 	cmakeopt='-DCMAKE_INSTALL_PREFIX="$root/$prefix"'
+	# some scons based builds are using 'prefix' others 'PREFIX'
+	sconsopt='PREFIX=/$prefix prefix=/$prefix'
+	sconsinstopt="$sconsopt"' install'
 
 	if atstage toolchain; then
 		makeopt="$makeopt"' prefix="$root${prefix:+/$prefix}"'
@@ -1185,6 +1196,8 @@ init_vars_and_hooks()
 		makeopt="$makeopt"' INSTALL_PREFIX="$root"'
 		makeopt="$makeopt"' DESTDIR="$root" DEST_DIR="$root"'
 		makeopt="$makeopt"' INSTROOT="$root" INSTALLROOT="$root"'
+		# scons based build
+		sconsinstopt="$sconsinstopt"' DESTDIR="$root"'
 	fi
 	makeinstopt="$makeopt"' install'
 
@@ -1206,6 +1219,7 @@ init_vars_and_hooks()
 
 	mainfunction="build_this_package"
 	runconf=1 ; runcmake=1 ; runxmkmf=1 ; runmkpl=1 ; runpysetup=1 ; runwaf=1 ;
+	runscons=1 ;
 	autopatch=1 ; autoextract=1 ; chownsrcdir=1 ; nocvsinsrcdir=1 ; cleanconfopt=1
 	patchopt="-bfp1 -z .orig"
 	createprefix=1 ; createdocs= ; rmemptydir=
