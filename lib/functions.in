@@ -1170,6 +1170,7 @@ init_vars_and_hooks()
 {
 	makeopt='CC="$CC" CPP="$CPP" CXX="$CXX"'
 	cmakeopt='-DCMAKE_INSTALL_PREFIX="$root/$prefix"'
+	cmakeopt="$cmakeopt"' -DCMAKE_LIBRARY_PATH="$libdir"'
 	# some scons based builds are using 'prefix' others 'PREFIX'
 	sconsopt='PREFIX=/$prefix prefix=/$prefix'
 	sconsinstopt="$sconsopt"' install'
