@@ -74,12 +74,6 @@ O util-linux
 O setarch
 O schedutils
 
-# different libchipcard version gives shared files
-# we prefer only the latest version for reference
-# build
-O libchipcard
-O libchipcard2
-
 O runit-shutdown
 O runit-logacct
 
