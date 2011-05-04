@@ -323,7 +323,7 @@ postflist_static_lib() {
 				$root/$fn > $root/usr/$fn
 			rm $root/$fn
 			;;
-		*)
+		*.a)
 			mv -fv $root/$fn $root/usr/$fn
 			;;
 		*.so)
