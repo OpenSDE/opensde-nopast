@@ -1077,11 +1077,16 @@ build_this_package() {
 			# CMake based Makefile generation
 			#
 			if [ -f CMakeLists.txt -a $runcmake = 1 -a ! -f Makefile ]; then
-				# use a dedicated build directory
-				mkdir -p build
-				cd build
+				local cmakesrcdir='..'
+				# check if we use a dedicated build directory
+				if [ $cmakebuilddir = 1 ]; then
+					mkdir -p build
+					cd build
+				else
+					cmakesrcdir='.'
+				fi
 				eval echo "Running cmake $cmakeopt"
-				cmake $( eval echo $cmakeopt ) ..
+				cmake $( eval echo $cmakeopt $cmakesrcdir )
 			fi
 
 			# automated package build
@@ -1303,6 +1308,7 @@ init_vars_and_hooks()
 	makeopt='CC="$CC" CPP="$CPP" CXX="$CXX"'
 	cmakeopt='-DCMAKE_INSTALL_PREFIX="$root/$prefix"'
 	cmakeopt="$cmakeopt"' -DCMAKE_LIBRARY_PATH="$libdir"'
+	cmakebuilddir=1
 	# some scons based builds are using 'prefix' others 'PREFIX'
 	sconsopt='PREFIX=/$prefix prefix=/$prefix install'
 
