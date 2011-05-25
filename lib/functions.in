@@ -959,9 +959,10 @@ build_this_package() {
 
 			# styles without make run first:
 			if [ -f setup.py -a $runpysetup = 1 ] ; then
-				pyconfopt="${pyconfopt:=--prefix $root/$prefix}"
 				hook_eval premake
-				eval ${pyscript:-python} setup.py build install $pyconfopt
+				eval ${pyscript:-python} setup.py $pyconfopt \
+					build $pybuildopt \
+					install $pyinstopt
 				hook_eval postmake
 			elif [ -f waf -a $runwaf = 1 ] ; then
 				wafconfopt="${wafconfopt:=configure --prefix=/$prefix}"
@@ -1175,6 +1176,10 @@ init_vars_and_hooks()
 	cmakeopt="$cmakeopt"' -DCMAKE_LIBRARY_PATH="$libdir"'
 	# some scons based builds are using 'prefix' others 'PREFIX'
 	sconsopt='PREFIX=/$prefix prefix=/$prefix install'
+
+	# python builds
+	pybuildopt=
+	pyinstopt='--prefix=/$prefix'
 
 	if atstage toolchain; then
 		makeopt="$makeopt"' prefix="$root${prefix:+/$prefix}"'

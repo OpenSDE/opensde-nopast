@@ -83,6 +83,8 @@ configscript .. script file name of the GNU autoconf configure script
 cleanconfopt .. set to '0' if you don't want to remove unsupported options
 pyscript ...... script to run 'setup.py', python by default.
 pyconfopt ..... options for 'setup.py' - Python setup scripts
+pybuildopt .... options for 'python setup.py build'
+pyinstopt ..... options for 'python setup.py install' (default = '--prefix=/$prefix')
 plconfopt ..... options for 'Makefile.pl' - Perl setup scripts
 wafscript ..... script to run for waf based builds (default = './waf')
 wafconfopt .... options for 'waf configure' (default = 'configure --prefix=/$prefix')
