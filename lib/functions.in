@@ -977,9 +977,6 @@ build_this_package() {
 				hook_eval premake
 				eval ${sconsscript:-scons} $sconsopt
 				hook_eval inmake
-				if [ "$sconsinstopt" ]; then
-					eval ${sconsscript:-scons} $sconsinstopt
-				fi
 				hook_eval postmake
 			else # styles that include a make run
 				if [ ! -f Makefile -a ! -f makefile -a \
@@ -1175,8 +1172,7 @@ init_vars_and_hooks()
 	cmakeopt='-DCMAKE_INSTALL_PREFIX="$root/$prefix"'
 	cmakeopt="$cmakeopt"' -DCMAKE_LIBRARY_PATH="$libdir"'
 	# some scons based builds are using 'prefix' others 'PREFIX'
-	sconsopt='PREFIX=/$prefix prefix=/$prefix'
-	sconsinstopt="$sconsopt"' install'
+	sconsopt='PREFIX=/$prefix prefix=/$prefix install'
 
 	if atstage toolchain; then
 		makeopt="$makeopt"' prefix="$root${prefix:+/$prefix}"'
@@ -1201,7 +1197,7 @@ init_vars_and_hooks()
 		makeopt="$makeopt"' DESTDIR="$root" DEST_DIR="$root"'
 		makeopt="$makeopt"' INSTROOT="$root" INSTALLROOT="$root"'
 		# scons based build
-		sconsinstopt="$sconsinstopt"' DESTDIR="$root"'
+		sconsopt='DESTDIR="$root" '"$sconsopt"
 	fi
 	makeinstopt="$makeopt"' install'
 
