@@ -328,25 +328,29 @@ postflist_static_lib() {
 	echo "Processing static lib corrections ..."
 	egrep '^(lib|lib64)/.*\.(a\..*|a|la|so|pc)$' $builddir/flist.txt |
 	while read fn ; do
-		[ -e $root/$fn -o -L $root/$fn ] || continue
+		local ffn="$root/$fn" ffn2="$root/usr/$fn"
+		[ -e "$ffn" -o -L "$ffn" ] || continue
 
 		case "$fn" in
 		*.la)
 			sed "s,\([ =']\)/lib\(.*\),\1/usr/lib\2,g" \
-				$root/$fn > $root/usr/$fn
-			rm $root/$fn
+				"$ffn" > "$ffn2"
+			rm "$ffn"
 			;;
 		*.a|*.pc)
-			mv -fv $root/$fn $root/usr/$fn
+			mv -fv "$ffn" "$ffn2"
 			;;
 		*.so)
-			if [ -L "$root/$fn" ]; then
-				ln -svf "$root/lib/$( readlink $fn )" "$root/usr/$fn"
-				rm -f "$root/$fn"
+			if [ -L "$ffn" ]; then
+				ln -svf "../../lib/$( readlink "$ffn" )" "$ffn2"
+				rm -f "$ffn"
 			fi
 			;;
 		esac
-		add_flist $root/usr/$fn
+		add_flist "$ffn2"
+		if [ -L "$ffn2" -a ! -e "$ffn2" ]; then
+			echo_warning "broken symlink: usr/$fn (after static lib correction)"
+		fi
 	done
 
 	# this check might be removed in the future when we decide this is not
