@@ -308,6 +308,19 @@ function run_check() {
 	fi
 }
 
+# make symlinks relative
+#
+postflist_dirty_symlinks() {
+	local dfn= ffn=
+	echo "Processing symlink corrections ..."
+	while read fn; do
+		local ffn="$root/$fn"
+		if [ -L "$ffn" -a ! -e "$ffn" ]; then
+			echo_warning "broken symlink: $fn"
+		fi
+	done < "$builddir/flist.txt"
+}
+
 # move the static libs from lib to usr/lib and correct the libdir used
 # inside the .la file
 #
@@ -1212,6 +1225,8 @@ init_vars_and_hooks()
 	buildloop=1 buildloops=1
 
 	[ "$SDECFG_DO_CHECK" = 1 ] && hook_add inmake 6 'run_check'
+
+	hook_add postflist 3 'postflist_dirty_symlinks'
 
 	# no static lib corrections at toolchain stage
 	atstage toolchain || hook_add postflist 3 'postflist_static_lib'
