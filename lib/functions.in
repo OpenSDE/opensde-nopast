@@ -411,16 +411,16 @@ postflist_dirty_symlinks() {
 
 				dfn2=$(relative_path "$dfn" "/$fn")
 				if [ -z "$dfn2" ]; then
-					echo_warning "invalid symlink: $fn (can't fix)"
+					echo_error "invalid symlink: $fn (can't fix)"
 					continue
 				fi
 				ln -snf "$dfn2" "$ffn"
 
 				if [ ! -e "$ffn" ]; then
-					echo_warning "broken absolute symlink: $fn"
+					echo_error "broken absolute symlink: $fn"
 				fi
 			elif [ ! -e "$ffn" ]; then
-				echo_warning "broken symlink: $fn"
+				echo_error "broken symlink: $fn"
 			fi
 		fi
 	done < "$builddir/flist.txt"
@@ -454,7 +454,7 @@ postflist_static_lib() {
 		esac
 		add_flist "$ffn2"
 		if [ -L "$ffn2" -a ! -e "$ffn2" ]; then
-			echo_warning "broken symlink: usr/$fn (after static lib correction)"
+			echo_error "broken symlink: usr/$fn (after static lib correction)"
 		fi
 	done
 
