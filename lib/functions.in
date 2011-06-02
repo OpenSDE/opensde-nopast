@@ -404,23 +404,28 @@ postflist_dirty_symlinks() {
 				local dfn2="${dfn#$root}"
 				if [ "$dfn2" != "$dfn" ]; then
 					echo_warning "dirty symlink: $fn (fixing)"
+					echo "$fn: dirty!"
 					dfn="$dfn2"
 				else
 					echo_warning "absolute symlink: $fn (fixing)"
+					echo "$fn: absolute, fixing."
 				fi
 
 				dfn2=$(relative_path "$dfn" "/$fn")
 				if [ -z "$dfn2" ]; then
 					echo_error "invalid symlink: $fn (can't fix)"
+					echo "$fn: invalid!"
 					continue
 				fi
-				ln -snf "$dfn2" "$ffn"
+				ln -svnf "$dfn2" "$ffn"
 
 				if [ ! -e "$ffn" ]; then
 					echo_error "broken absolute symlink: $fn"
+					echo "$fn: broken"
 				fi
 			elif [ ! -e "$ffn" ]; then
 				echo_error "broken symlink: $fn"
+				echo "$fn: broken"
 			fi
 		fi
 	done < "$builddir/flist.txt"
