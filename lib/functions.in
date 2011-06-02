@@ -107,6 +107,41 @@ bz2filename() {
 	fi
 }
 
+# pseudo_realpath <path>
+# returns a clean absolute path without caring about symlinks or actual existance
+#
+pseudo_realpath() {
+	local origpath="$1"
+	local newpath= x=
+	local path="$(echo "$1" | sed -e "s,^\([^/]\),$PWD/\1," )"
+
+	while [ -n "$path" ]; do
+		x="${path%%/*}"
+		if [ "$x" = "$path" ]; then
+			path=
+		else
+			path="${path#*/}"
+		fi
+
+		case "$x" in
+		""|.)
+			;; # skip
+		..)
+			if [ -n "$newpath" ]; then
+				newpath="${newpath%/*}"
+			else
+				echo "$origpath: invalid" >&2
+				return
+			fi
+			;;
+		*)
+			newpath="$newpath/$x"
+		esac
+	done
+
+	echo "$newpath"
+}
+
 # Hook variables
 #
 unset hook_functions hook_fcounter
