@@ -142,6 +142,54 @@ pseudo_realpath() {
 	echo "$newpath"
 }
 
+# relative_path <target> <source>
+# returns a relative patch from source to target (for symlinking)
+#
+relative_path() {
+	local orig_to="$1" orig_from="$2"
+	local to=$(pseudo_realpath "$orig_to")
+	local from=$(pseudo_realpath "$orig_from")
+	local rel= x= y=
+
+	[ -n "$to" -a -n "$from" ] || return
+
+	# remove common part
+	while [ -n "$from" ]; do
+		x="${to%%/*}"
+		y="${from%%/*}"
+
+		[ "$x" = "$y" ] || break
+
+		if [ "$x" = "$to" ]; then
+			to=
+		else
+			to="${to#*/}"
+		fi
+
+		if [ "$y" = "$from" ]; then
+			from=
+		else
+			from="${from#*/}"
+		fi
+	done
+
+	if [ -z "$from" ]; then
+		echo "$orig_to: invalid target for $orig_from" >&2
+		return
+	fi
+
+	case "$from" in
+	*/*)
+		rel=$(echo "${from%/*}/" | sed -e 's,[^/]*/,../,g' -e 's,/$,,')
+		;;
+	*)
+		rel=.
+		;;
+	esac
+
+	echo "$rel${to:+/$to}" | sed -e 's,^\./,,'
+}
+
 # Hook variables
 #
 unset hook_functions hook_fcounter
