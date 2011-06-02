@@ -403,16 +403,21 @@ postflist_dirty_symlinks() {
 			if [ "${dfn:0:1}" = '/' ]; then
 				local dfn2="${dfn#$root}"
 				if [ "$dfn2" != "$dfn" ]; then
-					echo_warning "dirty symlink: $fn"
+					echo_warning "dirty symlink: $fn (fixing)"
 					dfn="$dfn2"
 				else
-					dfn2=
+					echo_warning "absolute symlink: $fn (fixing)"
 				fi
 
-				if [ ! -e "$root$dfn" ]; then
+				dfn2=$(relative_path "$dfn" "/$fn")
+				if [ -z "$dfn2" ]; then
+					echo_warning "invalid symlink: $fn (can't fix)"
+					continue
+				fi
+				ln -snf "$dfn2" "$ffn"
+
+				if [ ! -e "$ffn" ]; then
 					echo_warning "broken absolute symlink: $fn"
-				elif [ -z "$dfn2" ]; then # haven't said it's dirty already
-					echo_warning "absolute symlink: $fn"
 				fi
 			elif [ ! -e "$ffn" ]; then
 				echo_warning "broken symlink: $fn"
