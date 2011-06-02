@@ -452,7 +452,8 @@ postflist_static_lib() {
 			;;
 		*.so)
 			if [ -L "$ffn" ]; then
-				local dfn=$(relative_path $(readlink -f "$ffn") "$ffn2")
+				local dfn="${ffn%/*}/$(readlink "$ffn")"
+				dfn=$(relative_path "$dfn" "$ffn2")
 				ln -svnf "$dfn" "$ffn2"
 				rm -f "$ffn"
 			fi
