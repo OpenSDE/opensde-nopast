@@ -10,6 +10,7 @@ X automake
 X autoconf
 X gmp
 X mpfr
+X libmpc
 X ppl
 X cloog-ppl
 X gcc
