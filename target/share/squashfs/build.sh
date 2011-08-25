@@ -139,6 +139,6 @@ done
 echo_status "Expanded size: $( du -sh "$rootfs" | cut -f1)."
 
 echo_status "Creating ${rootfs#$base/}.sqx ..."
-( mksquashfs $rootfs $image -comp gzip )
+( mksquashfs $rootfs $image -comp $SDECFG_IMAGE_SQUASHFS_COMP )
 
 echo_status "Image size: $( du -sh "$rootfs.sqx" | cut -f1)."
