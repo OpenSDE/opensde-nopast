@@ -15,7 +15,9 @@
 #Description: SquashFS rootfs
 
 rootfs="$build_toolchain/squashfs"
+image="$rootfs.sqx"
 
+rm -f "$image"
 rm -rf "$rootfs"
 mkdir -p "$rootfs"
 
@@ -137,6 +139,6 @@ done
 echo_status "Expanded size: $( du -sh "$rootfs" | cut -f1)."
 
 echo_status "Creating ${rootfs#$base/}.sqx ..."
-( mksquashfs $rootfs $build_toolchain/squashfs.sqx -comp gzip )
+( mksquashfs $rootfs $image -comp gzip )
 
 echo_status "Image size: $( du -sh "$rootfs.sqx" | cut -f1)."
