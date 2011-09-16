@@ -68,6 +68,7 @@ done
 
 # remove empty directories, use $SQUASHFS_EMPTY_PATTERN to skip directories
 #
+empty_dir() {
 echo_status "Removing empty directories ..."
 ( cd "$rootfs"; find . -type d ) | tac | eval "sed -e '/\.\/\(dev\|sys\|proc\|mnt\|srv\|tmp\|root\|var\)\(\|\/.*\)$/d;' $SQUASHFS_EMPTY_PATTERN" | while read folder; do
 	count=$( find "$rootfs/$folder" | wc -l )
@@ -77,7 +78,9 @@ echo_status "Removing empty directories ..."
 		# echo_status "- ${folder} deleted."
 	fi
 done
+}
 
+check_symlinks() {
 echo_status "Checking for broken symlinks ..."
 ( cd "$rootfs"; find . -type l | cut -c2- ) | while read link; do
 	x="$link"
@@ -107,6 +110,7 @@ echo_status "Checking for broken symlinks ..."
 		rm -f "$rootfs$link"
 	fi
 done
+}
 
 # ldconfig
 #
