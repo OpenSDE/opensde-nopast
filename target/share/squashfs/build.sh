@@ -29,7 +29,8 @@ SQUASHFS_POSTOVERLAY_HOOK=
 # Lists
 #
 SQUASHFS_INSTALL_PACKAGES=
-SQUASHFS_INSTALL_PATTERN="-e '/ var\/adm/ d;' \
+SQUASHFS_INSTALL_PATTERN="-e '/ boot/d;' \
+	-e '/ var\/adm/ d;' \
 	-e '/\.\(h\|o\|a\|a\..*\|la\|pc\)$/d;' -e '/\/aclocal\//d;' \
 	-e '/ usr\/share\/\(doc\|info\|man\)\//d;' -e'/ opt\/[^\/]*\/\(doc\|info\|man\)\//d;' -e '/\/gtk-doc\//d;'"
 
