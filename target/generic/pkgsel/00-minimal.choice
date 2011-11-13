@@ -156,5 +156,5 @@ X stone
 X rocknet
 X mkinitramfs
 
-# needed by nfs-utils
+# needed by pam and nfs-utils
 X libtirpc
