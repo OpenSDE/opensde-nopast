@@ -158,3 +158,5 @@ X mkinitramfs
 
 # needed by pam and nfs-utils
 X libtirpc
+# turn on gss api in libtirpc
+X libgssglue
