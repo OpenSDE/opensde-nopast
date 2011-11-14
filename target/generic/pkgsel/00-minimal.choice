@@ -162,3 +162,5 @@ X libtirpc
 X libgssglue
 # nfs-utils
 X libevent
+# nfs-utils (NFS v4 and v4.1 support)
+X libnfsidmap
