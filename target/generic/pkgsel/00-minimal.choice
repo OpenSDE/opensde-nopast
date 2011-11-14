@@ -160,3 +160,5 @@ X mkinitramfs
 X libtirpc
 # turn on gss api in libtirpc
 X libgssglue
+# nfs-utils
+X libevent
