@@ -16,20 +16,20 @@
 #Description: Updates the entire working tree
 
 [ -n "$SDEROOT" ] ||
-	export SDEROOT=$( cd "${0%/*}/.."; pwd -P )
+	export SDEROOT="$(cd "${0%/*}/.."; pwd -P)"
 
 . $SDEROOT/lib/libsde.in
 
 update_usage() {
-	local progname=${0##*/}
+	local progname="$(echo "${0##*/}" | sed -e 's,-, ,g')"
 	cat <<-EOT
-	Usage:	${progname//-/ }
+	Usage:	$progname
 	EOT
 }
 
 shortopts=
 longopts='help'
-options=$( getopt -o "$shortopts" -l "$longopts" -- "$@" )
+options="$(getopt -o "$shortopts" -l "$longopts" -- "$@")"
 if [ $? -ne 0 ]; then
 	update_usage
 	exit -1
@@ -59,9 +59,9 @@ tree="${SDEROOT##*/}"
 update_git()
 {
 	local prefix="$1"
-	local branch=$( git symbolic-ref -q HEAD | sed -e 's|^refs/heads/||' )
-	local remote=$( git config branch.$branch.remote )
-	local remote_list=$( git remote )
+	local branch="$(git symbolic-ref -q HEAD | sed -e 's|^refs/heads/||')"
+	local remote="$(git config branch.$branch.remote)"
+	local remote_list="$(git remote)"
 	local remote_branch= remote_branch_list=
 
 	if [ -z "$remote_list" ]; then
@@ -74,11 +74,11 @@ update_git()
 		if [ "$( echo "$remote_list" | grep "^origin$" )" ]; then
 			remote=origin
 		else
-			remote="$( echo "$remote_list" | head -n 1 )"
+			remote="$(echo "$remote_list" | head -n 1)"
 		fi
 
 		# and it's list of branches
-		remote_branch_list=$( git branch -r | sed -n -e "s|^  $remote/||p" | grep -v '^HEAD$' )
+		remote_branch_list="$(git branch -r | sed -n -e "s|^  $remote/||p" | grep -v '^HEAD$')"
 
 		if [ -z "$remote_branch_list" ]; then
 			echo_abort 1 "$prefix: no remote set, and couldn't guess one".
@@ -87,7 +87,7 @@ update_git()
 		elif [ "$( echo "$remote_branch_list" | grep "^master$" )" ]; then
 			remote_branch=master
 		else
-			remote_branch="$( echo "$remote_branch_list" | head -n 1 )"
+			remote_branch="$(echo "$remote_branch_list" | head -n 1)"
 		fi
 			
 		echo_warning "$prefix: no remote set, assuming $remote/$remote_branch."
@@ -131,7 +131,7 @@ update_svn()
 
 # hunt for the roots of the sub-working trees
 #
-baseurl=$( git config remote.origin.url | sed -e 's|/[^/]*$||' )
+baseurl="$( git config remote.origin.url | sed -e 's|/[^/]*$||' )"
 [ -n "$baseurl" ] || baseurl="git://git.opensde.net/opensde"
 
 for x in . package $( ls -1d package/* target/* 2> /dev/null ); do
