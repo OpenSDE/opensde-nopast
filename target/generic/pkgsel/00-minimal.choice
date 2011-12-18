@@ -80,8 +80,8 @@ X libjpeg
 X libpng
 X libtiff
 X libungif
-X linux26
-X linux26-src
+X linux
+X linux-src
 X linux-header
 X m4
 X make
