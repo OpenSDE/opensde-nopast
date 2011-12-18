@@ -101,7 +101,6 @@ X openssl
 X rsync
 X pam
 X parted
-X pdksh
 X patch
 X perl
 X procinfo
