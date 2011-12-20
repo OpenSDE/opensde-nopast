@@ -526,6 +526,8 @@ download_file_now() {
 			  typeexpr="gzip compressed data" ;;
 		      *.bz2|*.tbz2|*.tbz)
 			  typeexpr="bzip2 compressed data" ;;
+		      *.xz)
+			  typeexpr="xz compressed data" ;;
 		      *.Z|*.tZ)
 			  typeexpr="compress'd data" ;;
 		      *.zip|*.jar)
