@@ -31,5 +31,5 @@ if [ "$SDECFG_FILTER_NODEVEL" = "1" ]; then
 		eval "sed -i $pattern '$builddir/flist.txt'"
 	}
 
-	hook_add postflist 5 "filter_nodevel"
+	#hook_add postflist 5 "filter_nodevel"
 fi
