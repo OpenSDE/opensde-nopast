@@ -69,8 +69,7 @@ O devfsd
 # we prefer gamin
 O fam
 
-# we prefer util-linux-ng
-O util-linux
+# we prefer util-linux
 O setarch
 O schedutils
 
