@@ -81,6 +81,9 @@ Reserved User and Group IDs:
 - memcached:
 45	memcached	memcached
 
+- incron:
+52	incron		incron
+
 - cron:
 53	cron		crontab
 
