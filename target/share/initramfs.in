@@ -37,7 +37,10 @@ initramfs_install_flist() {
 
 # weak functions
 #
-initramfs_install_overlay() { overlay_apply "$@"; }
+initramfs_install_overlay() {
+	local x="$1/initramfs"
+	[ ! -d "$x" ] || overlay_apply "$x" "$2"
+}
 
 # should this package be extracted by flist or not?
 # initramfs_install <pkg_name> <sandbox> <rootfs>
