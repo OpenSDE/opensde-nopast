@@ -58,7 +58,7 @@ done
 [ -z "$SQUASHFS_POSTINSTALL_HOOK" ] || eval "$SQUASHFS_POSTINSTALL_HOOK"
 
 # Apply overlay
-[ ! -d "target/$target/squashfs" ] || squashfs_install_overlay "target/$target/squashfs" "$rootfs"
+squashfs_install_overlay "target/$target" "$rootfs"
 
 # hook $SQUASHFS_POSTOVERLAY_HOOK
 #

@@ -37,7 +37,10 @@ squashfs_install_flist() {
 
 # weak functions
 #
-squashfs_install_overlay() { overlay_apply "$@"; }
+squashfs_install_overlay() {
+	local x="$1/squashfs"
+	[ ! -d "$x" ] || overlay_apply "$x" "$2"
+}
 
 # should this package be extracted by flist or not?
 # squashfs_install <pkg_name> <sandbox> <rootfs>
