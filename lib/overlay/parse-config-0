@@ -14,7 +14,11 @@
 
 . "$base/lib/overlay/overlay-functions.in"
 
-overlay_apply_dirs=
+if [ -d "$confdir/install" ]; then
+	overlay_apply_dirs="$confdir/install"
+else
+	overlay_apply_dirs=
+fi
 
 overlay_apply_hook() {
 	local d=
