@@ -27,4 +27,4 @@ overlay_apply_hook() {
 		overlay_apply -q -- "$d"
 	done
 }
-hook_add postmake 6 'overlay_apply_hook'
+hook_add postdoc 6 'overlay_apply_hook'
