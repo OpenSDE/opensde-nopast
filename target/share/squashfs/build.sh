@@ -21,6 +21,9 @@ rm -f "$image"
 rm -rf "$rootfs"
 mkdir -p "$rootfs"
 
+SQUASHFS_REMOVE_EMPTY_DIRS=0
+SQUASHFS_REMOVE_BROKEN_LINKS=0
+
 # Hooks
 #
 SQUASHFS_POSTINSTALL_HOOK=
@@ -66,49 +69,50 @@ squashfs_install_overlay "target/$target" "$rootfs"
 
 # remove empty directories, use $SQUASHFS_EMPTY_PATTERN to skip directories
 #
-empty_dir() {
-echo_status "Removing empty directories ..."
-( cd "$rootfs"; find . -type d ) | tac | eval "sed -e '/\.\/\(dev\|sys\|proc\|mnt\|srv\|tmp\|root\|var\)\(\|\/.*\)$/d;' $SQUASHFS_EMPTY_PATTERN" | while read folder; do
-	count=$( find "$rootfs/$folder" | wc -l )
+if [ $SQUASHFS_REMOVE_EMPTY_DIRS -ne 0 ]; then
+	echo_status "Removing empty directories ..."
+	( cd "$rootfs"; find . -type d ) | tac |
+		eval "sed -e '/\.\/\(dev\|sys\|proc\|mnt\|srv\|tmp\|root\|var\)\(\|\/.*\)$/d;' $SQUASHFS_EMPTY_PATTERN" | while read folder; do
+		count=$( find "$rootfs/$folder" | wc -l )
 
-	if [ $count -eq 1 ]; then
-		rm -r "$rootfs/$folder"
-		# echo_status "- ${folder} deleted."
-	fi
-done
-}
-
-check_symlinks() {
-echo_status "Checking for broken symlinks ..."
-( cd "$rootfs"; find . -type l | cut -c2- ) | while read link; do
-	x="$link"
-	case "$link" in
-		/dev/*) continue ;;
-	esac
-	while true; do
-		target=$( readlink "$rootfs$x" )
-		case "$target" in
-			/proc/*)
-				continue 2
-				;;
-			/*)
-				;;
-			*)
-				# relatives turned into absolute
-				target="${x%/*}/${target}"
-		esac
-
-		[ -L "$rootfs$target" ] || break 1
-
-		x="$target"
+		if [ $count -eq 1 ]; then
+			#echo_status "- ${folder} deleted."
+			rm -r "$rootfs/$folder"
+		fi
 	done
+fi
 
-	if [ ! -e "$rootfs$target" ]; then
-		echo_warning "- $link is broken ($target), deleting."
-		rm -f "$rootfs$link"
-	fi
-done
-}
+if [ $SQUASHFS_REMOVE_BROKEN_LINKS -ne 0 ]; then
+	echo_status "Checking for broken symlinks ..."
+	( cd "$rootfs"; find . -type l | cut -c2- ) | while read link; do
+		x="$link"
+		case "$link" in
+			/dev/*) continue ;;
+		esac
+		while true; do
+			target=$( readlink "$rootfs$x" )
+			case "$target" in
+				/proc/*)
+					continue 2
+					;;
+				/*)
+					;;
+				*)
+					# relatives turned into absolute
+					target="${x%/*}/${target}"
+			esac
+
+			[ -L "$rootfs$target" ] || break 1
+
+			x="$target"
+		done
+
+		if [ ! -e "$rootfs$target" ]; then
+			echo_warning "- $link is broken ($target), deleting."
+			rm -f "$rootfs$link"
+		fi
+	done
+fi
 
 # ldconfig
 #
