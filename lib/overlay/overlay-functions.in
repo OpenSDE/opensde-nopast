@@ -66,11 +66,19 @@ overlay_apply() {
 		xtarget="$rootfs/$target" targetdir="${xtarget%/*}"
 
 		if [ -L "$xtarget" -o -e "$xtarget" ]; then
-			if [ "$overwrite" = yes ]; then
-				[ "$type" = patch ] || rm -f "$xtarget"
-			else
+			if [ "$type" != rm -a "$overwrite" != yes ]; then
 				$echo_status "skipping $target ($type)"
 				continue
+			fi
+
+			if [ "$type" = patch ]; then
+				:
+			elif [ ! -d "$xtarget/" ]; then
+				rm -f "$xtarget"
+			elif [ "$type" = rm ]; then
+				rm -rf "$xtarget"
+			else
+				rmdir "$xtarget"
 			fi
 		fi
 
@@ -99,7 +107,6 @@ overlay_apply() {
 				;;
 			rm)
 				$echo_status "removing $target"
-				rm -f "$xtarget"
 				;;
 			patch)
 				$echo_status "overlay: patching $target"
