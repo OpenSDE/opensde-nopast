@@ -75,10 +75,8 @@ overlay_apply() {
 				:
 			elif [ ! -d "$xtarget/" ]; then
 				rm -f "$xtarget"
-			elif [ "$type" = rm ]; then
-				rm -rf "$xtarget"
 			else
-				rmdir "$xtarget"
+				rm -rf "$xtarget"
 			fi
 		fi
 
