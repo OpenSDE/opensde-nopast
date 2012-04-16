@@ -123,7 +123,6 @@ fi
 
 # sanity checks
 #
-[ -x "$rootfs/init" ] || echo_warning "This image is missing an /init file, it wont run."
 for x in $rootfs/{,usr/}{sbin,bin}/* $rootfs/init $rootfs/lib/udev/*; do
 	[ -e "$x" ] || continue
 
