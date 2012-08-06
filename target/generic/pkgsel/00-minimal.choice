@@ -61,7 +61,7 @@ X gmp
 X mpfr
 X libmpc
 X ppl
-X cloog-ppl
+X cloog
 X gcc
 X gdb
 X gettext
