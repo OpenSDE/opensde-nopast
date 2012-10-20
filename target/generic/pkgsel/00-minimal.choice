@@ -75,6 +75,7 @@ X jfsutils
 X wireless-tools
 X wpa_supplicant
 X kbd
+X kmod
 X less
 X libtool
 X libjpeg
@@ -90,7 +91,6 @@ X man
 X man-pages
 X mine
 X mktemp
-X module-init-tools
 X ncurses
 X netkit-base
 X net-tools
