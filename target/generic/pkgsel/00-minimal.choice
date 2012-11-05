@@ -44,6 +44,7 @@ X diffutils
 X disktype
 X distcc
 X e2fsprogs
+X btrfs-progs
 X ethtool
 X reiserfsprogs
 X ed
