@@ -43,6 +43,8 @@ X curl
 X diffutils
 X disktype
 X distcc
+X acl
+X attr
 X e2fsprogs
 X btrfs-progs
 X ethtool
