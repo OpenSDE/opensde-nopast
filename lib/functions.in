@@ -587,7 +587,9 @@ rock_substitute() {
 # packages to cross-build correctly in stages 0 and 1.
 #
 create_config_cache() {
-	cat $base/architecture/share/config.cache
+	if [ -e $base/architecture/share/config.cache ]; then
+		cat $base/architecture/share/config.cache
+	fi
 
 	if [ $createarchcache -eq 1 ]; then
 		cat  <<-EOT
