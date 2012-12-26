@@ -124,6 +124,7 @@ X sysvinit
 X tar
 X texinfo
 X time
+X tzdata
 X udev
 X unzip
 X util-linux
