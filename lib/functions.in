@@ -1385,7 +1385,7 @@ detect_confdir()
 init_vars_and_hooks()
 {
 	makeopt='CC="$CC" CPP="$CPP" CXX="$CXX"'
-	cmakeopt='-DCMAKE_INSTALL_PREFIX="$root/$prefix"'
+	cmakeopt='-DCMAKE_INSTALL_PREFIX="/$prefix"'
 	cmakeopt="$cmakeopt"' -DCMAKE_LIBRARY_PATH="$libdir"'
 	cmakebuilddir=1
 	# some scons based builds are using 'prefix' others 'PREFIX'
