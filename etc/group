@@ -56,5 +56,6 @@ pdns:107
 ldap:389
 jboss:390
 secoff:400
+dspam:551
 nogroup:65534
 nobody:65534

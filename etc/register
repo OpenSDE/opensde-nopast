@@ -152,9 +152,11 @@ Reserved User and Group IDs:
 - rsbac:
 400	secoff		rsbac
 
+- dspam:
+551	dspam		dspam
 
   Free IDs: 11-12,29,37,46-52,57-62,67-69,72-75,83-96,98-99
-            101-388,391-399,401-999
+            101-388,391-399,401-550,552-999
 
 
 Filedescriptor Numbers
