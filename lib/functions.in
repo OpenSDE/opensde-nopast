@@ -965,6 +965,11 @@ split_debug_files() {
 	for x in $( fl_wrparse -D -s -r "$xroot/" < $builddir/fl_wrapper.wlog | sort -u ); do
 		local is_elf=false
 
+		# files we do not process
+		case $( basename $root/$x ) in
+			$objcopycmd|*.a) continue ;;
+		esac
+
 		# process regular files only
 		[ "$( stat --printf="%F" $root/$x )" = "regular file" ] || continue;
 
@@ -976,11 +981,6 @@ split_debug_files() {
 			local has_gnu_debuglink=false
 			$objdumpcmd -s -j .gnu_debuglink $root/$x &>/dev/null && has_gnu_debuglink=true
 			if $has_gnu_debuglink; then continue; fi
-
-			# files we do not process
-			case $( basename $root/$x ) in
-				$objcopycmd|*.a) continue ;;
-			esac
 
 			# create destination directory for the debug info file if needed
 			local debugdir=$( dirname $root/$libdir/debug/$x )
