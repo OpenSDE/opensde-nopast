@@ -977,9 +977,9 @@ split_debug_files() {
 			$objdumpcmd -s -j .gnu_debuglink $root/$x &>/dev/null && has_gnu_debuglink=true
 			if $has_gnu_debuglink; then continue; fi
 
-			# skip the temporary objcopy command
+			# files we do not process
 			case $( basename $root/$x ) in
-				$objcopycmd) continue ;;
+				$objcopycmd|*.a) continue ;;
 			esac
 
 			# create destination directory for the debug info file if needed
