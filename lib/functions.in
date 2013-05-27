@@ -988,6 +988,7 @@ split_debug_files() {
 
 			# split debug symbols into a separate file
 			$objcopycmd --only-keep-debug $root/$x $root/$libdir/debug/$x
+			chmod 644 $root/$libdir/debug/$x
 
 			# preserve hardlinks
 			if [ $( stat --printf="%h" $root/$x ) -gt 1 ]; then
