@@ -1231,11 +1231,6 @@ build_this_package() {
 			done
 		fi
 
-		# split debug symbols
-		if [ "$SDECFG_DEBUG_SPLIT" = 1 ] && ! atstage toolchain; then
-			split_debug_files
-		fi
-
 		if [ "$createdocs" != 0 ]; then
 			if [ ! -e $root$docdir ]; then
 				mkdir -p $docdir

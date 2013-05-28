@@ -652,6 +652,11 @@ abort() {
 
 	hook_eval postinstall
 
+	# split debug symbols
+	if [ "$SDECFG_DEBUG_SPLIT" = 1 ] && ! atstage toolchain; then
+		split_debug_files
+	fi
+
 	echo "Creating file list and doing final adaptions ... "
 	#
 	cd $xroot/
