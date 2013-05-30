@@ -963,7 +963,7 @@ split_debug_files() {
 
 	# iterate through a list files generated from the fl_wrapper.wlog
 	for x in $( fl_wrparse -D -s -r "$xroot/" < $builddir/fl_wrapper.wlog | sort -u ); do
-		local is_elf=false
+		local is_dynelf=false
 
 		# files we do not process
 		case $( basename $root/$x ) in
@@ -973,9 +973,9 @@ split_debug_files() {
 		# process regular files only
 		[ "$( stat --printf="%F" $root/$x )" = "regular file" ] || continue;
 
-		# check if the file has an ELF header
-		readelf -h $root/$x &>/dev/null && is_elf=true
-		if $is_elf; then
+		# only process dynamically linked ELF binaries
+		$objdumpcmd -s -j .dynsym $root/$x &>/dev/null && is_dynelf=true
+		if $is_dynelf; then
 			# skip if the file has a '.gnu_debuglink' section yet such as a
 			# hardlink which had been processed before
 			local has_gnu_debuglink=false
