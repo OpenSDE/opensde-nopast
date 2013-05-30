@@ -994,7 +994,7 @@ split_debug_files() {
 			if [ $( stat --printf="%h" $root/$x ) -gt 1 ]; then
 				cp -fla $root/$x $root/$x.stripped
 			else
-				cp $root/$x $root/$x.stripped
+				cp -a $root/$x $root/$x.stripped
 			fi
 
 			# create a stripped binary with gnu_debuglink section
