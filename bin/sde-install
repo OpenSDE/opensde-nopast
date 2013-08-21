@@ -20,8 +20,6 @@ set -e
 [ -n "$SDEROOT" ] ||
 	export SDEROOT=$( cd "${0%/*}/.."; pwd -P )
 
-[ -z "$SUDO_USER" ] || export HOME=/root
-
 . $SDEROOT/lib/libsde.in
 
 install_usage() {
@@ -32,21 +30,27 @@ Usage: sde install
 EOT
 }
 
+if [ -n "$SUDO_USER" -a "$SUDO_USER" != "$USER" ]; then
+	BINDIR="/usr/local/bin"
+else
+	BINDIR="$HOME/bin"
+fi
+
 # what action was requested?
 if [ $# -ne 0 ]; then
 	install_usage
-elif [ -L "$HOME/bin/sde" ]; then
-	if [ "$( readlink -f $HOME/bin/sde )" = "$SDEROOT/bin/sde" ]; then
+elif [ -L "$BINDIR/sde" ]; then
+	if [ "$( readlink -f $BINDIR/sde )" = "$SDEROOT/bin/sde" ]; then
 		echo_warning "the same sde wrapper is already installed, skip."
 	else
-		echo_warning "sde wrapper already installed [$( readlink -f $HOME/bin/sde )]"
-		ln -sf "$SDEROOT/bin/sde" "$HOME/bin/sde"
-		echo_info "sde wrapper reinstalled at $HOME/bin/"
+		echo_warning "sde wrapper already installed [$( readlink -f $BINDIR/sde )]"
+		ln -sf "$SDEROOT/bin/sde" "$BINDIR/sde"
+		echo_info "sde wrapper reinstalled at $BINDIR/"
 	fi
-elif [ -e "$HOME/bin/sde" ]; then
-	echo_abort 1 "Something is already at '$HOME/bin/sde', this is not supported."
+elif [ -e "$BINDIR/sde" ]; then
+	echo_abort 1 "Something is already at '$BINDIR/sde', this is not supported."
 else
-	mkdir -p "$HOME/bin/"
-	ln -s "$SDEROOT/bin/sde" "$HOME/bin/sde"
-	echo_info "sde wrapper installed at $HOME/bin/"
+	mkdir -p "$BINDIR/"
+	ln -s "$SDEROOT/bin/sde" "$BINDIR/sde"
+	echo_info "sde wrapper installed at $BINDIR/"
 fi
