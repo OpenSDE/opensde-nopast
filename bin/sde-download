@@ -212,9 +212,13 @@ detect_mirror() {
 
 	echo_warning "Auto-detecting best mirror ..."
 
-	echo_info "Downloading mirror-list from opensde.net."
+	if [ -z "$mirror_list" ]; then
+		mirror_list="http://opensde.net/opensde-download-mirrors"
+	fi
+
+	echo_info "Downloading mirror-list from $mirror_list"
 	curl -s -S $curl_options -o tmp/Download-Mirror-List \
-		"http://opensde.net/opensde-download-mirrors/$pkgver"
+		"$mirror_list/$pkgver"
 
 	if [ -r tmp/Download-Mirror-List ]; then
 		bash lib/sde-download/mirror-test.sh < tmp/Download-Mirror-List
