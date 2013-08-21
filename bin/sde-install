@@ -20,6 +20,8 @@ set -e
 [ -n "$SDEROOT" ] ||
 	export SDEROOT=$( cd "${0%/*}/.."; pwd -P )
 
+[ -z "$SUDO_USER" ] || export HOME=/root
+
 . $SDEROOT/lib/libsde.in
 
 install_usage() {
