@@ -90,20 +90,22 @@ done
 remove_package() {
 	local root="$1" pkg="$2"
 	local flist="$root/var/adm/flists/$pkg"
-	local tag=f=
+	local tag= f=
 
 	sort -r "$flist" | while read tag f; do
-		f="$root/$f"
 		if [ "$tag" != "$pkg:" ]; then
 			echo_warning "$pkg: invalid tag '$tag' in $flist"
 		elif [ -z "$f" ]; then
 			echo_warning "$pkg: missing filename in $flist"
-		elif [ -L "$f" ]; then
-			rm -f "$f"
-		elif [ -d "$f" ]; then
-			rmdir "$f"
 		else
-			rm -f "$f"
+			f="$root/$f"
+			if [ -L "$f" ]; then
+				rm -f "$f"
+			elif [ -d "$f" ]; then
+				rmdir "$f"
+			else
+				rm -f "$f"
+			fi
 		fi
 	done
 }
