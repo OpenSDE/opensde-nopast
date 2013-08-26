@@ -92,6 +92,11 @@ remove_package() {
 	local flist="$root/var/adm/flists/$pkg"
 	local tag= f=
 
+	if [ ! -s "$flist" ]; then
+		echo_warning "$pkg: $flist not found."
+		return
+	fi
+
 	sort -r "$flist" | while read tag f; do
 		if [ "$tag" != "$pkg:" ]; then
 			echo_warning "$pkg: invalid tag '$tag' in $flist"
