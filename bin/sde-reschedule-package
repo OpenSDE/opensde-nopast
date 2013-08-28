@@ -104,12 +104,10 @@ remove_package() {
 			echo_warning "$pkg: missing filename in $flist"
 		else
 			f="$root/$f"
-			if [ -L "$f" ]; then
-				rm -f "$f"
-			elif [ -d "$f" ]; then
-				rmdir "$f"
+			if [ ! -L "$f" -a -d "$f" ]; then
+				rmdir --ignore-fail-on-non-empty -- "$f"
 			else
-				rm -f "$f"
+				rm -f -- "$f"
 			fi
 		fi
 	done
