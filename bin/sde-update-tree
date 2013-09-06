@@ -101,6 +101,10 @@ update_git()
 		git remote prune "$remote"
 		git pull --rebase
 	fi
+
+	if [ -x "./update.sh" ]; then
+		./update.sh "$prefix"
+	fi
 }
 
 update_svn_nested()
@@ -122,6 +126,9 @@ update_svn()
 
 	echo_info "$prefix:"
 	svn up --ignore-externals
+	if [ -x "./update.sh" ]; then
+		./update.sh "$prefix"
+	fi
 
 	# nested svn
 	for x in $( update_svn_nested ); do
