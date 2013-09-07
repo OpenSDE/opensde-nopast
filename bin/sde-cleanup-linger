@@ -49,7 +49,8 @@ files_warn="-name DEADJOE -o -name *-[xX]			\
 # Print warnings for 'lingering' files
 #
 ( bin/find ${sderootdirs} \(						\
-	\( \( $files_warn -o -name '.[^.]*' \) -a ! -name '.gitignore' \) \
+	\( \( $files_warn -o -name '.[^.]*' \)				\
+		-a ! -name '.gitignore' -a ! -name '.gitattributes' \)	\
 	-printf 'WARNING: Found %p\n'					\
   \) -o \(								\
 	\( ! -type d ! -type f \)					\
