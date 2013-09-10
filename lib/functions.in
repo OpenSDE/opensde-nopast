@@ -436,7 +436,7 @@ postflist_dirty_symlinks() {
 #
 postflist_static_lib() {
 	echo "Processing static lib corrections ..."
-	egrep '^(lib|lib64)/.*\.(a\..*|a|la|so|pc)$' $builddir/flist.txt |
+	egrep '^(lib|lib64)/.*\.(a\..*|a|la|o|so|pc)$' $builddir/flist.txt |
 	while read fn ; do
 		local ffn="$root/$fn" ffn2="$root/usr/$fn"
 		[ -e "$ffn" -o -L "$ffn" ] || continue
@@ -447,7 +447,7 @@ postflist_static_lib() {
 				"$ffn" > "$ffn2"
 			rm "$ffn"
 			;;
-		*.a|*.pc)
+		*.a|*.o|*.pc)
 			mv -fv "$ffn" "$ffn2"
 			;;
 		*.so)
