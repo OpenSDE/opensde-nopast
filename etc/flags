@@ -50,6 +50,7 @@ SQUIRRELMAIL	Package is SquirrelMail addon/plugin
 
 LUA		Package needs lua's generic configuration
 X11R6		Package has hardcoded references to X11R6
+GNU99		Package needs -std=gnu99 hardcoded
 
 CLAWS		Package is a Claws-mail plugin
 
