@@ -535,7 +535,7 @@ download_file_now() {
 		      *.Z|*.tZ)
 			  typeexpr="compress'd data" ;;
 		      *.zip|*.jar)
-			  typeexpr="Zip archive data" ;;
+			  typeexpr="\(Zip archive data\|Java Jar file data\)" ;;
 		      *.tar)
 			  typeexpr="tar archive" ;;
 		      *)
