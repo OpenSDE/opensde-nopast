@@ -33,10 +33,11 @@ oldconfig=
 nobashmod=
 cfgtmpdir=
 profile=
+target=
 
 show_usage() {
 	echo
-	echo "Usage: $0 [ -delete | -oldconfig ] [ -cfg <config> ]"
+	echo "Usage: $0 [ -delete | -oldconfig | -t <target> ] [ -cfg <config> ]"
 	echo
 	echo "Other options:"
 	echo "	-profile	create a config.profile with profiling data"
@@ -52,6 +53,7 @@ while [ "$1" ] ; do
 	    -oldconfig)	oldconfig='-oldconfig'    ; shift ;;
 	    -nobashmod)	nobashmod='-nobashmod'    ; shift ;;
 	    -cfg)	config="$2"       ; shift ; shift ;;
+	    -t)		target="$2"	  ; shift ; shift ;;
 
 	    *)  show_usage
 		exit 1 ;;
@@ -67,6 +69,22 @@ if [ ! -d config/$config -a -n "$oldconfig" ]; then
 	echo "Abort: -oldconfig is not supported for new configs"
 	echo
 	exit 1
+fi
+
+if [ -n "$target" ]; then
+	if [ -d "config/$config" ]; then
+		echo "Abort: -t is not supported for old configs"
+		echo
+		exit 1
+	elif [ ! -s "target/$target/config.in" ]; then
+		echo "Abort: $target: target doesn't exist"
+		echo
+		exit 1
+	else
+		mkdir "config/$config"
+		echo "export SDECFG_TARGET='$target'" > config/$config/config
+		oldconfig="-oldconfig"
+	fi
 fi
 
 if [ $delete_mode = 1 ] ; then
