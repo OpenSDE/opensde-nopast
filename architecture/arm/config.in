@@ -167,6 +167,8 @@ fi
 
 bool 'Generate code using the 16bit thumb instruction set' SDECFG_ARM_THUMB 0
 
+SDECFG_ID="$SDECFG_ID-$SDECFG_ARM_ARCH"
+
 if [ $SDECFG_ARM_OPT != generic ] ; then
 	SDECFG_ID="$SDECFG_ID-$SDECFG_ARM_OPT"
 fi
