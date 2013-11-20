@@ -228,22 +228,8 @@ if [ ! -f $TOOLSDIR/.lastupdate ] ; then
 		$( get_reverted `get_expanded target/%/. $targetchain` ) -name 'wrappers.in' )
 	#
 	echo_status "Building $toolsdir/wrapper/strip_wrapper."
-	cat << EOT > $TOOLSDIR/wrapper/strip_wrapper.$$
-#!/bin/sh
-if [ "\$STRIP_WRAPPER_NOLOOP" = 1 ] ; then
-	echo "Aaaaaeik! Strip wrapper is looping!" >&2
-	exit 1
-fi
-if [ "\$SDECFG_DEBUG" = 0 ] ; then
-	PATH=\${PATH//\$STRIP_WRAPPER_MYPATH:/}
-	export STRIP_WRAPPER_NOLOOP=1
-	exec "\$( basename \$0 )" "\$@"
-fi
-exit 0
-EOT
-	chmod +x $TOOLSDIR/wrapper/strip_wrapper.$$
-	mv $TOOLSDIR/wrapper/strip_wrapper.$$ \
-	   $TOOLSDIR/wrapper/strip_wrapper
+	cp src/tools-source/strip_wrapper.sh $TOOLSDIR/wrapper/strip_wrapper
+	chmod +x $TOOLSDIR/wrapper/strip_wrapper
 	wrappers="$wrappers strip_wrapper"
 	#
 	for x in strip $arch_target-strip ; do
