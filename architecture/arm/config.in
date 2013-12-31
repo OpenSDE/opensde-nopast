@@ -144,7 +144,7 @@ choice SDECFG_ARM_FLOAT_ABI soft \
 	softfp		"hardware floating-point instructions using soft-float calling conventions" \
 	hard		"hardware floating-point instructions using FPU-specific calling conventions"
 
-if [ $SDECFG_ARM_FLOAT_ABI == hard ]; then
+if [ $SDECFG_ARM_FLOAT_ABI != soft ]; then
 	choice SDECFG_ARM_FPU neon \
 		fpa		"fpa" \
 		fpe2		"fpe2" \
