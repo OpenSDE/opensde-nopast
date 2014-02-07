@@ -30,6 +30,12 @@ choice SDECFG_MIPS_OPT generic   \
 	4kem		"4KEp" \
 	4ksc		"4KSc" \
 	4kem		"4KSd" \
+	24kc		"24Kc" \
+	24kf2_1		"24Kf2_1" \
+	24kf1_1		"24Kf1_1" \
+	24kec		"24KEc" \
+	24kef2_1	"24KEf2_1" \
+	24kef1_1	"24KEf1_1" \
 	r2000	"Build for R2000 CPU"		\
 	r3000	"Build for R3000 CPU"		\
 	r3900	"Build for R3900 CPU"		\
