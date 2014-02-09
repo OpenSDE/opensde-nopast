@@ -27,9 +27,9 @@ choice SDECFG_MIPS_OPT generic   \
 	4kp		"4Kp" \
 	4kec		"4KEc" \
 	4kem		"4KEm" \
-	4kem		"4KEp" \
+	4kep		"4KEp" \
 	4ksc		"4KSc" \
-	4kem		"4KSd" \
+	4ksd		"4KSd" \
 	24kc		"24Kc" \
 	24kf2_1		"24Kf2_1" \
 	24kf1_1		"24Kf1_1" \
