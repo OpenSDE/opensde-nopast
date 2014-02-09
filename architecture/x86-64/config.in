@@ -25,6 +25,7 @@ choice SDECFG_X8664_OPT generic   \
 	k8-sse3		"Optimised for AMD K8 with SSE3"	\
 	opteron-sse3	"Optimised for AMD Opteron with SSE3"	\
 	athlon64-sse3	"Optimised for AMD Athlon64 with SSE3"	\
+	amdfam10	"Optimised for AMD Family 10h core based CPUs"	\
 	em64t		"Optimised for Intel EM64T (Pentium 4 / Xeon)"	\
 	corei7		"Optimised for Intel Core i3/i5/i7"		\
 	corei7-avx	"Optimised for Intel Core i3/i5/i7 with AVX"	\
