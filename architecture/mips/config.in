@@ -21,31 +21,31 @@ choice SDECFG_MIPS_ENDIANESS EB \
 SDECFG_ID="$SDECFG_ID-$SDECFG_MIPS_ENDIANESS"
 
 choice SDECFG_MIPS_OPT generic   \
-	generic	"No special optimisation"	\
-	4kc		"4Kc" \
-	4km		"4Km" \
-	4kp		"4Kp" \
-	4kec		"4KEc" \
-	4kem		"4KEm" \
-	4kep		"4KEp" \
-	4ksc		"4KSc" \
-	4ksd		"4KSd" \
-	24kc		"24Kc" \
-	24kf2_1		"24Kf2_1" \
-	24kf1_1		"24Kf1_1" \
-	24kec		"24KEc" \
-	24kef2_1	"24KEf2_1" \
-	24kef1_1	"24KEf1_1" \
-	34kc		"34Kc" \
-	34kf2_1		"34Kf2_1" \
-	34kf1_1		"34Kf1_1" \
-	74kc		"74Kc" \
-	74kf2_1		"74Kf2_1" \
-	74kf1_1		"74Kf1_1" \
-	74kf3_2		"74Kf3_2" \
-	1004kc		"1004Kc" \
-	1004kf2_1	"1004Kf2_1" \
-	1004kf1_1	"1004Kf1_1" \
+	generic		"No special optimisation"				\
+	4kc		"Optimised for MIPS 4Kc"				\
+	4km		"Optimised for MIPS 4Km"				\
+	4kp		"Optimised for MIPS 4Kp"				\
+	4kec		"Optimised for MIPS 4KEc"				\
+	4kem		"Optimised for MIPS 4KEm"				\
+	4kep		"Optimised for MIPS 4KEp"				\
+	4ksc		"Optimised for MIPS 4KSc"				\
+	4ksd		"Optimised for MIPS 4KSd"				\
+	24kc		"Optimised for MIPS 24Kc"				\
+	24kf2_1		"Optimised for MIPS 24Kf (2:1 Core/FPU clock ratio)"	\
+	24kf1_1		"Optimised for MIPS 24Kf (1:1 Core/FPU clock ratio)"	\
+	24kec		"Optimised for MIPS 24KEc"				\
+	24kef2_1	"Optimised for MIPS 24KEf (2:1 Core/FPU clock ratio)"	\
+	24kef1_1	"Optimised for MIPS 24KEf (1:1 Core/FPU clock ratio)"	\
+	34kc		"Optimised for MIPS 34Kc"				\
+	34kf2_1		"Optimised for MIPS 34Kf (2:1 Core/FPU clock ratio)"	\
+	34kf1_1		"Optimised for MIPS 34Kf (1:1 Core/FPU clock ratio)"	\
+	74kc		"Optimised for MIPS 74Kc"				\
+	74kf2_1		"Optimised for MIPS 74Kf (2:1 Core/FPU clock ratio)"	\
+	74kf1_1		"Optimised for MIPS 74Kf (1:1 Core/FPU clock ratio)"	\
+	74kf3_2		"Optimised for MIPS 74Kf (3:2 Core/FPU clock ratio)"	\
+	1004kc		"Optimised for MIPS 1004Kc"				\
+	1004kf2_1	"Optimised for MIPS 1004Kf (2:1 Core/FPU clock ratio)"  \
+	1004kf1_1	"Optimised for MIPS 1004Kf (1:1 Core/FPU clock ratio)"	\
 	r2000	"Build for R2000 CPU"		\
 	r3000	"Build for R3000 CPU"		\
 	r3900	"Build for R3900 CPU"		\
