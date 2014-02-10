@@ -32,7 +32,8 @@ choice SDECFG_X8664_OPT generic   \
 	em64t		"Optimised for Intel EM64T (Pentium 4 / Xeon)"	\
 	corei7		"Optimised for Intel Core i3/i5/i7"		\
 	corei7-avx	"Optimised for Intel Core i3/i5/i7 with AVX"	\
-	core-avx-i	"Optimised for Intel Core i3/i5/i7 IvyBridge"
+	core-avx-i	"Optimised for Intel Core i3/i5/i7 IvyBridge" \
+	core-avx2	"Optimised for Intel Core i3/i5/i7 Haswell"
 
 if [ $SDECFG_X8664_OPT != generic ] ; then
 	SDECFG_ID="$SDECFG_ID-$SDECFG_X8664_OPT"
