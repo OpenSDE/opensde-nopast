@@ -25,7 +25,7 @@ choice SDECFG_X8664_OPT generic   \
 	k8-sse3		"Optimised for AMD K8 with SSE3"	\
 	opteron-sse3	"Optimised for AMD Opteron with SSE3"	\
 	athlon64-sse3	"Optimised for AMD Athlon64 with SSE3"	\
-	amdfam10	"Optimised for AMD Family 10h core based CPUs"	\
+	amdfam10	"Optimised for AMD Family 10h Barcelona core based CPUs" \
 	btver1		"Optimised for AMD Family 14h Bobcat core based CPUs" \
 	bdver1		"Optimised for AMD Family 15h Bulldozer core based CPUs" \
 	bdver2		"Optimised for AMD Family 15h Piledriver core based CPUs" \
