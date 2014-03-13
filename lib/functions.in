@@ -337,6 +337,18 @@ function eval_config_command() {
 			create_config_cache >> $config_cache
 		fi
 
+		if [ -n "$configcachefile" ]; then
+			for x in $configcachefile; do
+				if [ -e $x ]; then
+					cat <<-EOT
+
+					# cache file: $x
+					EOT
+					cat "$x"
+				fi
+			done
+		fi >> $config_cache
+
 		if [ -n "$configcache" ]; then
 			cat <<-EOT
 
